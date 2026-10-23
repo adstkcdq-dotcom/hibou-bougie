@@ -1,5 +1,5 @@
 {
-  "_note": "Identifiants AdMob. Tant qu'ils sont vides, l'app affiche des pubs de TEST.",
-  "appId": "",
-  "rewardedId": ""
+  "_note": "Identifiants AdMob. Vides = pubs de TEST.",
+  "appId": "ca-app-pub-9505529401322295~7612989950",
+  "rewardedId": "ca-app-pub-9505529401322295/1838541218"
 }
