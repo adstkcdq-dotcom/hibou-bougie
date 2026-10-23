@@ -37,23 +37,24 @@ jobs:
 
       - name: Déchiffrer la clé de signature
         env:
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          RAW_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
-          if [ -z "$KEYSTORE_PASSWORD" ]; then
+          PW=$(printf %s "$RAW_PASSWORD" | tr -d '[:space:]')
+          if [ -z "$PW" ]; then
             echo "::warning::Secret KEYSTORE_PASSWORD absent : fabrication NON signée (impossible à envoyer sur Google Play)."
             exit 0
           fi
-          openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -in signing/upload.jks.enc -out "$RUNNER_TEMP/upload.jks" -pass env:KEYSTORE_PASSWORD
-          echo "KEYSTORE_PATH=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
+          echo "::add-mask::$PW"
+          if [ "$(printf %s "$PW" | sha256sum | cut -c1-16)" != "bbcd89ae4b1c38b2" ]; then
+            echo "::error::Le secret KEYSTORE_PASSWORD ne correspond pas au mot de passe de la clé. Recopie-le exactement (24 caractères, sans espace)."
+            exit 1
+          fi
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -in signing/upload.jks.enc -out "$RUNNER_TEMP/upload.jks" -pass pass:"$PW"
+          { echo "KEYSTORE_PATH=$RUNNER_TEMP/upload.jks"; echo "KEYSTORE_PASSWORD=$PW"; echo "KEY_PASSWORD=$PW"; echo "KEY_ALIAS=hibou"; } >> "$GITHUB_ENV"
 
       - name: Fabriquer le fichier .aab
         working-directory: android
-        env:
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: hibou
         run: |
-          [ -z "$ADMOB_APP_ID" ] && unset ADMOB_APP_ID
           chmod +x gradlew
           ./gradlew bundleRelease assembleRelease --no-daemon
 
