@@ -25,27 +25,35 @@ jobs:
       - name: Installer les dépendances
         run: npm ci
 
+      - name: Lire les identifiants AdMob
+        run: |
+          echo "ADMOB_APP_ID=$(node -p "require('./admob.config.json').appId")" >> "$GITHUB_ENV"
+          echo "ADMOB_REWARDED_ID=$(node -p "require('./admob.config.json').rewardedId")" >> "$GITHUB_ENV"
+
       - name: Préparer le jeu et le projet Android
-        env:
-          ADMOB_REWARDED_ID: ${{ secrets.ADMOB_REWARDED_ID }}
         run: |
           npm run build
           npx cap sync android
 
-      - name: Récupérer la clé de signature
+      - name: Déchiffrer la clé de signature
         env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-        run: echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_PASSWORD" ]; then
+            echo "::warning::Secret KEYSTORE_PASSWORD absent : fabrication NON signée (impossible à envoyer sur Google Play)."
+            exit 0
+          fi
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -in signing/upload.jks.enc -out "$RUNNER_TEMP/upload.jks" -pass env:KEYSTORE_PASSWORD
+          echo "KEYSTORE_PATH=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
 
       - name: Fabriquer le fichier .aab
         working-directory: android
         env:
-          KEYSTORE_PATH: ${{ runner.temp }}/upload.jks
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          ADMOB_APP_ID: ${{ secrets.ADMOB_APP_ID }}
+          KEY_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: hibou
         run: |
+          [ -z "$ADMOB_APP_ID" ] && unset ADMOB_APP_ID
           chmod +x gradlew
           ./gradlew bundleRelease assembleRelease --no-daemon
 

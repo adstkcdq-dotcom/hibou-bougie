@@ -15,5 +15,6 @@ Onglet **Actions** → « Fabriquer l'app Android » → **Run workflow**. Le fi
 2. Augmenter `versionCode` (et `versionName`) dans `android/app/build.gradle`.
 3. Laisser GitHub fabriquer le nouveau `.aab`, puis l'envoyer dans la Play Console.
 
-## Secrets GitHub nécessaires
-`KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`, `ADMOB_APP_ID`, `ADMOB_REWARDED_ID`.
+## Signature et pubs
+- La clé de signature est chiffrée dans `signing/upload.jks.enc`. Un seul secret GitHub : `KEYSTORE_PASSWORD`.
+- Les identifiants AdMob sont dans `admob.config.json` (vides = pubs de test).
