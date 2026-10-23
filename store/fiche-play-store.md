@@ -49,8 +49,9 @@ Jeu › Simulation (ou Occasionnel)
 Incrémental, Inactif, Détente, Hors ligne, Solo
 
 ## Coordonnées
-- E-mail : [E-MAIL DE CONTACT]
-- Politique de confidentialité : [URL GITHUB PAGES]
+- Nom du développeur : Hibou.bougie
+- E-mail : adst.kcdq@gmail.com
+- Politique de confidentialité : https://adstkcdq-dotcom.github.io/hibou-bougie/
 
 ---
 
