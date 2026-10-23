@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Hibou &amp; Bougie</string>
+    <string name="title_activity_main">Hibou &amp; Bougie</string>
+    <string name="package_name">com.hiboubougie.app</string>
+    <string name="custom_url_scheme">com.hiboubougie.app</string>
+</resources>

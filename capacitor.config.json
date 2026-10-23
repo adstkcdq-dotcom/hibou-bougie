@@ -1,0 +1,19 @@
+{
+  "appId": "com.hiboubougie.app",
+  "appName": "Hibou & Bougie",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#141a33"
+  },
+  "plugins": {
+    "SystemBars": {
+      "insetsHandling": "css",
+      "initialViewportFitValueHint": "cover",
+      "style": "DARK"
+    },
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_notify",
+      "iconColor": "#f2b134"
+    }
+  }
+}
