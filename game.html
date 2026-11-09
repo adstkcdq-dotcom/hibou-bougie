@@ -257,6 +257,14 @@ details summary{cursor:pointer;font-family:var(--f-display);font-weight:600}
 #modal .card{max-width:340px;width:100%;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
 #modal h3{font-size:22px;color:var(--fg)}
 #modal p{margin:0;color:var(--muted);line-height:1.45}
+.love{display:flex;gap:10px}.love .btn{flex:1}
+#tuto{position:fixed;inset:0;z-index:30;touch-action:none}
+#tuto .hole{position:fixed;border-radius:16px;box-shadow:0 0 0 2px var(--amber),0 0 0 9999px rgba(8,10,24,.78);pointer-events:none;transition:all .25s}
+#tuto .bub{position:fixed;left:16px;right:16px;max-width:420px;margin:0 auto;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+#tuto .bub small{color:var(--amber);font-weight:800}
+#tuto .bub b{display:block;font-family:var(--f-display);font-size:18px;margin:2px 0 4px}
+#tuto .bub p{margin:0 0 12px;font-size:14px;line-height:1.45}
+#tuto .bub div{display:flex;gap:10px;align-items:center;justify-content:space-between}
 #toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 64px);transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:999px;font-weight:800;font-size:13px;z-index:50;max-width:90%;text-align:center;transition:opacity .3s;pointer-events:none}
 @media (prefers-reduced-motion:reduce){#glow,.float{animation-duration:.01s}#letter{animation:none}}
 </style>
@@ -395,6 +403,14 @@ const Notif={P:null,
   await N.schedule({notifications:[{id:1,title:'Minuteur terminé, bravo !',body:`Tes ${studyReward(min)} étoile${studyReward(min)>1?'s':''} t’attendent. Ouvre le jeu pour les récupérer.`,schedule:{at:new Date(end),allowWhileIdle:true}}]})}catch(e){console.log('notif',e)}},
  async cancel(){const N=this.get();if(!N)return;try{await N.cancel({notifications:[{id:1}]})}catch(e){}}
 };
+const STORE_URL='https://play.google.com/store/apps/details?id=com.hiboubougie.app';
+const plug=n=>NATIVE?window.Capacitor.registerPlugin(n):null;
+function rateApp(){if(NATIVE)location.href='market://details?id=com.hiboubougie.app';else window.open(STORE_URL,'_blank')}
+async function shareApp(){const text='Je me concentre avec Hibou & Bougie : pendant que je travaille, la bibliothèque de mon hibou grandit 🦉🕯️';
+ try{if(NATIVE){await plug('Share').share({title:'Hibou & Bougie',text,url:STORE_URL,dialogTitle:'Partager Hibou & Bougie'});return}
+  if(navigator.share){await navigator.share({title:'Hibou & Bougie',text,url:STORE_URL});return}
+  await navigator.clipboard.writeText(text+' '+STORE_URL);toast('Lien copié !')}catch(e){}}
+async function askReview(){try{await plug('InAppReview').requestReview()}catch(e){console.log('review',e)}}
 const prod=()=>prodBase()*boostMult()*(studying()?3:1);
 const tapVal=()=>(1+lv('bec'))*(1+.5*tr('lunettes'))*lvlMult()*boostMult();
 function gain(n){S.pl+=n;S.tot+=n;S.run=(S.run||0)+n}
@@ -643,7 +659,8 @@ function render(){
    ${dg?'':`<div class="bar"><i style="width:${pr}%;background:var(--amber)"></i></div>`}
    <div class="facts" style="background:transparent"><div class="fact"><small>Tu gardes</small><div>Tes étoiles, le rang de la bibliothèque, l’équipement, le niveau du hibou et tes diplômes.</div></div><div class="fact"><small>Tu recommences</small><div>Tes plumes, tes objets, leurs améliorations et le bec.</div></div></div>
    ${dg?`<button class="btn main big" data-act="dip">Recommencer avec +${dg} diplôme${dg>1?'s':''}</button>`:''}</div></section>`}
- h+=`<p class="foot">${fmt(S.tot)} plumes gagnées · ${S.studies} minuteur${S.studies>1?'s':''} terminé${S.studies>1?'s':''}<br>${NATIVE&&Ads.privacy?'<button class="link" data-act="adprivacy">Choix de confidentialité des pubs</button> · ':''}<button class="link" data-act="reset">Effacer toute ma partie (sans bonus)</button></p>`;
+ h+=`<section class="sect" id="seclove"><h2>Tu aimes le jeu ?</h2><p class="sub">Une note ou un partage aide beaucoup ce petit jeu à se faire connaître. Merci !</p><div class="love"><button class="btn ghost" data-act="rate">⭐ Noter le jeu</button><button class="btn ghost" data-act="share">📤 Partager</button></div></section>`;
+ h+=`<p class="foot">${fmt(S.tot)} plumes gagnées · ${S.studies} minuteur${S.studies>1?'s':''} terminé${S.studies>1?'s':''}<br>${NATIVE&&Ads.privacy?'<button class="link" data-act="adprivacy">Choix de confidentialité des pubs</button> · ':''}<button class="link" data-act="tuto">Revoir le tutoriel</button> · <button class="link" data-act="reset">Effacer toute ma partie (sans bonus)</button></p>`;
  $('content').innerHTML=h;refresh();
 }
 function refresh(){document.querySelectorAll('.buy[data-cost]').forEach(b=>{b.disabled=(b.dataset.cur==='st'?S.st:S.pl)<+b.dataset.cost})}
@@ -673,7 +690,7 @@ function nextGoal(){
 // ---------- panneau d'aide ----------
 let F={kind:null};
 function openSheet(kind,info){F.kind=kind;F.info=info;$('sheet').hidden=false;document.body.style.overflow='hidden';renderSheet();$('sbody').scrollTop=0}
-function closeSheet(){F.kind=null;$('sheet').hidden=true;document.body.style.overflow='';render()}
+function closeSheet(){const k=F.kind;F.kind=null;$('sheet').hidden=true;document.body.style.overflow='';render();if(k==='help'&&!S.tuto&&!studying())tuto(0)}
 const becGain=()=>(1+.5*tr('lunettes'))*lvlMult()*boostMult();
 const PLUR={globe:'globes',sablier:'sabliers',lucioles:'bocaux de lucioles',grimoire:'grimoires volants',planetaire:'planétaires',portail:'portails du savoir',bougie:'bougies',the:'tasses de thé',lampe:'lampes',etagere:'étagères',chat:'chats',tour:'tours d’astronomie'};
 const FEM=id=>['bougie','the','lampe','etagere','tour'].includes(id);
@@ -749,6 +766,9 @@ document.addEventListener('click',e=>{
   case 'durset':setDur(+arg);save();return;
   case 'adboost':Ads.show(()=>{S.adEnd=Math.max(now(),S.adEnd||0)+AD_BOOST_MIN*60000;save();render();toast(`Plumes ×2 pendant ${AD_BOOST_MIN} minutes !`)});return;
   case 'adprivacy':Ads.privacyForm();return;
+  case 'rate':rateApp();return;
+  case 'share':shareApp();return;
+  case 'tuto':window.scrollTo({top:0});tuto(0);return;
   case 'study':if(+arg<1){if(S.trial)return;S.trial=1}S.study={end:now()+(+arg)*60000,min:+arg};Notif.plan(S.study.end,+arg);toast('C’est parti ! Pose ton téléphone.');window.scrollTo({top:0,behavior:'smooth'});break;
   case 'stop':if(b.dataset.sure){S.study=null;Notif.cancel();toast('Minuteur arrêté, pas de récompense')}else{b.dataset.sure=1;b.textContent='Toque encore pour arrêter';return}break;
   case 'dip':{const g=dipGain();if(!g)return;if(!b.dataset.sure){b.dataset.sure=1;b.textContent='Toque encore pour confirmer';return}
@@ -760,7 +780,7 @@ document.addEventListener('click',e=>{
  if($('sheet').hidden)render();else if(F.kind==='info')renderSheet();
 });
 function toast(t){const T=$('toast');T.textContent=t;T.hidden=false;T.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>{T.style.opacity=0;setTimeout(()=>T.hidden=true,300)},2200)}
-function modal(title,txt,ad){$('modalcard').innerHTML=`<h3>${title}</h3><p>${txt}</p>${ad&&adOk()?`<button class="btn ad" id="mad">▶ ${ad.label}</button>`:''}<button class="btn ${ad&&adOk()?'ghost':'main'}" id="mok">${ad&&adOk()?'Non merci':'Super'}</button>`;$('modal').hidden=false;$('mok').onclick=()=>{$('modal').hidden=true};
+function modal(title,txt,ad,onClose){$('modalcard').innerHTML=`<h3>${title}</h3><p>${txt}</p>${ad&&adOk()?`<button class="btn ad" id="mad">▶ ${ad.label}</button>`:''}<button class="btn ${ad&&adOk()?'ghost':'main'}" id="mok">${ad&&adOk()?'Non merci':'Super'}</button>`;$('modal').hidden=false;$('mok').onclick=()=>{$('modal').hidden=true;if(onClose)onClose()};
  if($('mad'))$('mad').onclick=()=>{$('modal').hidden=true;Ads.show(()=>{ad.give();save();render();toast(ad.done)})};$('mok').focus()}
 
 // ---------- boucle ----------
@@ -783,11 +803,31 @@ function tick(t){
  acc+=dt;if(acc>.2){acc=0;hud();refresh()}
  requestAnimationFrame(tick);
 }
-function finishStudy(){const m=S.study.min,r=studyReward(m);S.study=null;S.st+=r;S.studies++;addXp(m<1?20:Math.round(m*8));save();render();modal('Minuteur terminé, bravo !',`Tu as gagné ${r} étoile${r>1?'s':''}. Fais une vraie pause de 5 minutes avant la suite.`)}
+function finishStudy(){const m=S.study.min,r=studyReward(m);S.study=null;S.st+=r;S.studies++;addXp(m<1?20:Math.round(m*8));const rev=NATIVE&&m>=10&&S.studies>=3&&!S.revAsked;if(rev)S.revAsked=1;
+ save();render();modal('Minuteur terminé, bravo !',`Tu as gagné ${r} étoile${r>1?'s':''}. Fais une vraie pause de 5 minutes avant la suite.`,null,rev?()=>setTimeout(askReview,600):null)}
 setInterval(save,5000);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)save()});
 
+// ---------- mini-tutoriel (premier lancement, ou « Revoir le tutoriel ») ----------
+const TUTO=[
+ {q:'#owlbtn',t:'Touche le hibou',d:'Chaque toucher te donne des plumes. Les plumes servent à acheter des objets.'},
+ {q:'#goal',t:'Ton prochain objectif',d:'Cette carte te dit toujours quoi faire ensuite. Touche-la pour y aller.'},
+ {q:'#mission',t:'Le minuteur de concentration',d:'Choisis une durée, pose ton téléphone et concentre-toi. À la fin, tu gagnes des étoiles.'},
+ {q:'#secbib .row',t:'Ta bibliothèque',d:'Achète des objets avec tes plumes : ils en produisent tout seuls, même jeu fermé. Chaque achat change la pièce.'}];
+function tuto(i){const old=$('tuto');if(old)old.remove();
+ if(i>=TUTO.length){S.tuto=1;save();window.scrollTo({top:0,behavior:'smooth'});return}
+ const s=TUTO[i],el=document.querySelector(s.q);if(!el){tuto(i+1);return}
+ el.scrollIntoView({block:'center'});
+ const O=document.createElement('div');O.id='tuto';O.setAttribute('role','dialog');O.setAttribute('aria-label','Tutoriel');
+ O.innerHTML=`<div class="hole"></div><div class="bub"><small>Étape ${i+1} / ${TUTO.length}</small><b>${s.t}</b><p>${s.d}</p><div><button class="link" id="tskip">Passer</button><button class="btn main" id="tnext">${i+1<TUTO.length?'Suivant':'C’est parti !'}</button></div></div>`;
+ document.body.appendChild(O);
+ requestAnimationFrame(()=>{const r=el.getBoundingClientRect(),vh=innerHeight,top=Math.max(r.top-6,8),bot=Math.min(r.bottom+6,vh-8),H=O.querySelector('.hole'),B=O.querySelector('.bub');
+  Object.assign(H.style,{left:(r.left-6)+'px',top:top+'px',width:(r.width+12)+'px',height:Math.max(bot-top,0)+'px'});
+  if(vh-bot>B.offsetHeight+16)B.style.top=(bot+12)+'px';else if(top>B.offsetHeight+16)B.style.top=(top-12-B.offsetHeight)+'px';else B.style.bottom='16px'});
+ $('tnext').onclick=()=>tuto(i+1);$('tskip').onclick=()=>tuto(TUTO.length);$('tnext').focus()}
+
 function start(){
+ if(S.tuto==null&&(S.studies>0||S.taps>=10))S.tuto=1; // joueurs déjà lancés : pas de tutoriel imposé
  const away=Math.min((now()-S.last)/1000,8*3600);
  drawOwl();drawLib();render();hud();
  if(S.study&&now()>=S.study.end)finishStudy();
@@ -798,7 +838,7 @@ function start(){
 start();
 if(NATIVE){Ads.init();
  try{const App=window.Capacitor.registerPlugin('App');
-  App.addListener('backButton',()=>{if(!$('modal').hidden){$('modal').hidden=true;return}if(!$('sheet').hidden){closeSheet();return}App.minimizeApp()});
+  App.addListener('backButton',()=>{if($('tuto')){tuto(TUTO.length);return}if(!$('modal').hidden){$('modal').hidden=true;return}if(!$('sheet').hidden){closeSheet();return}App.minimizeApp()});
   let pausedAt=0;
   App.addListener('pause',()=>{pausedAt=now();save()});
   App.addListener('resume',()=>{lastT=performance.now();const away=pausedAt?Math.min((now()-pausedAt)/1000,8*3600):0;pausedAt=0;
