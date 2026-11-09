@@ -1,0 +1,86 @@
+# Fabrique l'app iPhone/iPad dans le cloud (Mac de GitHub).
+# Sans clé App Store Connect : vérifie seulement que l'app se compile.
+# Avec la clé (secrets ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8) et le Team ID dans ios-config.json :
+# signe l'app et l'envoie directement sur App Store Connect / TestFlight.
+name: Fabriquer l'app iOS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-26
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Choisir la dernière version de Xcode
+        run: |
+          sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+          xcodebuild -version
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Lire la configuration
+        run: |
+          echo "ADMOB_IOS_APP_ID=$(node -p "require('./admob.config.json').iosAppId||''")" >> "$GITHUB_ENV"
+          echo "ADMOB_IOS_REWARDED_ID=$(node -p "require('./admob.config.json').iosRewardedId||''")" >> "$GITHUB_ENV"
+          echo "TEAM_ID=$(node -p "require('./ios-config.json').teamId||''")" >> "$GITHUB_ENV"
+          echo "IOS_APP_ID=$(node -p "require('./ios-config.json').appStoreId||''")" >> "$GITHUB_ENV"
+
+      - name: Préparer le jeu et le projet iOS
+        run: |
+          npm run build
+          npx cap sync ios
+          if [ -n "$ADMOB_IOS_APP_ID" ]; then
+            /usr/libexec/PlistBuddy -c "Set :GADApplicationIdentifier $ADMOB_IOS_APP_ID" ios/App/App/Info.plist
+            echo "AdMob iOS : identifiant réel"
+          else
+            echo "AdMob iOS : identifiant de TEST"
+          fi
+
+      - name: Vérifier que l'app se compile (sans signature)
+        if: env.ASC_KEY_ID == '' || env.TEAM_ID == ''
+        working-directory: ios/App
+        run: |
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release \
+            -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} build | tail -40
+
+      - name: Signer et envoyer sur App Store Connect (TestFlight)
+        if: env.ASC_KEY_ID != '' && env.TEAM_ID != ''
+        working-directory: ios/App
+        run: |
+          KEY="$RUNNER_TEMP/AuthKey.p8"
+          printf '%s' "$ASC_KEY_P8" > "$KEY"
+          AUTH=(-allowProvisioningUpdates -authenticationKeyPath "$KEY" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID")
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            DEVELOPMENT_TEAM="$TEAM_ID" CODE_SIGN_STYLE=Automatic \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} "${AUTH[@]}" archive | tail -40
+          cat > "$RUNNER_TEMP/export.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>$TEAM_ID</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+          </dict></plist>
+          PLIST
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/export.plist" -exportPath "$RUNNER_TEMP/export" "${AUTH[@]}"
+          rm -f "$KEY"
+          echo "Envoyé sur App Store Connect : la version apparaîtra dans TestFlight après quelques minutes de traitement."

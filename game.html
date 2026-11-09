@@ -378,7 +378,9 @@ function prodBase(){let p=0;for(const b of BUILD)p+=cnt(b.id)*bProd(b);return p*
 function boostMult(){return (now()<S.lEnd?7:1)*(now()<(S.adEnd||0)?2:1)}
 // ---------- app Android : pubs avec récompense, notifications, bouton retour ----------
 const NATIVE=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
-const AD_CFG={rewarded:'ca-app-pub-3940256099942544/5224354917',testing:true}; /*AD_CFG*/ // identifiants de TEST, remplacés par les vrais avant publication
+const AD_CFG={android:'ca-app-pub-3940256099942544/5224354917',ios:'ca-app-pub-3940256099942544/1712485313'}; /*AD_CFG*/ // identifiants de TEST, remplacés par les vrais à la fabrication
+const PLATFORM=NATIVE?window.Capacitor.getPlatform():'web',IOS=PLATFORM==='ios';
+const AD_ID=IOS?AD_CFG.ios:AD_CFG.android,AD_TEST=AD_ID.startsWith('ca-app-pub-3940256099942544/');
 const AD_BOOST_MIN=15,AD_BOOST_CAP=120;
 const Ads={ready:false,can:false,privacy:false,pending:null,A:null,
  async init(){if(!NATIVE)return;try{const A=this.A=window.Capacitor.registerPlugin('AdMob');
@@ -388,9 +390,10 @@ const Ads={ready:false,can:false,privacy:false,pending:null,A:null,
   await A.initialize({});
   let info=await A.requestConsentInfo();
   if(info.isConsentFormAvailable&&info.status==='REQUIRED')info=await A.showConsentForm();
+  if(IOS){try{const t=await A.trackingAuthorizationStatus();if(t.status==='notDetermined')await A.requestTrackingAuthorization()}catch(e){}}
   this.can=!!info.canRequestAds;this.privacy=info.privacyOptionsRequirementStatus==='REQUIRED';
   this.preload();render()}catch(e){console.log('ads',e)}},
- async preload(){if(!this.can||this.ready)return;try{await this.A.prepareRewardVideoAd({adId:AD_CFG.rewarded,isTesting:AD_CFG.testing});this.ready=true;if($('sheet').hidden)render()}catch(e){this.ready=false;setTimeout(()=>this.preload(),60000)}},
+ async preload(){if(!this.can||this.ready)return;try{await this.A.prepareRewardVideoAd({adId:AD_ID,isTesting:AD_TEST});this.ready=true;if($('sheet').hidden)render()}catch(e){this.ready=false;setTimeout(()=>this.preload(),60000)}},
  show(onReward){if(!this.ready){toast('Pas de pub disponible pour l’instant, réessaie dans un moment');return}
   this.ready=false;this.pending=onReward;this.A.showRewardVideoAd().catch(()=>{this.pending=null;setTimeout(()=>this.preload(),5000)});render()},
  async privacyForm(){try{await this.A.showPrivacyOptionsForm()}catch(e){}}
@@ -403,9 +406,11 @@ const Notif={P:null,
   await N.schedule({notifications:[{id:1,title:'Minuteur terminé, bravo !',body:`Tes ${studyReward(min)} étoile${studyReward(min)>1?'s':''} t’attendent. Ouvre le jeu pour les récupérer.`,schedule:{at:new Date(end),allowWhileIdle:true}}]})}catch(e){console.log('notif',e)}},
  async cancel(){const N=this.get();if(!N)return;try{await N.cancel({notifications:[{id:1}]})}catch(e){}}
 };
-const STORE_URL='https://play.google.com/store/apps/details?id=com.hiboubougie.app';
+const IOS_APP_ID=''; /*IOS_APP_ID*/ // numéro de l'appli sur l'App Store, rempli quand la fiche App Store existe
+const PLAY_URL='https://play.google.com/store/apps/details?id=com.hiboubougie.app',APPSTORE_URL=IOS_APP_ID?'https://apps.apple.com/app/id'+IOS_APP_ID:'';
+const STORE_URL=IOS&&APPSTORE_URL?APPSTORE_URL:PLAY_URL;
 const plug=n=>NATIVE?window.Capacitor.registerPlugin(n):null;
-function rateApp(){if(NATIVE)location.href='market://details?id=com.hiboubougie.app';else window.open(STORE_URL,'_blank')}
+function rateApp(){if(IOS){if(IOS_APP_ID)location.href='itms-apps://apps.apple.com/app/id'+IOS_APP_ID+'?action=write-review';else askReview()}else if(NATIVE)location.href='market://details?id=com.hiboubougie.app';else window.open(STORE_URL,'_blank')}
 async function shareApp(){const text='Je me concentre avec Hibou & Bougie : pendant que je travaille, la bibliothèque de mon hibou grandit 🦉🕯️';
  try{if(NATIVE){await plug('Share').share({title:'Hibou & Bougie',text,url:STORE_URL,dialogTitle:'Partager Hibou & Bougie'});return}
   if(navigator.share){await navigator.share({title:'Hibou & Bougie',text,url:STORE_URL});return}

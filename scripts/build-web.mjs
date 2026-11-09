@@ -25,11 +25,14 @@ for (const [family, weight, src] of fonts) {
 }
 
 let game = readFileSync(join(root, 'game.html'), 'utf8');
-// Vrai identifiant de pub avec récompense (fourni par GitHub) ; sinon, pubs de test.
-if (process.env.ADMOB_REWARDED_ID) {
-  game = game.replace(/const AD_CFG=\{[^}]*\};/, `const AD_CFG={rewarded:'${process.env.ADMOB_REWARDED_ID}',testing:false};`);
-  console.log('Pubs réelles activées');
-} else console.log('Pubs de TEST');
+// Vrais identifiants de pub avec récompense (lus dans admob.config.json par GitHub) ; sinon, pubs de test.
+const m = game.match(/const AD_CFG=\{android:'([^']*)',ios:'([^']*)'\};/);
+if (!m) throw new Error('AD_CFG introuvable dans game.html');
+const androidId = process.env.ADMOB_REWARDED_ID || m[1];
+const iosId = process.env.ADMOB_IOS_REWARDED_ID || m[2];
+game = game.replace(m[0], `const AD_CFG={android:'${androidId}',ios:'${iosId}'};`);
+console.log(`Pubs Android : ${process.env.ADMOB_REWARDED_ID ? 'réelles' : 'TEST'} · Pubs iOS : ${process.env.ADMOB_IOS_REWARDED_ID ? 'réelles' : 'TEST'}`);
+if (process.env.IOS_APP_ID) game = game.replace("const IOS_APP_ID='';", `const IOS_APP_ID='${process.env.IOS_APP_ID}';`);
 game = game.replace(/<link rel="stylesheet" href="https:\/\/fonts\.googleapis\.com[^>]*>\n?/, '');
 game = game.replace(/<meta name="claude:viewport-fit-sides"[^>]*>\n?/, '');
 const title = (game.match(/<title>[\s\S]*?<\/title>/) || ['<title>Hibou &amp; Bougie</title>'])[0];
