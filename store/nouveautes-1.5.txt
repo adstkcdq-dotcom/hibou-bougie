@@ -1,0 +1,17 @@
+Notes de version 1.5 (Play Console : 500 caractères max par langue ; App Store : champ « Nouveautés ») :
+
+<fr-FR>
+• Progression rééquilibrée : la bibliothèque se construit plus longtemps, chaque nouvel objet se mérite
+• Les derniers objets (du globe au portail) et les diplômes demandent plus de plumes
+• Le début de partie reste aussi rapide qu'avant
+</fr-FR>
+<en-US>
+• Rebalanced progression: your library takes longer to build, every new object is earned
+• The last objects (from the globe to the portal) and diplomas need more feathers
+• The early game stays as fast as before
+</en-US>
+<en-GB>
+• Rebalanced progression: your library takes longer to build, every new object is earned
+• The last objects (from the globe to the portal) and diplomas need more feathers
+• The early game stays as fast as before
+</en-GB>
