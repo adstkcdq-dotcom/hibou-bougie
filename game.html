@@ -273,6 +273,50 @@ details summary{cursor:pointer;font-family:var(--f-display);font-weight:600}
 #tuto .bub p{margin:0 0 12px;font-size:14px;line-height:1.45}
 #tuto .bub div{display:flex;gap:10px;align-items:center;justify-content:space-between}
 #toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 64px);transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:999px;font-weight:800;font-size:13px;z-index:50;max-width:90%;text-align:center;transition:opacity .3s;pointer-events:none}
+/* 1.3 : hibou expressif, effets, progrès, succès, collection, plumage */
+#owltilt{transform-box:fill-box;transform-origin:50% 100%}
+#owltilt.tl{animation:tiltl .45s ease-out}#owltilt.tr{animation:tiltr .45s ease-out}
+@keyframes tiltl{35%{transform:rotate(-7deg)}}@keyframes tiltr{35%{transform:rotate(7deg)}}
+.zz{animation:zz 3s ease-in-out infinite;opacity:0}
+@keyframes zz{0%{opacity:0;transform:translate(0,0)}30%{opacity:.9}100%{opacity:0;transform:translate(14px,-30px)}}
+.cloud{animation:cloud 18s ease-in-out infinite alternate}
+@keyframes cloud{to{transform:translateX(40px)}}
+#scene.rankup{animation:rankup 1.3s ease-out}
+@keyframes rankup{0%{filter:none}18%{filter:brightness(2.2) saturate(1.5)}100%{filter:none}}
+.spark{position:absolute;left:50%;top:45%;color:#f2c94c;font-size:22px;pointer-events:none;animation:spark 1.4s ease-out forwards;z-index:4;text-shadow:0 0 8px #fff2b0}
+@keyframes spark{to{transform:translate(var(--dx),var(--dy)) scale(.4) rotate(220deg);opacity:0}}
+.stats{display:flex;flex-direction:column;gap:12px}
+.srow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.srow b{display:block;font-family:var(--f-display);font-size:19px;font-weight:600}
+.srow small{color:var(--muted);font-size:11px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;height:96px}
+.week div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px}
+.week i{display:block;width:70%;min-height:3px;background:var(--amber);border-radius:4px 4px 2px 2px}
+.week i.z{background:var(--panel2)}
+.week small{font-size:11px;color:var(--muted)}
+.actl{display:flex;flex-direction:column;gap:6px}
+.actl>div{display:grid;grid-template-columns:118px 1fr auto;gap:8px;align-items:center;font-size:13px}
+.actl b{font-size:12px;color:var(--muted)}
+details.card summary{font-size:16px}
+.achl{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.ach{display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
+.ach.off{opacity:.5}
+.ach .medal{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--amber);color:#2a1a05;font-size:17px;flex:none}
+.ach.off .medal{background:var(--panel);filter:grayscale(1)}
+.ach b{display:block;font-family:var(--f-display);font-weight:600}
+.ach span{display:block;font-size:12px;color:var(--muted)}
+.ach em{font-style:normal;color:var(--star);font-weight:800;font-size:12px;flex:none}
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;margin-top:10px}
+.book{border-radius:5px 10px 10px 5px;padding:10px 8px;min-height:92px;font-size:11px;font-weight:800;line-height:1.25;color:#fff;display:flex;flex-direction:column;justify-content:space-between;border-left:6px solid rgba(0,0,0,.28);text-shadow:0 1px 0 rgba(0,0,0,.35)}
+.book small{font-size:10px;opacity:.85;font-weight:700}
+.book.r2{box-shadow:0 0 12px rgba(242,201,76,.55)}
+.book.unk{background:var(--panel2)!important;color:var(--muted);display:grid;place-items:center;font-size:22px;text-shadow:none}
+.plum{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.plum button{display:flex;flex-direction:column;align-items:center;gap:4px;border:0;background:none;color:var(--muted);font:700 11px var(--f-body);cursor:pointer;padding:0;min-width:44px}
+.plum i{width:36px;height:36px;border-radius:50%;border:3px solid transparent;display:block}
+.plum button[aria-pressed=true] i{border-color:var(--fg)}
+.plum button[aria-pressed=true]{color:var(--fg)}
+#actpick button{padding:6px 10px}
 @media (prefers-reduced-motion:reduce){#glow,.float{animation-duration:.01s}#letter{animation:none}}
 </style>
 
@@ -306,6 +350,10 @@ details summary{cursor:pointer;font-family:var(--f-display);font-weight:600}
 
 <script>
 (()=>{
+// Langue : celle du téléphone (français sinon anglais), modifiable dans le jeu
+const LANG=(()=>{try{const v=JSON.parse(localStorage.getItem('hibou-bougie-v1'));if(v&&v.lang)return v.lang}catch(e){}return /^fr/i.test(navigator.language||'fr')?'fr':'en'})();
+const tx=(fr,en)=>LANG==='en'?en:fr;
+document.documentElement.lang=LANG;
 const ICON={
  plume:'<svg viewBox="0 0 24 24"><path d="M20 3C11 4 6 9 5 18l-2 3 1 .5 2-2.5c8-1 13-6 14-16Z" fill="currentColor"/></svg>',
  star:'<svg viewBox="0 0 24 24"><path d="m12 2.5 2.8 6 6.5.7-4.9 4.4 1.4 6.4L12 16.8 6.2 20l1.4-6.4L2.7 9.2l6.5-.7Z" fill="currentColor"/></svg>',
@@ -342,6 +390,74 @@ const EQ=[
  {id:'plume',n:"Plume d'écriture",role:'Quand le jeu est fermé, ta bibliothèque produit plus vite.',d:t=>`Jeu fermé : ${50+10*t} % de la vitesse`},
 ];
 const EQCOST=[3,8,20,45,90];
+// Le hibou grandit avec le temps de concentration (en heures)
+const STAGES=[{h:0,fr:'Oisillon',en:'Owlet',s:.8},{h:1,fr:'Jeune étudiant',en:'Young student',s:.9},{h:10,fr:'Savant',en:'Scholar',s:.97},{h:50,fr:'Grand sage',en:'Great sage',s:1.04}];
+const stage=()=>{const h=(S.fmin||0)/60;let i=0;STAGES.forEach((x,k)=>{if(h>=x.h)i=k});return i};
+const stageName=i=>tx(STAGES[i].fr,STAGES[i].en);
+// Plumage : corps, ailes/oreilles, ventre, motifs
+const PLUMAGE=[
+ {id:'brun',fr:'Brun',en:'Brown',cost:0,c:['#8a6a4a','#6e5038','#d9b98a','#b8935e']},
+ {id:'neige',fr:'Neige',en:'Snow',cost:10,c:['#e4e0d8','#bdb6aa','#faf7f1','#d3cbbd']},
+ {id:'roux',fr:'Roux',en:'Russet',cost:10,c:['#b8673a','#8f4a26','#f0c79a','#cf9a68']},
+ {id:'gris',fr:'Gris perle',en:'Pearl grey',cost:15,c:['#8d8f99','#6c6e78','#d3d4da','#aeb0b8']},
+ {id:'nuit',fr:'Nuit',en:'Midnight',cost:20,c:['#3c4470','#2a3158','#8a93c4','#6b74a8']},
+ {id:'lavande',fr:'Lavande',en:'Lavender',cost:30,c:['#9a7fc0','#7a5fa3','#e6dbf4','#bba6d9']}];
+const plumC=()=>(PLUMAGE.find(x=>x.id===S.pcol)||PLUMAGE[0]).c;
+// Activités du minuteur
+const ACTS=[{id:'etudes',fr:'Études',en:'Study',e:'📚'},{id:'travail',fr:'Travail',en:'Work',e:'💼'},{id:'lecture',fr:'Lecture',en:'Reading',e:'📖'},{id:'sport',fr:'Sport',en:'Sport',e:'🏃'},{id:'creation',fr:'Création',en:'Creative',e:'🎨'},{id:'autre',fr:'Autre',en:'Other',e:'✨'}];
+const actOf=id=>ACTS.find(a=>a.id===id)||ACTS[0];
+const actName=a=>tx(a.fr,a.en);
+// Collection de livres : un livre au hasard par minuteur de 10 min ou plus (r : 0 commun, 1 rare, 2 légendaire)
+const BOOKS=[
+ ['plumes','Petit traité des plumes','A Little Treatise on Feathers',0],['chandelle','Contes de la chandelle','Candlelight Tales',0],['sieste','L’art de la sieste','The Art of Napping',0],
+ ['forets','Atlas des forêts','Atlas of Forests',0],['the','Recettes de thé','Tea Recipes',0],['ciel','Cartes du ciel','Star Charts',0],
+ ['chat','Mémoires d’un chat','Memoirs of a Cat',0],['grammaire','Grammaire des hiboux','Owl Grammar',0],['nuages','Le grand livre des nuages','The Big Book of Clouds',0],
+ ['poemes','Poèmes du soir','Evening Poems',0],['horloges','Histoire des horloges','A History of Clocks',0],['herbier','L’herbier secret','The Secret Herbarium',0],
+ ['lune','Calculs lunaires','Lunar Calculations',0],['calme','Le manuel du calme','The Calm Handbook',0],
+ ['bleu','Le grimoire bleu','The Blue Grimoire',1],['explorateur','Carnet de l’explorateur','The Explorer’s Notebook',1],['lucioles','Chants des lucioles','Songs of the Fireflies',1],
+ ['minuscule','L’encyclopédie minuscule','The Tiny Encyclopedia',1],['bougie','Voyage au bout de la bougie','Journey to the End of the Candle',1],['code','Le code des étoiles','The Star Code',1],
+ ['focus','Traité de concentration','Treatise on Focus',1],
+ ['infini','Le livre infini','The Endless Book',2],['or','Le manuscrit d’or','The Golden Manuscript',2],['celeste','Les archives célestes','The Celestial Archives',2]
+].map(([id,fr,en,r])=>({id,fr,en,r}));
+const bookName=b=>tx(b.fr,b.en);
+const rarName=r=>[tx('commun','common'),tx('rare','rare'),tx('légendaire','legendary')][r];
+const bookCount=()=>BOOKS.filter(b=>S.books?.[b.id]).length;
+function drawBook(){const x=Math.random(),rar=x<.05?2:x<.3?1:0,pool=BOOKS.filter(b=>b.r===rar),b=pool[Math.floor(Math.random()*pool.length)];
+ S.books=S.books||{};const isNew=!S.books[b.id];S.books[b.id]=(S.books[b.id]||0)+1;if(!isNew)S.st+=1;return{b,isNew}}
+// Succès
+const ACH=[
+ {id:'first',e:'🎯',fr:['Premier pas','Termine ton premier minuteur'],en:['First step','Finish your first timer'],t:()=>S.studies>=1,r:1},
+ {id:'h1',e:'⏱️',fr:['Première heure','1 h de concentration au total'],en:['First hour','1 h of focus in total'],t:()=>(S.fmin||0)>=60,r:2},
+ {id:'h10',e:'📘',fr:['Dix heures','10 h de concentration au total'],en:['Ten hours','10 h of focus in total'],t:()=>(S.fmin||0)>=600,r:5},
+ {id:'h50',e:'🎓',fr:['Cinquante heures','50 h de concentration au total'],en:['Fifty hours','50 h of focus in total'],t:()=>(S.fmin||0)>=3000,r:10},
+ {id:'h100',e:'🏛️',fr:['Centurion','100 h de concentration au total'],en:['Centurion','100 h of focus in total'],t:()=>(S.fmin||0)>=6000,r:20},
+ {id:'s3',e:'🔥',fr:['Régulier','3 jours de suite avec un minuteur'],en:['Steady','3 days in a row with a timer'],t:()=>(S.fbest||0)>=3,r:2},
+ {id:'s7',e:'📅',fr:['Une semaine','7 jours de suite'],en:['One week','7 days in a row'],t:()=>(S.fbest||0)>=7,r:5},
+ {id:'s30',e:'🌙',fr:['Un mois entier','30 jours de suite'],en:['A whole month','30 days in a row'],t:()=>(S.fbest||0)>=30,r:15},
+ {id:'long',e:'🏃',fr:['Marathon','Un minuteur de 2 h ou plus'],en:['Marathon','A timer of 2 h or more'],t:()=>(S.maxmin||0)>=120,r:3},
+ {id:'night',e:'🦉',fr:['Oiseau de nuit','Finis un minuteur entre minuit et 5 h'],en:['Night owl','Finish a timer between midnight and 5 am'],t:()=>!!S.nightOwl,r:2},
+ {id:'early',e:'🌅',fr:['Lève-tôt','Finis un minuteur entre 5 h et 8 h'],en:['Early bird','Finish a timer between 5 and 8 am'],t:()=>!!S.early,r:2},
+ {id:'acts',e:'🎨',fr:['Touche-à-tout','Concentre-toi dans 4 activités différentes'],en:['All-rounder','Focus on 4 different activities'],t:()=>Object.keys(S.fact||{}).length>=4,r:3},
+ {id:'books5',e:'📚',fr:['Lecteur','5 livres dans ta collection'],en:['Reader','5 books in your collection'],t:()=>bookCount()>=5,r:2},
+ {id:'books15',e:'🗝️',fr:['Collectionneur','15 livres dans ta collection'],en:['Collector','15 books in your collection'],t:()=>bookCount()>=15,r:5},
+ {id:'legend',e:'✨',fr:['Légende','Trouve un livre légendaire'],en:['Legend','Find a legendary book'],t:()=>BOOKS.some(b=>b.r===2&&S.books?.[b.id]),r:5},
+ {id:'rank3',e:'🏰',fr:['Grande bibliothèque','Atteins le rang 4'],en:['Grand library','Reach rank 4'],t:()=>(S.rank||0)>=3,r:3},
+ {id:'allobj',e:'🪐',fr:['Tout le mobilier','Possède les 12 objets'],en:['Fully furnished','Own all 12 objects'],t:()=>BUILD.every(b=>cnt(b.id)),r:5},
+ {id:'dip',e:'📜',fr:['Diplômé','Obtiens un diplôme'],en:['Graduate','Earn a diploma'],t:()=>(S.dip||0)>=1,r:5},
+ {id:'sage',e:'👑',fr:['Grand sage','Ton hibou atteint son dernier stade'],en:['Great sage','Your owl reaches its final stage'],t:()=>stage()>=3,r:10}];
+const achName=a=>tx(a.fr[0],a.en[0]);
+const achCount=()=>ACH.filter(a=>S.ach?.[a.id]).length;
+function checkAch(silent){const got=[];for(const a of ACH){if(S.ach?.[a.id]||!a.t())continue;S.ach=S.ach||{};S.ach[a.id]=1;S.st+=a.r;got.push(a)}
+ if(got.length&&!silent)toast(`${got[0].e} ${tx('Succès','Achievement')} : ${got.map(achName).join(', ')} (+${got.reduce((n,a)=>n+a.r,0)} ★)`);return got}
+const dk=(d=new Date())=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+// Moment de la journée (heure réelle du téléphone)
+const tod=()=>{const h=new Date().getHours();return h>=21||h<6?'night':h<9?'dawn':h<17?'day':'dusk'};
+const SKY={night:['#1d2c66','#2f4590'],dawn:['#f4a97f','#a9c1ec'],day:['#6fb9f5','#d3ecff'],dusk:['#3d3a86','#ef8f6b']};
+let happyUntil=0;
+const mood=()=>studying()?'sleep':now()<happyUntil?'happy':'';
+// Effet visuel : passage de rang, hibou qui grandit
+function fx(){const sc=$('scene');sc.classList.remove('rankup');void sc.offsetWidth;sc.classList.add('rankup');
+ for(let i=0;i<18;i++){const e=document.createElement('div');e.className='spark';e.textContent='★';const a=i/18*Math.PI*2,d=90+Math.random()*70;e.style.setProperty('--dx',Math.cos(a)*d+'px');e.style.setProperty('--dy',Math.sin(a)*d+'px');sc.appendChild(e);setTimeout(()=>e.remove(),1500)}}
 // Améliorations de la bibliothèque
 const RANKS=['Coin lecture','Bureau douillet','Bibliothèque','Grande bibliothèque','Bibliothèque royale','Bibliothèque céleste'];
 const RANKCOST=[5,15,40,90,180];      // en étoiles
@@ -358,6 +474,7 @@ const fresh=()=>({pl:0,st:3,tot:0,xp:0,lvl:1,taps:0,b:{},u:{},e:{},
 let S;
 try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 S=Object.assign(fresh(),S||{});
+if(S.fmin==null&&S.studies)S.fmin=S.studies*20;
 if(window.claude?.hot?.data?.S)S=window.claude.hot.data.S;
 window.claude?.hot?.snapshot?.(()=>({S}));
 const save=()=>{S.last=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
@@ -453,24 +570,34 @@ const becTier=()=>lv('bec')>=30?2:lv('bec')>=10?1:0;
 let sceneSig='';
 function drawScene(force){
  const r=S.rank||0,c=id=>Math.min(cnt(id),12);
- const sig=JSON.stringify([S.dip||0,r,c('bougie'),c('the'),c('lampe'),c('etagere'),c('chat'),c('tour'),c('globe'),c('sablier'),c('lucioles'),c('grimoire'),c('planetaire'),c('portail'),S.bl,S.e,becTier(),Math.min(S.lvl,15)>=15?15:S.lvl>=10?10:S.lvl>=6?6:S.lvl>=3?3:0]);
+ const TD=tod(),SKYC=r>=5&&TD==='night'?['#3a1f6b','#6b3fa0']:SKY[TD];
+ const sig=JSON.stringify([TD,mood(),stage(),S.pcol||'',S.dip||0,r,c('bougie'),c('the'),c('lampe'),c('etagere'),c('chat'),c('tour'),c('globe'),c('sablier'),c('lucioles'),c('grimoire'),c('planetaire'),c('portail'),S.bl,S.e,becTier(),Math.min(S.lvl,15)>=15?15:S.lvl>=10?10:S.lvl>=6?6:S.lvl>=3?3:0]);
  if(!force&&sig===sceneSig)return;sceneSig=sig;
  const W=WALL[r];let g=`<defs><linearGradient id="gw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${W[0]}"/><stop offset="1" stop-color="${W[1]}"/></linearGradient>
-  <linearGradient id="gs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${r>=5?'#3a1f6b':'#1d2c66'}"/><stop offset="1" stop-color="${r>=5?'#6b3fa0':'#2f4590'}"/></linearGradient>
+  <linearGradient id="gs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${SKYC[0]}"/><stop offset="1" stop-color="${SKYC[1]}"/></linearGradient>
   <radialGradient id="gc"><stop offset="0" stop-color="#f2b134" stop-opacity=".45"/><stop offset="1" stop-color="#f2b134" stop-opacity="0"/></radialGradient>
   <linearGradient id="gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe7a3" stop-opacity=".55"/><stop offset="1" stop-color="#ffe7a3" stop-opacity="0"/></linearGradient></defs>`;
  // mur
  g+=`<rect width="400" height="360" fill="url(#gw)"/>`;
+ if(r===1)for(let y=14;y<350;y+=28)for(let x=(y/28%2)*14+8;x<400;x+=28)g+=`<circle cx="${x}" cy="${y}" r="1.6" fill="#fff" opacity=".06"/>`;
+ if(r===4)for(let y=20;y<340;y+=40)for(let x=(y/40%2)*20+10;x<400;x+=40)g+=`<path d="M${x} ${y-6}l5 6-5 6-5-6Z" fill="#c9a227" opacity=".18"/>`;
+ if(r>=3&&r<5)g+=`<rect y="286" width="400" height="66" fill="#000" opacity=".16"/><rect y="284" width="400" height="4" fill="${r>=4?'#c9a227':'#5a3f2a'}" opacity=".8"/>`;
+ if(TD==='day')g+=`<rect width="400" height="360" fill="#fff6d8" opacity=".05"/>`;
  if(r>=2&&r<5)for(let x=0;x<400;x+=24)g+=`<rect x="${x}" y="0" width="12" height="352" fill="#fff" opacity=".025"/>`;
  if(r>=5)for(let i=0;i<40;i++)g+=`<circle class="tw" style="animation-delay:${(i%9)*.3}s" cx="${(i*97)%400}" cy="${(i*53)%330}" r="${i%3?1:1.8}" fill="#fff6c9"/>`;
  // fenêtre
  const wx=r>=3?135:150,ww=r>=3?130:100,wh=r>=3?150:120,wy=24,frame=r>=4?'#c9a227':'#3a2b20';
  g+=`<path d="M${wx} ${wy+wh}V${wy+ww/2}a${ww/2} ${ww/2} 0 0 1 ${ww} 0V${wy+wh}Z" fill="url(#gs)" stroke="${frame}" stroke-width="7"/>`;
- g+=`<circle cx="${wx+ww*.66}" cy="${wy+ww*.42}" r="${ww*.13}" fill="#f6e7b8"/><circle cx="${wx+ww*.71}" cy="${wy+ww*.38}" r="${ww*.12}" fill="url(#gs)"/>`;
+ if(TD==='night')g+=`<circle cx="${wx+ww*.66}" cy="${wy+ww*.42}" r="${ww*.13}" fill="#f6e7b8"/><circle cx="${wx+ww*.71}" cy="${wy+ww*.38}" r="${ww*.12}" fill="url(#gs)"/>`;
+ else if(TD==='day')g+=`<circle cx="${wx+ww*.68}" cy="${wy+ww*.42}" r="${ww*.2}" fill="#fff6c9" opacity=".35"/><circle cx="${wx+ww*.68}" cy="${wy+ww*.42}" r="${ww*.12}" fill="#fff3b0"/><ellipse cx="${wx+ww*.3}" cy="${wy+wh*.72}" rx="${ww*.16}" ry="${ww*.06}" fill="#fff" opacity=".8"/><ellipse cx="${wx+ww*.38}" cy="${wy+wh*.68}" rx="${ww*.11}" ry="${ww*.06}" fill="#fff" opacity=".8"/>`;
+ else g+=`<circle cx="${wx+ww*.3}" cy="${wy+wh*.82}" r="${ww*.13}" fill="#ffcf7a" opacity=".95"/>`;
  if(r>=5)g+=`<ellipse cx="${wx+ww*.4}" cy="${wy+wh*.62}" rx="${ww*.28}" ry="${ww*.1}" fill="#c9a7ff" opacity=".45" transform="rotate(-20 ${wx+ww*.4} ${wy+wh*.62})"/><circle cx="${wx+ww*.4}" cy="${wy+wh*.62}" r="4" fill="#fff6c9"/>`;
- for(let i=0;i<5;i++)g+=`<circle class="tw" style="animation-delay:${i*.5}s" cx="${wx+12+i*ww/5.5}" cy="${wy+wh*.3+((i*37)%40)}" r="1.4" fill="#fff"/>`;
+ if(TD==='night')for(let i=0;i<5;i++)g+=`<circle class="tw" style="animation-delay:${i*.5}s" cx="${wx+12+i*ww/5.5}" cy="${wy+wh*.3+((i*37)%40)}" r="1.4" fill="#fff"/>`;
  g+=`<path d="M${wx+ww/2} ${wy}V${wy+wh}M${wx} ${wy+wh*.62}H${wx+ww}" stroke="${frame}" stroke-width="5"/>`;
  if(r>=3){const cc=r>=4?'#8a2a3a':'#6b3a5a';g+=`<path d="M${wx-14} 12q-10 90 6 160h18q-14-70-4-160Z" fill="${cc}"/><path d="M${wx+ww+14} 12q10 90-6 160h-18q14-70 4-160Z" fill="${cc}"/><rect x="${wx-24}" y="8" width="${ww+48}" height="8" rx="4" fill="${frame}"/>`}
+ if(TD!=='night')g+=`<path d="M${wx} ${wy+wh}L${wx-70} 352H${wx+ww+70}L${wx+ww} ${wy+wh}Z" fill="${TD==='day'?'#fff6c9':'#ffb98a'}" opacity=".07"/>`;
+ if(r>=4){const cx=200,arm=[-32,-16,0,16,32];g+=`<path d="M${cx} 0V22" stroke="#c9a227" stroke-width="2"/><path d="M${cx-34} 26q34 18 68 0" stroke="#c9a227" stroke-width="3" fill="none"/><ellipse cx="${cx}" cy="28" rx="9" ry="7" fill="#c9a227"/>`;
+  arm.forEach((d,i)=>{const y=26+ (1-(d/34)**2)*9;g+=`<rect x="${cx+d-2.5}" y="${y-10}" width="5" height="10" rx="1" fill="#efe8da"/><path class="fl" style="animation-delay:${i*.2}s" d="M${cx+d} ${y-17}c3 4 3 7 0 7c-3 0-3-3 0-7Z" fill="#ffd36b"/>`});g+=`<circle cx="${cx}" cy="30" r="46" fill="url(#gc)" opacity=".6"/>`}
  // fenêtre : portail, rebord et objets posés dessus
  const wb=wy+wh;
  if(cnt('portail')){const pc=pickT(['#c9a7ff','#8fd3ff','#7fcf9a','#f2c94c','#ff9ad5'],bl('portail'));
@@ -511,6 +638,7 @@ function drawScene(force){
   if(cnt('chat')>=5)g+=`<g data-v="chat" transform="translate(-8 ${ty-14}) scale(.55)"><ellipse cx="24" cy="16" rx="22" ry="9" fill="${cc}"/><circle cx="6" cy="10" r="9" fill="${cc}"/><path d="M0 4l2-9 5 6ZM8 2l5-8 3 8Z" fill="${cc}"/></g>`.replace('translate(-8','translate(96');}
  // sol + tapis
  g+=`<rect y="352" width="400" height="128" fill="${FLOOR[r]}"/><rect y="350" width="400" height="5" fill="${gold?'#c9a227':'#2a1d14'}"/>`;
+ if(r>=5)for(let i=0;i<5;i++)g+=`<ellipse class="cloud" style="animation-delay:-${i*3}s" cx="${20+i*90}" cy="${356+(i%2)*14}" rx="${46+(i%3)*10}" ry="12" fill="#fff" opacity=".1"/>`;
  if(r<5)for(let y=372;y<480;y+=22)g+=`<path d="M0 ${y}H400" stroke="#000" stroke-opacity=".18"/>`;
  if(r>=1)g+=`<ellipse cx="200" cy="440" rx="178" ry="34" fill="${RUG[r]}" stroke="${gold?'#c9a227':'#00000033'}" stroke-width="${gold?4:2}"/><ellipse cx="200" cy="440" rx="150" ry="24" fill="none" stroke="#efe8da" stroke-opacity=".18" stroke-width="2" stroke-dasharray="6 6"/>`;
  // télescope
@@ -556,29 +684,36 @@ function drawScene(force){
  if(nt)g+=hit('the',nt>=10?226:276,338,nt>=10?92:42,46);
  if(nl)g+=hit('lampe',296,276,44,44)+hit('lampe',336,300,26,82);
  // hibou
- g+=`<g transform="translate(100 182)"><g id="owlsq" data-obj="owl" class="hit"><g id="owlbob">${owlSvg()}</g></g></g>`;
+ g+=`<g transform="translate(100 182)"><g id="owlsq" data-obj="owl" class="hit"><g id="owlbob"><g id="owltilt">${owlSvg()}</g></g></g></g>`;
  $('scenesvg').innerHTML=g;
 }
 function owlSvg(){
- const t=k=>TCOL[tr(k)],beak=['#f2b134','#f2c94c','#9fe7ff'][becTier()];let s='';
+ const t=k=>TCOL[tr(k)],beak=['#f2b134','#f2c94c','#9fe7ff'][becTier()],P=plumC(),st=stage(),md=mood();let s='';
  if(S.lvl>=15)s+=`<g class="aura"><circle cx="100" cy="112" r="98" fill="none" stroke="#f2c94c" stroke-width="3" stroke-dasharray="4 14" opacity=".55"/></g><circle cx="100" cy="112" r="92" fill="#f2c94c" opacity=".07"/>`;
- s+=`<ellipse cx="100" cy="196" rx="60" ry="7" fill="rgba(0,0,0,.3)"/>
- <path d="M48 70 40 34 70 58ZM152 70 160 34 130 58Z" fill="#6e5038"/>
- <ellipse cx="100" cy="120" rx="62" ry="72" fill="#8a6a4a"/>
- <path d="M38 122c-6 25 4 50 22 58-4-20-6-40-2-58Z M162 122c6 25-4 50-22 58 4-20 6-40 2-58Z" fill="#6e5038"/>
- <ellipse cx="100" cy="142" rx="38" ry="44" fill="#d9b98a"/>
- <path d="M84 130q4 4 8 0M100 138q4 4 8 0M84 150q4 4 8 0M100 158q4 4 8 0M92 168q4 4 8 0" stroke="#b8935e" stroke-width="2" fill="none"/>
- <circle cx="76" cy="86" r="24" fill="#f4ead2"/><circle cx="124" cy="86" r="24" fill="#f4ead2"/>
- <g class="blink"><circle cx="79" cy="88" r="11" fill="#141a33"/><circle cx="121" cy="88" r="11" fill="#141a33"/><circle cx="83" cy="84" r="3.5" fill="#fff"/><circle cx="125" cy="84" r="3.5" fill="#fff"/></g>
- <path d="M92 102h16l-8 14Z" fill="${beak}"/>${becTier()===2?'<circle class="tw" cx="104" cy="106" r="2" fill="#fff"/>':''}
+ s+=`<ellipse cx="100" cy="196" rx="${60*STAGES[st].s}" ry="7" fill="rgba(0,0,0,.3)"/><g transform="translate(100 196) scale(${STAGES[st].s}) translate(-100 -196)">`;
+ s+=st===0?`<path d="M54 74 50 50 72 62ZM146 74 150 50 128 62Z" fill="${P[1]}"/>`:`<path d="M48 70 40 34 70 58ZM152 70 160 34 130 58Z" fill="${P[1]}"/>`;
+ s+=`<ellipse cx="100" cy="120" rx="62" ry="72" fill="${P[0]}"/>
+ <path d="M38 122c-6 25 4 50 22 58-4-20-6-40-2-58Z M162 122c6 25-4 50-22 58 4-20 6-40 2-58Z" fill="${P[1]}"/>
+ <ellipse cx="100" cy="142" rx="38" ry="44" fill="${P[2]}"/>
+ <path d="M84 130q4 4 8 0M100 138q4 4 8 0M84 150q4 4 8 0M100 158q4 4 8 0M92 168q4 4 8 0" stroke="${P[3]}" stroke-width="2" fill="none"/>
+ <circle cx="76" cy="86" r="24" fill="#f4ead2"/><circle cx="124" cy="86" r="24" fill="#f4ead2"/>`;
+ if(md==='sleep')s+=`<path d="M66 88q10 9 22 0M112 88q10 9 22 0" stroke="#141a33" stroke-width="4.5" fill="none" stroke-linecap="round"/>`;
+ else if(md==='happy')s+=`<path d="M66 92q11-14 22 0M112 92q11-14 22 0" stroke="#141a33" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="62" cy="104" rx="8" ry="4" fill="#ef8a8a" opacity=".55"/><ellipse cx="138" cy="104" rx="8" ry="4" fill="#ef8a8a" opacity=".55"/>`;
+ else{const pr=st===0?13:11;s+=`<g class="blink"><circle cx="79" cy="88" r="${pr}" fill="#141a33"/><circle cx="121" cy="88" r="${pr}" fill="#141a33"/><circle cx="83" cy="84" r="${pr*.33}" fill="#fff"/><circle cx="125" cy="84" r="${pr*.33}" fill="#fff"/></g>`}
+ s+=`<path d="M92 102h16l-8 14Z" fill="${beak}"/>${becTier()===2?'<circle class="tw" cx="104" cy="106" r="2" fill="#fff"/>':''}
  <path d="M70 190l-6 6M78 192v7M122 192v7M130 190l6 6" stroke="${beak}" stroke-width="4" stroke-linecap="round"/>`;
- if(S.lvl>=3)s+=`<path d="M92 50q6-22 18-16q-10 4-8 18" fill="#6e5038"/>`;
+ if(st===0)s+=`<path d="M88 52q2-16 8-6q2-14 8-2q4-12 8 4q-12-4-24 4Z" fill="${P[2]}"/>`;
+ if(st>=2)s+=`<path d="M54 60q18-12 36 0M110 60q18-12 36 0" stroke="${P[1]}" stroke-width="6" fill="none" stroke-linecap="round"/>`;
+ if(st>=3)s+=`<path d="M86 112q14 6 28 0q-2 22-14 34q-12-12-14-34Z" fill="#f4ead2"/><path d="M94 118q6 10 12 0M98 128q2 6 4 0" stroke="#d3c7ad" stroke-width="1.6" fill="none"/>`;
+ if(S.lvl>=3)s+=`<path d="M92 50q6-22 18-16q-10 4-8 18" fill="${P[1]}"/>`;
  if(tr('echarpe'))s+=`<path d="M48 120q52 22 104 0v14q-52 22-104 0Z" fill="${t('echarpe')}"/><path d="M128 130l10 34 12-4-8-32Z" fill="${t('echarpe')}"/>`;
  if(S.lvl>=6)s+=`<g transform="translate(70 150)"><path d="M0 4q15-6 30 0v26q-15-6-30 0Z" fill="#5d8fc9"/><path d="M30 4q15-6 30 0v26q-15-6-30 0Z" fill="#4a77ad"/><path d="M4 8q11-4 22 0M4 13q11-4 22 0M34 8q11-4 22 0M34 13q11-4 22 0" stroke="#efe8da" stroke-width="1.5" fill="none"/></g>`;
  if(tr('lunettes'))s+=`<g fill="none" stroke="${t('lunettes')}" stroke-width="5"><circle cx="76" cy="86" r="26"/><circle cx="124" cy="86" r="26"/><path d="M98 84q2-4 4 0"/></g>`;
  if(tr('casque'))s+=`<path d="M40 90a60 62 0 0 1 120 0" fill="none" stroke="${t('casque')}" stroke-width="9"/><rect x="28" y="80" width="18" height="34" rx="8" fill="${t('casque')}"/><rect x="154" y="80" width="18" height="34" rx="8" fill="${t('casque')}"/>`;
  if(S.lvl>=10)s+=`<path d="M100 18l52 16-52 16-52-16Z" fill="#2c3156" stroke="#8f97c9" stroke-width="2" stroke-linejoin="round"/><path d="M74 42v12q26 10 52 0V42l-26 8Z" fill="#2c3156"/><path d="M146 36v22" stroke="#f2c94c" stroke-width="2.5"/><circle cx="146" cy="60" r="4" fill="#f2c94c"/>`;
  if(tr('plume'))s+=`<path d="M176 130c-18 6-28 22-30 44l3 1c4-20 14-34 27-45Z" fill="${t('plume')}"/>`;
+ s+=`</g>`;
+ if(md==='sleep')s+=[0,1,2].map(i=>`<text class="zz" style="animation-delay:${i}s" x="${150+i*8}" y="${50-i*10}" fill="#efe8da" font-size="${16+i*4}" font-family="Fredoka,sans-serif" font-weight="600">z</text>`).join('');
  return s;
 }
 const drawOwl=()=>drawScene(true),drawLib=drawOwl;
@@ -590,6 +725,7 @@ function tapOwl(x,y){
  if(studying()){floatAt(x,y,'Chut… on se concentre');return}
  const v=tapVal();gain(v);S.taps++;addXp(1);floatAt(x,y,'+'+fmt(v));
  const q=document.getElementById('owlsq');if(q){q.classList.add('squish');setTimeout(()=>q.classList.remove('squish'),80)}
+ const tl=document.getElementById('owltilt');if(tl){const c=(S.taps%2)?'tl':'tr';tl.classList.remove('tl','tr');void tl.getBBox?.();tl.classList.add(c);setTimeout(()=>tl.classList.remove(c),460)}
 }
 const objReady=id=>now()-(lastUse[id]||0)>=OBJ_CD;
 function useObj(id,x,y){
@@ -631,11 +767,13 @@ function render(){
  h+=`<section id="mission">${st?`
   <div class="goalhead"><b>Concentration en cours</b><span class="prog">plumes ×3</span></div>
   <p class="sub">Pose ton téléphone et concentre-toi. À la fin du minuteur : ${studyReward(S.study.min)} étoile${studyReward(S.study.min)>1?'s':''}.</p>
+  <p class="fstats">${actOf(S.study.act).e} ${actName(actOf(S.study.act))}</p>
   <button class="btn ghost" data-act="stop">Arrêter le minuteur</button>`:`
   <div><div class="goalhead"><b>Se concentrer = gagner des étoiles</b></div><p class="sub">Lance un minuteur, pose ton téléphone et concentre-toi : études, travail, lecture, sport… Pendant ce temps, ta bibliothèque produit 3 fois plus.</p></div>
   <div class="dur"><button class="step-b" data-act="dur:-5" aria-label="Moins 5 minutes">−</button><div class="durv"><b id="durmin">${fmtDur(S.dur||25)}</b><span id="durst">${studyReward(S.dur||25)} ★ à la fin</span></div><button class="step-b" data-act="dur:5" aria-label="Plus 5 minutes">+</button></div>
   <input type="range" id="durrange" min="${DUR_MIN}" max="${DUR_MAX}" step="5" value="${S.dur||25}" aria-label="Durée de concentration">
   <div class="pick">${[15,25,45,60,90].map(m=>`<button data-act="durset:${m}" aria-pressed="${(S.dur||25)===m}">${fmtDur(m)}</button>`).join('')}</div>
+  <div class="pick" id="actpick" style="justify-content:center">${ACTS.map(a=>`<button data-act="actset:${a.id}" aria-pressed="${(S.act||'etudes')===a.id}">${a.e} ${actName(a)}</button>`).join('')}</div>
   <button class="btn main big" data-act="study:${S.dur||25}" id="durgo">${ICON.timer}Lancer ${fmtDur(S.dur||25)}</button>
   ${S.trial?'':'<button class="link" data-act="study:0.5" style="align-self:center">Essayer une fois avec 30 secondes</button>'}
   ${S.fmin>=1?`<p class="fstats">Concentration au total : <b>${fmtDur(Math.round(S.fmin))}</b>${fstreak()>1?` · série : <b>${fstreak()} jours</b>`:''}</p>`:''}
@@ -662,7 +800,19 @@ function render(){
   <div class="row"><div class="ico">${BEC.ic}</div><button class="txtbtn" data-act="info:bec:"><b>${BEC.n}<span class="lv" style="display:inline">niv. ${lv('bec')}</span></b><span>Chaque toucher sur le hibou rapporte plus de plumes.</span><span class="eff">Un toucher = ${fmt(tapVal())} plumes · <em>+${fmt(becGain())}</em> par achat</span><span class="more">Détails ›</span></button>${buy(becCost(),'pl','bec')}</div>`;
  for(const e of EQ){const t=tr(e.id);
   h+=`<div class="row"><div class="ico" style="color:${TCOL[t]||'var(--muted)'}">${ICON.star}</div><button class="txtbtn" data-act="info:e:${e.id}"><b>${e.n}${t?`<span class="lv" style="display:inline;color:${TCOL[t]}">${TIER[t]}</span>`:''}</b><span>${e.role}</span><span class="eff">${t>=5?e.d(t):t?`${e.d(t)} → <em>${e.d(t+1)}</em>`:`Pas encore équipé · <em>${e.d(1)}</em>`}</span><div class="tiers">${[1,2,3,4,5].map(i=>`<i style="${i<=t?'background:'+TCOL[i]:''}"></i>`).join('')}</div><span class="more">Détails ›</span></button>${t>=5?'<button class="buy st" disabled>Max</button>':buy(EQCOST[t],'st','e:'+e.id)}</div>`}
+ h+=`<div class="card"><b style="font-family:var(--f-display);font-weight:600">${tx('Plumage','Plumage')}</b><p class="sub">${tx('Change la couleur de ton hibou. Les nouvelles couleurs se débloquent avec des étoiles.','Change your owl’s colours. New colours are unlocked with stars.')}</p>
+  <div class="plum">${PLUMAGE.map(p=>{const own=!p.cost||S.plum?.[p.id];return `<button data-act="plum:${p.id}" aria-pressed="${(S.pcol||'brun')===p.id}" ${!own&&S.st<p.cost?'disabled style="opacity:.45"':''}><i style="background:linear-gradient(135deg,${p.c[0]} 55%,${p.c[2]} 55%)"></i>${own?tx(p.fr,p.en):'★ '+p.cost}</button>`}).join('')}</div></div>`;
  h+=`</section>`;
+ // 3 bis. Mes progrès : stade du hibou, statistiques, succès, collection
+ {const st=stage(),nx=STAGES[st+1],hrs=(S.fmin||0)/60;
+ h+=`<section class="sect" id="secprog"><h2>${tx('Mes progrès','My progress')}</h2>
+  <div class="rankcard"><div class="txt"><span class="tag">${tx('Ton hibou','Your owl')} · ${tx('stade','stage')} ${st+1} / ${STAGES.length}</span><b>${stageName(st)}</b><span>${nx?tx(`Il grandit avec ton temps de concentration. Prochain stade : <b class="in">${stageName(st+1)}</b> à ${nx.h} h au total.`,`It grows with your focus time. Next stage: <b class="in">${stageName(st+1)}</b> at ${nx.h} h in total.`):tx('Ton hibou a atteint son dernier stade. Bravo !','Your owl has reached its final stage. Well done!')}</span></div>
+  ${nx?`<div class="bar"><i style="width:${Math.max(2,Math.min(100,(hrs-STAGES[st].h)/(nx.h-STAGES[st].h)*100))}%;background:var(--amber)"></i></div>`:''}</div>
+  ${statsHtml()}
+  <details class="card"><summary>🏅 ${tx('Succès','Achievements')} · ${achCount()} / ${ACH.length}</summary><div class="achl">${ACH.map(a=>{const ok=S.ach?.[a.id];return `<div class="ach ${ok?'':'off'}"><span class="medal">${a.e}</span><div style="flex:1"><b>${achName(a)}</b><span>${tx(a.fr[1],a.en[1])}</span></div><em>${ok?'✓':'+'+a.r+' ★'}</em></div>`}).join('')}</div></details>
+  <details class="card"><summary>📚 ${tx('Ma collection de livres','My book collection')} · ${bookCount()} / ${BOOKS.length}</summary><p class="sub" style="margin-top:8px">${tx('Chaque minuteur de 10 min ou plus te fait gagner un livre au hasard. Un livre en double donne 1 étoile.','Every timer of 10 min or more earns you a random book. A duplicate gives you 1 star.')}</p>
+   <div class="shelf">${BOOKS.map((b,i)=>S.books?.[b.id]?`<div class="book r${b.r}" style="background:${b.r===2?'linear-gradient(160deg,#f2c94c,#c98a1e)':b.r===1?'linear-gradient(160deg,#7a5fd0,#3b3f9a)':BOOKC[i%BOOKC.length]}"><span>${bookName(b)}</span><small>${rarName(b.r)}${S.books[b.id]>1?' · ×'+S.books[b.id]:''}</small></div>`:`<div class="book unk">?</div>`).join('')}</div></details>
+ </section>`}
  // 2 bis. Recommencer avec un bonus (diplômes)
  {const run=S.run||0,pr=Math.min(100,Math.pow(run/dipNext(),1/3)*100),after=(1+.2*((S.dip||0)+dg)).toFixed(1);
  h+=`<section class="sect" id="secdip"><h2>Recommencer avec un bonus</h2><p class="sub">Quand ta bibliothèque a produit énormément de plumes, tu obtiens un diplôme. Tu recommences alors ta bibliothèque, mais en plus fort, pour toujours.</p>
@@ -673,9 +823,17 @@ function render(){
    <div class="facts" style="background:transparent"><div class="fact"><small>Tu gardes</small><div>Tes étoiles, le rang de la bibliothèque, l’équipement, le niveau du hibou et tes diplômes.</div></div><div class="fact"><small>Tu recommences</small><div>Tes plumes, tes objets, leurs améliorations et le bec.</div></div></div>
    ${dg?`<button class="btn main big" data-act="dip">Recommencer avec +${dg} diplôme${dg>1?'s':''}</button>`:''}</div></section>`}
  h+=`<section class="sect" id="seclove"><h2>Tu aimes le jeu ?</h2><p class="sub">Une note ou un partage aide beaucoup ce petit jeu à se faire connaître. Merci !</p><div class="love"><button class="btn ghost" data-act="rate">⭐ Noter le jeu</button><button class="btn ghost" data-act="share">📤 Partager</button></div></section>`;
- h+=`<p class="foot">${fmt(S.tot)} plumes gagnées · ${S.studies} minuteur${S.studies>1?'s':''} terminé${S.studies>1?'s':''}${S.fmin>=1?` · ${fmtDur(Math.round(S.fmin))} de concentration`:''}${(S.fbest||0)>1?` · meilleure série : ${S.fbest} jours`:''}<br>${NATIVE&&Ads.privacy?'<button class="link" data-act="adprivacy">Choix de confidentialité des pubs</button> · ':''}<button class="link" data-act="tuto">Revoir le tutoriel</button> · <button class="link" data-act="reset">Effacer toute ma partie (sans bonus)</button></p>`;
+ h+=`<p class="foot">${fmt(S.tot)} plumes gagnées · ${S.studies} minuteur${S.studies>1?'s':''} terminé${S.studies>1?'s':''}${S.fmin>=1?` · ${fmtDur(Math.round(S.fmin))} de concentration`:''}${(S.fbest||0)>1?` · meilleure série : ${S.fbest} jours`:''}<br>${NATIVE&&Ads.privacy?'<button class="link" data-act="adprivacy">Choix de confidentialité des pubs</button> · ':''}<button class="link" data-act="lang">${LANG==='fr'?'English version':'Version française'}</button> · <button class="link" data-act="tuto">Revoir le tutoriel</button> · <button class="link" data-act="reset">Effacer toute ma partie (sans bonus)</button></p>`;
  $('content').innerHTML=h;refresh();
 }
+function statsHtml(){
+ const days=[];for(let i=6;i>=0;i--){const d=new Date(Date.now()-i*864e5);days.push({k:dk(d),l:d.toLocaleDateString(LANG==='en'?'en-GB':'fr-FR',{weekday:'narrow'})})}
+ const vals=days.map(d=>(S.flog||{})[d.k]||0),mx=Math.max(30,...vals),week=vals.reduce((a,b)=>a+b,0);
+ const fa=S.fact||{},tot=Object.values(fa).reduce((a,b)=>a+b,0)||1;
+ return `<div class="card stats"><div class="srow"><div><b>${fmtDur(Math.round(S.fmin||0))}</b><small>${tx('au total','in total')}</small></div><div><b>${fmtDur(Math.round(week))}</b><small>${tx('ces 7 jours','last 7 days')}</small></div><div><b>${fstreak()}</b><small>${tx('jours de suite','day streak')}</small></div></div>
+  <div class="week">${days.map((d,i)=>`<div><i class="${vals[i]?'':'z'}" style="height:${Math.round(vals[i]/mx*76)}px"></i><small>${d.l}</small></div>`).join('')}</div>
+  ${Object.keys(fa).length?`<div class="actl">${ACTS.filter(a=>fa[a.id]).map(a=>`<div><span>${a.e} ${actName(a)}</span><div class="bar"><i style="width:${fa[a.id]/tot*100}%;background:var(--star)"></i></div><b>${fmtDur(Math.round(fa[a.id]))}</b></div>`).join('')}</div>`:''}
+  <p class="sub" style="text-align:center">${tx(`${S.studies} minuteur${S.studies>1?'s':''} terminé${S.studies>1?'s':''} · plus longue séance : ${fmtDur(Math.round(S.maxmin||0))} · meilleure série : ${S.fbest||0} jour${(S.fbest||0)>1?'s':''}`,`${S.studies} timer${S.studies>1?'s':''} finished · longest session: ${fmtDur(Math.round(S.maxmin||0))} · best streak: ${S.fbest||0} day${(S.fbest||0)>1?'s':''}`)}</p></div>`}
 function refresh(){document.querySelectorAll('.buy[data-cost]').forEach(b=>{b.disabled=(b.dataset.cur==='st'?S.st:S.pl)<+b.dataset.cost})}
 
 // ---------- objectif suivant : une seule chose à faire, toujours visible ----------
@@ -770,11 +928,14 @@ document.addEventListener('click',e=>{
   case 'help':openSheet('help');S.seenHelp=1;break;
   case 'close':closeSheet();break;
   case 'up':{const B=BUILD.find(x=>x.id===arg),c=upCost(B);if(S.pl<c||cnt(arg)<upNeed(B))return;S.pl-=c;S.bl=S.bl||{};S.bl[arg]=bl(arg)+1;addXp(15);toast(`${B.n} améliorée : production ×2 et nouveau look !`);break}
-  case 'rank':{const r=S.rank||0,c=RANKCOST[r];if(r>=5||S.st<c)return;S.st-=c;S.rank=r+1;drawLib();addXp(30);modal('La bibliothèque s’agrandit !',`Tu passes au rang ${RANKS[r+1]}. Toute ta production est maintenant ×${rankMult(r+1)}.`);break}
+  case 'rank':{const r=S.rank||0,c=RANKCOST[r];if(r>=5||S.st<c)return;S.st-=c;S.rank=r+1;drawLib();fx();addXp(30);modal('La bibliothèque s’agrandit !',`Tu passes au rang ${RANKS[r+1]}. Toute ta production est maintenant ×${rankMult(r+1)}.`);break}
   case 'bec':{const c=becCost();if(S.pl<c)return;S.pl-=c;S.u.bec=lv('bec')+1;addXp(3);break}
   case 'b':{const B=BUILD.find(x=>x.id===arg),c=bCost(B);if(S.pl<c)return;S.pl-=c;S.b[arg]=cnt(arg)+1;addXp(4);if(cnt(arg)===1)toast(`${B.n} : nouvel objet dans ta bibliothèque !`);break}
   case 'e':{const t=tr(arg),c=EQCOST[t];if(S.st<c)return;S.st-=c;S.e[arg]=t+1;drawOwl();toast(`${EQ.find(x=>x.id===arg).n} ${TIER[t+1]} équipé !`);addXp(10);break}
   case 'daily':{const n=S.daily.day===yesterday()?S.daily.n+1:1,s=dailyStars(n),p=dailyPl();S.daily={day:today(),n};S.st+=s;gain(p);addXp(20);modal('Coffre ouvert !',`Jour ${n} d’affilée : +${s} étoiles et +${fmt(p)} plumes. Reviens demain pour plus.`,{label:'Doubler avec une pub',give:()=>{S.st+=s;gain(p)},done:`Coffre doublé : +${s} étoiles et +${fmt(p)} plumes`});break}
+  case 'actset':S.act=arg;document.querySelectorAll('[data-act^="actset:"]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.act==='actset:'+arg));save();return;
+  case 'plum':{const P=PLUMAGE.find(x=>x.id===arg);if(!P)return;S.plum=S.plum||{};if(P.cost&&!S.plum[arg]){if(S.st<P.cost)return;S.st-=P.cost;S.plum[arg]=1;toast(tx(`Plumage ${P.fr} débloqué !`,`${P.en} plumage unlocked!`))}S.pcol=arg;drawOwl();break}
+  case 'lang':S.lang=LANG==='fr'?'en':'fr';save();location.reload();return;
   case 'dur':setDur((S.dur||25)+(+arg));save();return;
   case 'durset':setDur(+arg);save();return;
   case 'adboost':Ads.show(()=>{S.adEnd=Math.max(now(),S.adEnd||0)+AD_BOOST_MIN*60000;save();render();toast(`Plumes ×2 pendant ${AD_BOOST_MIN} minutes !`)});return;
@@ -782,7 +943,7 @@ document.addEventListener('click',e=>{
   case 'rate':rateApp();return;
   case 'share':shareApp();return;
   case 'tuto':window.scrollTo({top:0});tuto(0);return;
-  case 'study':if(+arg<1){if(S.trial)return;S.trial=1}S.study={end:now()+(+arg)*60000,min:+arg,t0:S.tot};Notif.plan(S.study.end,+arg);toast('C’est parti ! Pose ton téléphone.');window.scrollTo({top:0,behavior:'smooth'});break;
+  case 'study':if(+arg<1){if(S.trial)return;S.trial=1}S.study={end:now()+(+arg)*60000,min:+arg,t0:S.tot,act:S.act||'etudes'};Notif.plan(S.study.end,+arg);toast('C’est parti ! Pose ton téléphone.');window.scrollTo({top:0,behavior:'smooth'});break;
   case 'stop':if(b.dataset.sure){S.study=null;Notif.cancel();toast('Minuteur arrêté, pas de récompense')}else{b.dataset.sure=1;b.textContent='Toque encore pour arrêter';return}break;
   case 'dip':{const g=dipGain();if(!g)return;if(!b.dataset.sure){b.dataset.sure=1;b.textContent='Toque encore pour confirmer';return}
    S.dip=(S.dip||0)+g;S.pl=0;S.run=0;S.b={};S.bl={};S.u.bec=0;addXp(50*g);drawScene(true);
@@ -798,13 +959,15 @@ function modal(title,txt,ad,onClose){$('modalcard').innerHTML=`<h3>${title}</h3>
 
 // ---------- boucle ----------
 let lastT=performance.now(),acc=0,wasStudy=false;
-function hud(){
+function hud(){hud.n=hud.n||0;
  $('plumes').textContent=fmt(S.pl);$('etoiles').textContent=fmt(S.st);$('lvl').textContent=S.lvl;
  $('xpbar').style.width=Math.min(100,S.xp/xpNeed(S.lvl)*100)+'%';
  $('ps').textContent=fmt(prod());$('pt').textContent='+'+fmt(tapVal());$('rankname').textContent=RANKS[S.rank||0];
  let c='';if(now()<S.lEnd)c+=`<span class="chip">×7 · ${Math.ceil((S.lEnd-now())/1000)} s</span>`;if(now()<(S.adEnd||0))c+=`<span class="chip blue">×2 · ${Math.ceil(((S.adEnd||0)-now())/60000)} min</span>`;
  $('chips').innerHTML=c;updGoal();
  {const svg=$('scenesvg');for(const b of BUILD)svg.classList.toggle('r-'+b.id,cnt(b.id)>0&&objReady(b.id)&&!studying())}
+ drawScene();
+ if(++hud.n%15===0&&checkAch().length&&$('sheet').hidden)render();
  const st=studying();$('veil').hidden=!st;
  if(st){const r=Math.ceil((S.study.end-now())/1000);$('studytime').textContent=`${String(Math.floor(r/60)).padStart(2,'0')}:${String(r%60).padStart(2,'0')}`}
 }
@@ -818,12 +981,28 @@ function tick(t){
 }
 // Série de jours avec au moins un minuteur terminé
 const fstreak=()=>S.fday&&(S.fday.day===today()||S.fday.day===yesterday())?S.fday.n:0;
-function finishStudy(extra=0){const late=now()-S.study.end>60000,m=S.study.min,r=studyReward(m),pl=S.study.t0!=null?S.tot-S.study.t0:null;S.study=null;S.st+=r;S.studies++;addXp(m<1?20:Math.round(m*8));const rev=NATIVE&&m>=10&&S.studies>=3&&!S.revAsked;if(rev)S.revAsked=1;
- if(m>=1){S.fmin=(S.fmin||0)+m;const d=today();if(!S.fday||S.fday.day!==d){S.fday={day:d,n:S.fday&&S.fday.day===yesterday()?S.fday.n+1:1};S.fbest=Math.max(S.fbest||0,S.fday.n)}}
+function finishStudy(extra=0){
+ const late=now()-S.study.end>60000,m=S.study.min,r=studyReward(m),pl=S.study.t0!=null?S.tot-S.study.t0:null,act=actOf(S.study.act),st0=stage();
+ S.study=null;S.st+=r;S.studies++;addXp(m<1?20:Math.round(m*8));
+ const rev=NATIVE&&m>=10&&S.studies>=3&&!S.revAsked;if(rev)S.revAsked=1;
+ let book=null;
+ if(m>=1){S.fmin=(S.fmin||0)+m;const d=today();if(!S.fday||S.fday.day!==d){S.fday={day:d,n:S.fday&&S.fday.day===yesterday()?S.fday.n+1:1};S.fbest=Math.max(S.fbest||0,S.fday.n)}
+  S.fact=S.fact||{};S.fact[act.id]=(S.fact[act.id]||0)+m;
+  S.flog=S.flog||{};const k=dk();S.flog[k]=(S.flog[k]||0)+m;const ks=Object.keys(S.flog);if(ks.length>40)for(const x of ks.slice(0,ks.length-40))delete S.flog[x];
+  S.maxmin=Math.max(S.maxmin||0,m);const h=new Date().getHours();if(h<5)S.nightOwl=1;else if(h<8)S.early=1;
+  if(m>=10)book=drawBook()}
  if(extra>0)gain(extra);
- save();render();
- const k=fstreak();
- modal('Minuteur terminé, bravo !',`<span class="recap"><span>${stIco}+${r} étoile${r>1?'s':''}</span>${pl!=null?`<span>${plIco}+${fmt(pl)}</span>`:''}<span>${ICON.timer}${m<1?'30 s':fmtDur(m)}</span></span>${m>=1?`Concentration au total : <b>${fmtDur(Math.round(S.fmin))}</b>${k>1?`, ${k} jours d’affilée`:''}.<br>`:''}${late&&extra>=1?`Et +${fmt(extra)} plumes produites ensuite, pendant ton absence.<br>`:''}Fais une vraie pause de 5 minutes avant la suite.`,null,rev?()=>setTimeout(askReview,600):null)}
+ const got=checkAch(true),grew=stage()>st0;
+ happyUntil=now()+8000;
+ save();render();if(grew)fx();
+ const k=fstreak();let x=`<span class="recap"><span>${stIco}+${r} ${tx('étoile','star')}${r>1?'s':''}</span>${pl!=null?`<span>${plIco}+${fmt(pl)}</span>`:''}<span>${ICON.timer}${m<1?'30 s':fmtDur(m)}</span></span>`;
+ if(grew)x+=tx(`🦉 Ton hibou grandit : il devient <b>${stageName(stage())}</b> !<br>`,`🦉 Your owl is growing: it is now a <b>${stageName(stage())}</b>!<br>`);
+ if(book)x+=book.isNew?tx(`📕 Nouveau livre : <b>« ${bookName(book.b)} »</b> (${rarName(book.b.r)})<br>`,`📕 New book: <b>“${bookName(book.b)}”</b> (${rarName(book.b.r)})<br>`):tx(`📕 « ${bookName(book.b)} » est déjà dans ta collection : +1 étoile.<br>`,`📕 “${bookName(book.b)}” is already in your collection: +1 star.<br>`);
+ if(got.length)x+=`🏅 ${tx('Succès','Achievement')} : <b>${got.map(achName).join(', ')}</b> (+${got.reduce((n,a)=>n+a.r,0)} ★)<br>`;
+ if(m>=1)x+=tx(`Concentration au total : <b>${fmtDur(Math.round(S.fmin))}</b>${k>1?`, ${k} jours d’affilée`:''}.<br>`,`Total focus: <b>${fmtDur(Math.round(S.fmin))}</b>${k>1?`, ${k} days in a row`:''}.<br>`);
+ if(late&&extra>=1)x+=tx(`Et +${fmt(extra)} plumes produites ensuite, pendant ton absence.<br>`,`Plus ${fmt(extra)} feathers made afterwards, while you were away.<br>`);
+ x+=tx('Fais une vraie pause de 5 minutes avant la suite.','Take a real 5-minute break before the next one.');
+ modal(grew?tx('Ton hibou grandit !','Your owl is growing!'):tx('Minuteur terminé, bravo !','Timer finished, well done!'),x,null,rev?()=>setTimeout(askReview,600):null)}
 setInterval(save,5000);
 // Gains pendant l'absence : le temps passé dans un minuteur compte ×3 (comme jeu ouvert),
 // le reste au rythme « jeu fermé ». Plafond : 8 h.
