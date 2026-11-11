@@ -1,0 +1,9 @@
+Nouveautés de la version 1.2 (texte « Notes de version » pour la Play Console, 500 caractères max) :
+
+<fr-FR>
+• Les plumes produites pendant le minuteur comptent maintenant même quand ton téléphone est verrouillé, avec le bonus ×3.
+• Nouveau bilan à la fin du minuteur : étoiles, plumes et durée.
+• Statistiques : temps total de concentration et série de jours.
+• L'écran d'accueil ne s'affiche plus qu'au premier lancement (toujours disponible avec le bouton « ? »).
+• Petites corrections d'affichage.
+</fr-FR>

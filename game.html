@@ -105,6 +105,13 @@ main{display:flex;flex-direction:column;gap:22px;padding-block:14px 28px}
 .buy.up{background:var(--leaf);color:#0d2a17;box-shadow:0 3px 0 #4f9a68;font-size:12px;min-width:80px;padding:6px 8px}
 .buy.up:disabled{background:var(--panel2);color:var(--muted);box-shadow:none}
 .mul{color:var(--leaf);font-weight:800}
+.txt .in,.txt .mul{display:inline!important;font:inherit!important;font-weight:800!important}
+.chest span span{display:block}
+.fstats{margin:0;font-size:12px;color:var(--muted);text-align:center}
+.fstats b{color:var(--fg)}
+.recap{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:4px 0 10px}
+.recap span{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:12px;padding:6px 10px;font-weight:800;color:var(--fg)}
+.recap svg{width:16px;height:16px}
 .look{color:var(--star)!important}
 #veil{position:absolute;inset:0;background:rgba(14,18,40,.6);display:flex;flex-direction:column;align-items:center;padding-top:14px;pointer-events:none}
 #veil b{font-family:var(--f-display);font-size:32px;font-weight:600;font-variant-numeric:tabular-nums}
@@ -631,13 +638,14 @@ function render(){
   <div class="pick">${[15,25,45,60,90].map(m=>`<button data-act="durset:${m}" aria-pressed="${(S.dur||25)===m}">${fmtDur(m)}</button>`).join('')}</div>
   <button class="btn main big" data-act="study:${S.dur||25}" id="durgo">${ICON.timer}Lancer ${fmtDur(S.dur||25)}</button>
   ${S.trial?'':'<button class="link" data-act="study:0.5" style="align-self:center">Essayer une fois avec 30 secondes</button>'}
+  ${S.fmin>=1?`<p class="fstats">Concentration au total : <b>${fmtDur(Math.round(S.fmin))}</b>${fstreak()>1?` · série : <b>${fstreak()} jours</b>`:''}</p>`:''}
   ${NATIVE&&Ads.can?`<button class="btn ad" data-act="adboost" ${Ads.ready&&((S.adEnd||0)-now())/60000<=AD_BOOST_CAP-AD_BOOST_MIN?'':'disabled'}>▶ Pub : plumes ×2 pendant ${AD_BOOST_MIN} min${now()<(S.adEnd||0)?` (encore ${Math.ceil(((S.adEnd||0)-now())/60000)} min)`:''}</button>`:''}`}
   ${S.daily.day!==today()?`<button class="chest" data-act="daily"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#f2b134" stroke-width="2"><path d="M3 10h18v11H3zM2 6h20v4H2zM12 6v15"/></svg><span style="flex:1"><b>Coffre du jour</b><span>Toque pour l’ouvrir</span></span></button>`:''}
  </section>`;
  // 2. Ma bibliothèque
  const r=S.rank||0;
  h+=`<section class="sect" id="secbib"><h2>Ma bibliothèque</h2><p class="sub">Elle produit des plumes toute seule, même app fermée. Achète des objets, puis améliore-les.</p>
-  <div class="rankcard"><div class="top"><div class="txt"><span class="tag">Rang ${r+1} / ${RANKS.length}</span><b>${RANKS[r]}</b><span>Agrandir la pièce multiplie <b>toute</b> ta production de plumes. Actuellement <span class="mul">×${rankMult(r)}</span>${r<5?`, puis ×${rankMult(r+1)} au rang suivant.`:'.'}</span></div>${r<5?buy(RANKCOST[r],'st','rank'):'<button class="buy st" disabled>Max</button>'}</div>
+  <div class="rankcard"><div class="top"><div class="txt"><span class="tag">Rang ${r+1} / ${RANKS.length}</span><b>${RANKS[r]}</b><span>Agrandir la pièce multiplie <b class="in">toute</b> ta production de plumes. Actuellement <span class="mul">×${rankMult(r)}</span>${r<5?`, puis ×${rankMult(r+1)} au rang suivant.`:'.'}</span></div>${r<5?buy(RANKCOST[r],'st','rank'):'<button class="buy st" disabled>Max</button>'}</div>
   <div class="rankdots">${RANKS.map((_,i)=>`<i class="${i<=r?'on':''}"></i>`).join('')}</div>${r<5?`<p class="sub">Agrandir coûte des étoiles, gagnées en te concentrant. La pièce se transforme à chaque rang.</p>`:''}</div>`;
  const dg=dipGain();
  let shown=0;
@@ -665,7 +673,7 @@ function render(){
    <div class="facts" style="background:transparent"><div class="fact"><small>Tu gardes</small><div>Tes étoiles, le rang de la bibliothèque, l’équipement, le niveau du hibou et tes diplômes.</div></div><div class="fact"><small>Tu recommences</small><div>Tes plumes, tes objets, leurs améliorations et le bec.</div></div></div>
    ${dg?`<button class="btn main big" data-act="dip">Recommencer avec +${dg} diplôme${dg>1?'s':''}</button>`:''}</div></section>`}
  h+=`<section class="sect" id="seclove"><h2>Tu aimes le jeu ?</h2><p class="sub">Une note ou un partage aide beaucoup ce petit jeu à se faire connaître. Merci !</p><div class="love"><button class="btn ghost" data-act="rate">⭐ Noter le jeu</button><button class="btn ghost" data-act="share">📤 Partager</button></div></section>`;
- h+=`<p class="foot">${fmt(S.tot)} plumes gagnées · ${S.studies} minuteur${S.studies>1?'s':''} terminé${S.studies>1?'s':''}<br>${NATIVE&&Ads.privacy?'<button class="link" data-act="adprivacy">Choix de confidentialité des pubs</button> · ':''}<button class="link" data-act="tuto">Revoir le tutoriel</button> · <button class="link" data-act="reset">Effacer toute ma partie (sans bonus)</button></p>`;
+ h+=`<p class="foot">${fmt(S.tot)} plumes gagnées · ${S.studies} minuteur${S.studies>1?'s':''} terminé${S.studies>1?'s':''}${S.fmin>=1?` · ${fmtDur(Math.round(S.fmin))} de concentration`:''}${(S.fbest||0)>1?` · meilleure série : ${S.fbest} jours`:''}<br>${NATIVE&&Ads.privacy?'<button class="link" data-act="adprivacy">Choix de confidentialité des pubs</button> · ':''}<button class="link" data-act="tuto">Revoir le tutoriel</button> · <button class="link" data-act="reset">Effacer toute ma partie (sans bonus)</button></p>`;
  $('content').innerHTML=h;refresh();
 }
 function refresh(){document.querySelectorAll('.buy[data-cost]').forEach(b=>{b.disabled=(b.dataset.cur==='st'?S.st:S.pl)<+b.dataset.cost})}
@@ -677,6 +685,7 @@ function goalHtml(){const G=nextGoal();goalKey=JSON.stringify([G.t,G.p!=null?Mat
 function updGoal(){const G=nextGoal(),k=JSON.stringify([G.t,G.p!=null?Math.round(G.p*50):0]);if(k!==goalKey&&$('goal'))$('goal').outerHTML=goalHtml()}
 function nextGoal(){
  const firstUp=BUILD.find(b=>cnt(b.id)>0&&bl(b.id)===0);
+ if(studying()){const a=S.study.end-S.study.min*60000;return{t:'Concentre-toi jusqu’à la fin',d:'Ta bibliothèque produit 3 fois plus. Reviens à la fin du minuteur pour tes étoiles.',p:(now()-a)/(S.study.end-a),act:'gotop'}}
  if(S.taps<10)return{t:'Touche le hibou 10 fois',d:'Chaque toucher te donne des plumes.',p:S.taps/10,act:'gotop'};
  if(!cnt('bougie'))return{t:'Achète ta première bougie',d:`Elle produit des plumes toute seule. Prix : 15 plumes.`,p:S.pl/15,act:'gobib'};
  if(!S.inter)return{t:'Touche la bougie dans la scène',d:'Les objets qui brillent donnent un bonus quand tu les touches, toutes les 30 secondes.',act:'gotop'};
@@ -745,9 +754,8 @@ function renderSheet(){
    <div class="step"><span class="n">3</span><div><b>Améliore tout</b><p class="sub">Chaque achat se voit dans la bibliothèque et sur le hibou. Plus tard, les diplômes te permettent de recommencer encore plus fort.</p></div></div>
   </div>
   <p class="sub">Pas sûr de quoi faire ? La carte verte <b>« Ton prochain objectif »</b> te le dit toujours.</p>`;
- $('sfootin').innerHTML=`<button class="btn main big" data-act="close">Jouer</button><label class="skip"><input type="checkbox" id="hidew" ${S.hideWelcome?'checked':''}> Ne plus afficher au lancement</label>`;$('sfoot').hidden=false;
+ $('sfootin').innerHTML=`<button class="btn main big" data-act="close">Jouer</button>`;$('sfoot').hidden=false;
 }
-document.addEventListener('change',e=>{if(e.target.id==='hidew'){S.hideWelcome=e.target.checked?1:0;save()}});
 
 // ---------- actions ----------
 document.addEventListener('click',e=>{
@@ -774,7 +782,7 @@ document.addEventListener('click',e=>{
   case 'rate':rateApp();return;
   case 'share':shareApp();return;
   case 'tuto':window.scrollTo({top:0});tuto(0);return;
-  case 'study':if(+arg<1){if(S.trial)return;S.trial=1}S.study={end:now()+(+arg)*60000,min:+arg};Notif.plan(S.study.end,+arg);toast('C’est parti ! Pose ton téléphone.');window.scrollTo({top:0,behavior:'smooth'});break;
+  case 'study':if(+arg<1){if(S.trial)return;S.trial=1}S.study={end:now()+(+arg)*60000,min:+arg,t0:S.tot};Notif.plan(S.study.end,+arg);toast('C’est parti ! Pose ton téléphone.');window.scrollTo({top:0,behavior:'smooth'});break;
   case 'stop':if(b.dataset.sure){S.study=null;Notif.cancel();toast('Minuteur arrêté, pas de récompense')}else{b.dataset.sure=1;b.textContent='Toque encore pour arrêter';return}break;
   case 'dip':{const g=dipGain();if(!g)return;if(!b.dataset.sure){b.dataset.sure=1;b.textContent='Toque encore pour confirmer';return}
    S.dip=(S.dip||0)+g;S.pl=0;S.run=0;S.b={};S.bl={};S.u.bec=0;addXp(50*g);drawScene(true);
@@ -808,10 +816,35 @@ function tick(t){
  acc+=dt;if(acc>.2){acc=0;hud();refresh()}
  requestAnimationFrame(tick);
 }
-function finishStudy(){const m=S.study.min,r=studyReward(m);S.study=null;S.st+=r;S.studies++;addXp(m<1?20:Math.round(m*8));const rev=NATIVE&&m>=10&&S.studies>=3&&!S.revAsked;if(rev)S.revAsked=1;
- save();render();modal('Minuteur terminé, bravo !',`Tu as gagné ${r} étoile${r>1?'s':''}. Fais une vraie pause de 5 minutes avant la suite.`,null,rev?()=>setTimeout(askReview,600):null)}
+// Série de jours avec au moins un minuteur terminé
+const fstreak=()=>S.fday&&(S.fday.day===today()||S.fday.day===yesterday())?S.fday.n:0;
+function finishStudy(extra=0){const m=S.study.min,r=studyReward(m),pl=S.study.t0!=null?S.tot-S.study.t0:null;S.study=null;S.st+=r;S.studies++;addXp(m<1?20:Math.round(m*8));const rev=NATIVE&&m>=10&&S.studies>=3&&!S.revAsked;if(rev)S.revAsked=1;
+ if(m>=1){S.fmin=(S.fmin||0)+m;const d=today();if(!S.fday||S.fday.day!==d){S.fday={day:d,n:S.fday&&S.fday.day===yesterday()?S.fday.n+1:1};S.fbest=Math.max(S.fbest||0,S.fday.n)}}
+ if(extra>0)gain(extra);
+ save();render();
+ const k=fstreak();
+ modal('Minuteur terminé, bravo !',`<span class="recap"><span>${stIco}+${r} étoile${r>1?'s':''}</span>${pl!=null?`<span>${plIco}+${fmt(pl)}</span>`:''}<span>${ICON.timer}${m<1?'30 s':fmtDur(m)}</span></span>${m>=1?`Concentration au total : <b>${fmtDur(Math.round(S.fmin))}</b>${k>1?`, ${k} jours d’affilée`:''}.<br>`:''}${extra>=1?`Et +${fmt(extra)} plumes produites ensuite, pendant ton absence.<br>`:''}Fais une vraie pause de 5 minutes avant la suite.`,null,rev?()=>setTimeout(askReview,600):null)}
 setInterval(save,5000);
-document.addEventListener('visibilitychange',()=>{if(document.hidden)save()});
+// Gains pendant l'absence : le temps passé dans un minuteur compte ×3 (comme jeu ouvert),
+// le reste au rythme « jeu fermé ». Plafond : 8 h.
+function awayGains(from,to){
+ const sec=Math.max(0,Math.min((to-from)/1000,8*3600));from=to-sec*1000;
+ let foc=0;if(S.study){const a=S.study.end-S.study.min*60000;foc=Math.max(0,(Math.min(to,S.study.end)-Math.max(from,a))/1000)}
+ const p=prodBase();return{foc:p*foc*3,off:p*(sec-foc)*(.5+.1*tr('plume')),sec};
+}
+function welcomeBack(from){
+ lastT=performance.now();
+ const g=awayGains(from,now());
+ if(g.foc>0)gain(g.foc);
+ if(S.study&&now()>=S.study.end)finishStudy(g.off);
+ else if(!studying()&&g.sec>60&&g.off>0){gain(g.off);save();modal('Bon retour !',`Pendant ton absence, ta bibliothèque a produit ${fmt(g.off)} plumes.`,{label:'Doubler avec une pub',give:()=>gain(g.off),done:`+${fmt(g.off)} plumes en plus`})}
+ else gain(g.off);
+ save();hud();
+}
+let pausedAt=0;
+function goAway(){if(!pausedAt)pausedAt=now();save()}
+function comeBack(){if(!pausedAt)return;const t=pausedAt;pausedAt=0;welcomeBack(t)}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)goAway();else comeBack()});
 
 // ---------- mini-tutoriel (premier lancement, ou « Revoir le tutoriel ») ----------
 const TUTO=[
@@ -833,22 +866,16 @@ function tuto(i){const old=$('tuto');if(old)old.remove();
 
 function start(){
  if(S.tuto==null&&(S.studies>0||S.taps>=10))S.tuto=1; // joueurs déjà lancés : pas de tutoriel imposé
- const away=Math.min((now()-S.last)/1000,8*3600);
  drawOwl();drawLib();render();hud();
- if(S.study&&now()>=S.study.end)finishStudy();
- else if(away>60&&prodBase()>0){const g=prodBase()*away*(.5+.1*tr('plume'));gain(g);modal('Bon retour !',`Pendant ton absence, ta bibliothèque a produit ${fmt(g)} plumes.`,{label:'Doubler avec une pub',give:()=>gain(g),done:`+${fmt(g)} plumes en plus`})}
- if(!S.hideWelcome){S.seenHelp=1;openSheet('help')}
+ welcomeBack(S.last);
+ if(!S.seenHelp){S.seenHelp=1;openSheet('help')}
  S.last=now();requestAnimationFrame(tick);
 }
 start();
 if(NATIVE){Ads.init();
  try{const App=window.Capacitor.registerPlugin('App');
   App.addListener('backButton',()=>{if($('tuto')){tuto(TUTO.length);return}if(!$('modal').hidden){$('modal').hidden=true;return}if(!$('sheet').hidden){closeSheet();return}App.minimizeApp()});
-  let pausedAt=0;
-  App.addListener('pause',()=>{pausedAt=now();save()});
-  App.addListener('resume',()=>{lastT=performance.now();const away=pausedAt?Math.min((now()-pausedAt)/1000,8*3600):0;pausedAt=0;
-   if(S.study&&now()>=S.study.end)finishStudy();
-   else if(away>60&&prodBase()>0){const g=prodBase()*away*(.5+.1*tr('plume'));gain(g);save();modal('Bon retour !',`Pendant ton absence, ta bibliothèque a produit ${fmt(g)} plumes.`,{label:'Doubler avec une pub',give:()=>gain(g),done:`+${fmt(g)} plumes en plus`})}
-   hud()})}catch(e){}}
+  App.addListener('pause',goAway);
+  App.addListener('resume',comeBack)}catch(e){}}
 })();
 </script>
