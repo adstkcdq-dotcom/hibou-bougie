@@ -818,12 +818,12 @@ function tick(t){
 }
 // Série de jours avec au moins un minuteur terminé
 const fstreak=()=>S.fday&&(S.fday.day===today()||S.fday.day===yesterday())?S.fday.n:0;
-function finishStudy(extra=0){const m=S.study.min,r=studyReward(m),pl=S.study.t0!=null?S.tot-S.study.t0:null;S.study=null;S.st+=r;S.studies++;addXp(m<1?20:Math.round(m*8));const rev=NATIVE&&m>=10&&S.studies>=3&&!S.revAsked;if(rev)S.revAsked=1;
+function finishStudy(extra=0){const late=now()-S.study.end>60000,m=S.study.min,r=studyReward(m),pl=S.study.t0!=null?S.tot-S.study.t0:null;S.study=null;S.st+=r;S.studies++;addXp(m<1?20:Math.round(m*8));const rev=NATIVE&&m>=10&&S.studies>=3&&!S.revAsked;if(rev)S.revAsked=1;
  if(m>=1){S.fmin=(S.fmin||0)+m;const d=today();if(!S.fday||S.fday.day!==d){S.fday={day:d,n:S.fday&&S.fday.day===yesterday()?S.fday.n+1:1};S.fbest=Math.max(S.fbest||0,S.fday.n)}}
  if(extra>0)gain(extra);
  save();render();
  const k=fstreak();
- modal('Minuteur terminé, bravo !',`<span class="recap"><span>${stIco}+${r} étoile${r>1?'s':''}</span>${pl!=null?`<span>${plIco}+${fmt(pl)}</span>`:''}<span>${ICON.timer}${m<1?'30 s':fmtDur(m)}</span></span>${m>=1?`Concentration au total : <b>${fmtDur(Math.round(S.fmin))}</b>${k>1?`, ${k} jours d’affilée`:''}.<br>`:''}${extra>=1?`Et +${fmt(extra)} plumes produites ensuite, pendant ton absence.<br>`:''}Fais une vraie pause de 5 minutes avant la suite.`,null,rev?()=>setTimeout(askReview,600):null)}
+ modal('Minuteur terminé, bravo !',`<span class="recap"><span>${stIco}+${r} étoile${r>1?'s':''}</span>${pl!=null?`<span>${plIco}+${fmt(pl)}</span>`:''}<span>${ICON.timer}${m<1?'30 s':fmtDur(m)}</span></span>${m>=1?`Concentration au total : <b>${fmtDur(Math.round(S.fmin))}</b>${k>1?`, ${k} jours d’affilée`:''}.<br>`:''}${late&&extra>=1?`Et +${fmt(extra)} plumes produites ensuite, pendant ton absence.<br>`:''}Fais une vraie pause de 5 minutes avant la suite.`,null,rev?()=>setTimeout(askReview,600):null)}
 setInterval(save,5000);
 // Gains pendant l'absence : le temps passé dans un minuteur compte ×3 (comme jeu ouvert),
 // le reste au rythme « jeu fermé ». Plafond : 8 h.
