@@ -8,8 +8,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         // À chaque mise à jour : augmenter versionCode (1, 2, 3…) et versionName
-        versionCode 3
-        versionName "1.2"
+        versionCode 4
+        versionName "1.3"
         // Identifiant AdMob : celui de TEST par défaut, le vrai est fourni par GitHub (secret ADMOB_APP_ID)
         manifestPlaceholders = [admobAppId: (System.getenv("ADMOB_APP_ID") ?: "ca-app-pub-3940256099942544~3347511713")]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
