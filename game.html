@@ -365,29 +365,29 @@ const plIco=ICON.plume.replace('currentColor','#f2b134'),stIco=ICON.star.replace
 const pic=b=>`<svg viewBox="0 0 32 32">${b}</svg>`;
 
 // Avec les plumes : le bec (tocs) + la bibliothèque (production automatique)
-const BEC={id:'bec',n:'Bec affûté',c:20,g:1.6,ic:pic('<path d="M6 12h20l-10 14Z" fill="#f2b134"/><path d="M6 12h20" stroke="#c98a1e" stroke-width="2"/>')};
+const BEC={id:'bec',n:tx('Bec affûté','Sharp beak'),c:20,g:1.6,ic:pic('<path d="M6 12h20l-10 14Z" fill="#f2b134"/><path d="M6 12h20" stroke="#c98a1e" stroke-width="2"/>')};
 const BUILD=[
- {id:'bougie',n:'Bougie',role:'Une petite flamme pour travailler tard le soir.',look:'Une bougie de plus sur le bureau (jusqu’à 6). Améliorée : bougeoir doré et flamme d’une nouvelle couleur.',c:15,p:.1,ic:pic('<rect x="12" y="13" width="8" height="15" rx="2" fill="#efe8da"/><path d="M16 4c3 4 3 7 0 8-3-1-3-4 0-8Z" fill="#f2b134"/>')},
- {id:'the',n:'Tasse de thé',role:'Une boisson chaude qui garde éveillé.',look:'Une tasse fumante sur le bureau, puis une théière dès 10. Améliorée : nouvelle porcelaine, puis un liseré doré.',c:150,p:.8,ic:pic('<path d="M7 12h15v7a6 6 0 0 1-6 6h-3a6 6 0 0 1-6-6Z" fill="#c0614e"/><path d="M22 14h2a3 3 0 0 1 0 6h-2" stroke="#c0614e" stroke-width="2" fill="none"/>')},
- {id:'lampe',n:'Lampe de bureau',role:'Une bonne lumière pour lire longtemps.',look:'Une lampe éclaire le bureau, de plus en plus fort. Améliorée : l’abat-jour change de couleur.',c:2000,p:6,ic:pic('<path d="M10 4h12l3 9H7Z" fill="#7fcf9a"/><rect x="15" y="13" width="2" height="11" fill="#a3abcf"/><rect x="9" y="24" width="14" height="4" rx="2" fill="#a3abcf"/>')},
- {id:'etagere',n:'Étagère de livres',role:'Des livres à consulter, rangés près du hibou.',look:'Les rayons se remplissent de livres. Améliorée : une échelle apparaît, puis des livres qui brillent.',c:30000,p:40,ic:pic('<rect x="5" y="6" width="4" height="20" fill="#5d8fc9"/><rect x="10" y="9" width="4" height="17" fill="#d9a441"/><rect x="15" y="5" width="4" height="21" fill="#c0614e"/><rect x="20" y="10" width="5" height="16" fill="#9a6fc0"/><rect x="3" y="26" width="26" height="3" fill="#7a5a40"/>')},
- {id:'chat',n:'Chat bibliothécaire',role:'Il range les livres pendant que tu dors.',look:'Un chat dort en haut de la bibliothèque, rejoint par un chaton dès 5. Amélioré : il met des lunettes, puis une couronne.',c:500000,p:250,ic:pic('<path d="M7 26c0-8 4-13 9-13s9 5 9 13Z" fill="#d9a441"/><path d="M9 9l3 6h-5ZM23 9l-3 6h5Z" fill="#d9a441"/><circle cx="16" cy="15" r="7" fill="#d9a441"/>')},
- {id:'tour',n:"Tour d'astronomie",role:'Pour observer les étoiles, la nuit.',look:'Un télescope près de la fenêtre, et une carte du ciel au mur dès 5. Améliorée : le télescope grandit et devient plus précieux.',c:8000000,p:1600,ic:pic('<rect x="10" y="12" width="12" height="17" fill="#34407a"/><path d="M8 13a8 8 0 0 1 16 0Z" fill="#8fd3ff"/><rect x="14" y="20" width="4" height="9" fill="#f2b134"/>')},
- {id:'globe',n:'Globe terrestre',role:'Pour découvrir le monde entier.',look:'Un globe sur le rebord de la fenêtre. Amélioré : son pied devient précieux, puis des anneaux dorés apparaissent.',c:1.3e8,p:1e4,ic:pic('<circle cx="16" cy="13" r="10" fill="#5d8fc9"/><path d="M10 9q4-3 6 1t5 4M12 17q3 0 4 3" stroke="#7fcf9a" stroke-width="3" fill="none"/><path d="M16 23v4M10 28h12" stroke="#c98a4b" stroke-width="3"/>')},
- {id:'sablier',n:'Sablier',role:'Chaque minute de concentration devient précieuse.',look:'Un sablier sur le rebord de la fenêtre. Amélioré : le sable change de couleur (doré, bleu, violet, étoilé).',c:2e9,p:6.5e4,ic:pic('<path d="M9 4h14M9 28h14" stroke="#c98a4b" stroke-width="3"/><path d="M11 5q0 8 5 11-5 3-5 11h10q0-8-5-11 5-3 5-11Z" fill="#cfe6ff" opacity=".7"/><path d="M13 24q3-5 6 0v2h-6Z" fill="#f2c94c"/>')},
- {id:'lucioles',n:'Bocal de lucioles',role:'De petites lumières qui veillent avec toi.',look:'Un bocal sur la fenêtre, et des lucioles qui volent dans la pièce (une de plus à chaque achat, jusqu’à 12). Amélioré : elles changent de couleur.',c:3.5e10,p:4.3e5,ic:pic('<rect x="9" y="9" width="14" height="19" rx="4" fill="#cfe6ff" opacity=".35" stroke="#cfe6ff"/><rect x="10" y="5" width="12" height="4" rx="1" fill="#8a6a4a"/><circle cx="14" cy="17" r="2" fill="#fff38a"/><circle cx="19" cy="22" r="2" fill="#fff38a"/><circle cx="17" cy="13" r="1.5" fill="#fff38a"/>')},
- {id:'grimoire',n:'Grimoire volant',role:'Des livres magiques qui se lisent tout seuls.',look:'Des grimoires flottent en haut de la pièce (jusqu’à 5). Améliorés : leurs pages se mettent à briller.',c:6e11,p:2.9e6,ic:pic('<path d="M4 10q6-3 12 0v16q-6-3-12 0Z" fill="#9a6fc0"/><path d="M16 10q6-3 12 0v16q-6-3-12 0Z" fill="#7a52a3"/><path d="M22 4l1.2 2.6 2.8.3-2.1 1.9.6 2.8-2.5-1.4-2.5 1.4.6-2.8-2.1-1.9 2.8-.3Z" fill="#f2c94c"/>')},
- {id:'planetaire',n:'Planétaire',role:'Une machine qui montre les planètes en mouvement.',look:'Un planétaire suspendu au plafond, dont les planètes tournent. Plus tu en as, plus il y a de planètes. Amélioré : le métal devient plus précieux.',c:1e13,p:2e7,ic:pic('<circle cx="16" cy="16" r="5" fill="#f2c94c"/><ellipse cx="16" cy="16" rx="13" ry="5" fill="none" stroke="#c9d1de" stroke-width="1.5"/><circle cx="28" cy="15" r="2.5" fill="#5d8fc9"/><circle cx="6" cy="18" r="2" fill="#c0614e"/>')},
- {id:'portail',n:'Portail du savoir',role:'Une porte vers toutes les connaissances du monde.',look:'La fenêtre devient un portail lumineux qui tourne. Amélioré : sa lumière change de couleur et s’intensifie.',c:1.8e14,p:1.4e8,ic:pic('<path d="M8 28V14a8 8 0 0 1 16 0v14Z" fill="#2b2a66" stroke="#c9a7ff" stroke-width="3"/><circle cx="16" cy="18" r="4" fill="#fff6c9" opacity=".8"/>')},
+ {id:'bougie',n:tx('Bougie','Candle'),role:tx('Une petite flamme pour travailler tard le soir.','A little flame for working late at night.'),look:tx('Une bougie de plus sur le bureau (jusqu’à 6). Améliorée : bougeoir doré et flamme d’une nouvelle couleur.','One more candle on the desk (up to 6). Upgraded: a golden candlestick and a flame in a new colour.'),c:15,p:.1,ic:pic('<rect x="12" y="13" width="8" height="15" rx="2" fill="#efe8da"/><path d="M16 4c3 4 3 7 0 8-3-1-3-4 0-8Z" fill="#f2b134"/>')},
+ {id:'the',n:tx('Tasse de thé','Cup of tea'),role:tx('Une boisson chaude qui garde éveillé.','A hot drink that keeps you awake.'),look:tx('Une tasse fumante sur le bureau, puis une théière dès 10. Améliorée : nouvelle porcelaine, puis un liseré doré.','A steaming cup on the desk, then a teapot from 10. Upgraded: new porcelain, then a golden rim.'),c:150,p:.8,ic:pic('<path d="M7 12h15v7a6 6 0 0 1-6 6h-3a6 6 0 0 1-6-6Z" fill="#c0614e"/><path d="M22 14h2a3 3 0 0 1 0 6h-2" stroke="#c0614e" stroke-width="2" fill="none"/>')},
+ {id:'lampe',n:tx('Lampe de bureau','Desk lamp'),role:tx('Une bonne lumière pour lire longtemps.','Good light for reading for hours.'),look:tx('Une lampe éclaire le bureau, de plus en plus fort. Améliorée : l’abat-jour change de couleur.','A lamp lights up the desk, brighter and brighter. Upgraded: the lampshade changes colour.'),c:2000,p:6,ic:pic('<path d="M10 4h12l3 9H7Z" fill="#7fcf9a"/><rect x="15" y="13" width="2" height="11" fill="#a3abcf"/><rect x="9" y="24" width="14" height="4" rx="2" fill="#a3abcf"/>')},
+ {id:'etagere',n:tx('Étagère de livres','Bookshelf'),role:tx('Des livres à consulter, rangés près du hibou.','Books to look things up in, kept close to the owl.'),look:tx('Les rayons se remplissent de livres. Améliorée : une échelle apparaît, puis des livres qui brillent.','The shelves fill up with books. Upgraded: a ladder appears, then glowing books.'),c:30000,p:40,ic:pic('<rect x="5" y="6" width="4" height="20" fill="#5d8fc9"/><rect x="10" y="9" width="4" height="17" fill="#d9a441"/><rect x="15" y="5" width="4" height="21" fill="#c0614e"/><rect x="20" y="10" width="5" height="16" fill="#9a6fc0"/><rect x="3" y="26" width="26" height="3" fill="#7a5a40"/>')},
+ {id:'chat',n:tx('Chat bibliothécaire','Library cat'),role:tx('Il range les livres pendant que tu dors.','It tidies the books while you sleep.'),look:tx('Un chat dort en haut de la bibliothèque, rejoint par un chaton dès 5. Amélioré : il met des lunettes, puis une couronne.','A cat sleeps on top of the bookcase, joined by a kitten from 5. Upgraded: it puts on glasses, then a crown.'),c:500000,p:250,ic:pic('<path d="M7 26c0-8 4-13 9-13s9 5 9 13Z" fill="#d9a441"/><path d="M9 9l3 6h-5ZM23 9l-3 6h5Z" fill="#d9a441"/><circle cx="16" cy="15" r="7" fill="#d9a441"/>')},
+ {id:'tour',n:tx("Tour d'astronomie",'Astronomy tower'),role:tx('Pour observer les étoiles, la nuit.','For watching the stars at night.'),look:tx('Un télescope près de la fenêtre, et une carte du ciel au mur dès 5. Améliorée : le télescope grandit et devient plus précieux.','A telescope by the window, and a star map on the wall from 5. Upgraded: the telescope grows and becomes more precious.'),c:8000000,p:1600,ic:pic('<rect x="10" y="12" width="12" height="17" fill="#34407a"/><path d="M8 13a8 8 0 0 1 16 0Z" fill="#8fd3ff"/><rect x="14" y="20" width="4" height="9" fill="#f2b134"/>')},
+ {id:'globe',n:tx('Globe terrestre','Globe'),role:tx('Pour découvrir le monde entier.','To discover the whole world.'),look:tx('Un globe sur le rebord de la fenêtre. Amélioré : son pied devient précieux, puis des anneaux dorés apparaissent.','A globe on the windowsill. Upgraded: its stand becomes precious, then golden rings appear.'),c:1.3e8,p:1e4,ic:pic('<circle cx="16" cy="13" r="10" fill="#5d8fc9"/><path d="M10 9q4-3 6 1t5 4M12 17q3 0 4 3" stroke="#7fcf9a" stroke-width="3" fill="none"/><path d="M16 23v4M10 28h12" stroke="#c98a4b" stroke-width="3"/>')},
+ {id:'sablier',n:tx('Sablier','Hourglass'),role:tx('Chaque minute de concentration devient précieuse.','Every minute of focus becomes precious.'),look:tx('Un sablier sur le rebord de la fenêtre. Amélioré : le sable change de couleur (doré, bleu, violet, étoilé).','An hourglass on the windowsill. Upgraded: the sand changes colour (gold, blue, purple, starry).'),c:2e9,p:6.5e4,ic:pic('<path d="M9 4h14M9 28h14" stroke="#c98a4b" stroke-width="3"/><path d="M11 5q0 8 5 11-5 3-5 11h10q0-8-5-11 5-3 5-11Z" fill="#cfe6ff" opacity=".7"/><path d="M13 24q3-5 6 0v2h-6Z" fill="#f2c94c"/>')},
+ {id:'lucioles',n:tx('Bocal de lucioles','Jar of fireflies'),role:tx('De petites lumières qui veillent avec toi.','Little lights that keep watch with you.'),look:tx('Un bocal sur la fenêtre, et des lucioles qui volent dans la pièce (une de plus à chaque achat, jusqu’à 12). Amélioré : elles changent de couleur.','A jar on the window, and fireflies flying around the room (one more with each purchase, up to 12). Upgraded: they change colour.'),c:3.5e10,p:4.3e5,ic:pic('<rect x="9" y="9" width="14" height="19" rx="4" fill="#cfe6ff" opacity=".35" stroke="#cfe6ff"/><rect x="10" y="5" width="12" height="4" rx="1" fill="#8a6a4a"/><circle cx="14" cy="17" r="2" fill="#fff38a"/><circle cx="19" cy="22" r="2" fill="#fff38a"/><circle cx="17" cy="13" r="1.5" fill="#fff38a"/>')},
+ {id:'grimoire',n:tx('Grimoire volant','Flying grimoire'),role:tx('Des livres magiques qui se lisent tout seuls.','Magic books that read themselves.'),look:tx('Des grimoires flottent en haut de la pièce (jusqu’à 5). Améliorés : leurs pages se mettent à briller.','Grimoires float near the ceiling (up to 5). Upgraded: their pages start to glow.'),c:6e11,p:2.9e6,ic:pic('<path d="M4 10q6-3 12 0v16q-6-3-12 0Z" fill="#9a6fc0"/><path d="M16 10q6-3 12 0v16q-6-3-12 0Z" fill="#7a52a3"/><path d="M22 4l1.2 2.6 2.8.3-2.1 1.9.6 2.8-2.5-1.4-2.5 1.4.6-2.8-2.1-1.9 2.8-.3Z" fill="#f2c94c"/>')},
+ {id:'planetaire',n:tx('Planétaire','Orrery'),role:tx('Une machine qui montre les planètes en mouvement.','A machine that shows the planets in motion.'),look:tx('Un planétaire suspendu au plafond, dont les planètes tournent. Plus tu en as, plus il y a de planètes. Amélioré : le métal devient plus précieux.','An orrery hangs from the ceiling and its planets spin. The more you have, the more planets. Upgraded: the metal becomes more precious.'),c:1e13,p:2e7,ic:pic('<circle cx="16" cy="16" r="5" fill="#f2c94c"/><ellipse cx="16" cy="16" rx="13" ry="5" fill="none" stroke="#c9d1de" stroke-width="1.5"/><circle cx="28" cy="15" r="2.5" fill="#5d8fc9"/><circle cx="6" cy="18" r="2" fill="#c0614e"/>')},
+ {id:'portail',n:tx('Portail du savoir','Portal of knowledge'),role:tx('Une porte vers toutes les connaissances du monde.','A door to all the knowledge in the world.'),look:tx('La fenêtre devient un portail lumineux qui tourne. Amélioré : sa lumière change de couleur et s’intensifie.','The window becomes a glowing, spinning portal. Upgraded: its light changes colour and grows stronger.'),c:1.8e14,p:1.4e8,ic:pic('<path d="M8 28V14a8 8 0 0 1 16 0v14Z" fill="#2b2a66" stroke="#c9a7ff" stroke-width="3"/><circle cx="16" cy="18" r="4" fill="#fff6c9" opacity=".8"/>')},
 ];
 // Avec les étoiles : l'équipement du hibou, 5 paliers
-const TIER=['','Bois','Bronze','Argent','Or','Cristal'];
+const TIER=LANG==='en'?['','Wood','Bronze','Silver','Gold','Crystal']:['','Bois','Bronze','Argent','Or','Cristal'];
 const TCOL=['','#a07850','#c98a4b','#c9d1de','#f2c94c','#9fe7ff'];
 const EQ=[
- {id:'lunettes',n:'Lunettes',role:'Chaque toucher sur le hibou rapporte plus de plumes.',d:t=>`Touchers ×${(1+.5*t).toFixed(1)}`},
- {id:'echarpe',n:'Écharpe',role:'Toute ta bibliothèque produit plus de plumes.',d:t=>`Production ×${(1+.25*t).toFixed(2)}`},
- {id:'casque',n:'Casque audio',role:'Chaque minuteur de concentration terminé rapporte des étoiles en plus.',d:t=>`+${t} étoile${t>1?'s':''} par minuteur`},
- {id:'plume',n:"Plume d'écriture",role:'Quand le jeu est fermé, ta bibliothèque produit plus vite.',d:t=>`Jeu fermé : ${50+10*t} % de la vitesse`},
+ {id:'lunettes',n:tx('Lunettes','Glasses'),role:tx('Chaque toucher sur le hibou rapporte plus de plumes.','Each tap on the owl earns more feathers.'),d:t=>tx(`Touchers ×${(1+.5*t).toFixed(1)}`,`Taps ×${(1+.5*t).toFixed(1)}`)},
+ {id:'echarpe',n:tx('Écharpe','Scarf'),role:tx('Toute ta bibliothèque produit plus de plumes.','Your whole library makes more feathers.'),d:t=>tx(`Production ×${(1+.25*t).toFixed(2)}`,`Output ×${(1+.25*t).toFixed(2)}`)},
+ {id:'casque',n:tx('Casque audio','Headphones'),role:tx('Chaque minuteur de concentration terminé rapporte des étoiles en plus.','Each focus timer you finish earns extra stars.'),d:t=>tx(`+${t} étoile${t>1?'s':''} par minuteur`,`+${t} star${t>1?'s':''} per timer`)},
+ {id:'plume',n:tx("Plume d'écriture",'Quill'),role:tx('Quand le jeu est fermé, ta bibliothèque produit plus vite.','When the game is closed, your library produces faster.'),d:t=>tx(`Jeu fermé : ${50+10*t} % de la vitesse`,`Game closed: ${50+10*t}% speed`)},
 ];
 const EQCOST=[3,8,20,45,90];
 // Le hibou grandit avec le temps de concentration (en heures)
@@ -448,7 +448,7 @@ const ACH=[
 const achName=a=>tx(a.fr[0],a.en[0]);
 const achCount=()=>ACH.filter(a=>S.ach?.[a.id]).length;
 function checkAch(silent){const got=[];for(const a of ACH){if(S.ach?.[a.id]||!a.t())continue;S.ach=S.ach||{};S.ach[a.id]=1;S.st+=a.r;got.push(a)}
- if(got.length&&!silent)toast(`${got[0].e} ${tx('Succès','Achievement')} : ${got.map(achName).join(', ')} (+${got.reduce((n,a)=>n+a.r,0)} ★)`);return got}
+ if(got.length&&!silent)toast(`${got[0].e} ${tx('Succès :','Achievement:')} ${got.map(achName).join(', ')} (+${got.reduce((n,a)=>n+a.r,0)} ★)`);return got}
 const dk=(d=new Date())=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
 // Moment de la journée (heure réelle du téléphone)
 const tod=()=>{const h=new Date().getHours();return h>=21||h<6?'night':h<9?'dawn':h<17?'day':'dusk'};
@@ -459,7 +459,7 @@ const mood=()=>studying()?'sleep':now()<happyUntil?'happy':'';
 function fx(){const sc=$('scene');sc.classList.remove('rankup');void sc.offsetWidth;sc.classList.add('rankup');
  for(let i=0;i<18;i++){const e=document.createElement('div');e.className='spark';e.textContent='★';const a=i/18*Math.PI*2,d=90+Math.random()*70;e.style.setProperty('--dx',Math.cos(a)*d+'px');e.style.setProperty('--dy',Math.sin(a)*d+'px');sc.appendChild(e);setTimeout(()=>e.remove(),1500)}}
 // Améliorations de la bibliothèque
-const RANKS=['Coin lecture','Bureau douillet','Bibliothèque','Grande bibliothèque','Bibliothèque royale','Bibliothèque céleste'];
+const RANKS=LANG==='en'?['Reading nook','Cosy study','Library','Grand library','Royal library','Celestial library']:['Coin lecture','Bureau douillet','Bibliothèque','Grande bibliothèque','Bibliothèque royale','Bibliothèque céleste'];
 const RANKCOST=[5,15,40,90,180];      // en étoiles
 const rankMult=r=>1+.5*r;              // bonus de rang sur toute la production
 const bl=id=>S.bl?.[id]||0;            // niveau d'amélioration d'un objet
@@ -480,7 +480,7 @@ window.claude?.hot?.snapshot?.(()=>({S}));
 const save=()=>{S.last=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 
 const $=id=>document.getElementById(id);
-const fmt=n=>{if(n<1000)return n<10&&n%1?n.toFixed(1):Math.floor(n).toString();const u=['k','M','Md','Bn','Bd'];let i=-1;while(n>=1000&&i<u.length-1){n/=1000;i++}return n.toFixed(n<10?2:n<100?1:0)+u[i]};
+const fmt=n=>{if(n<1000)return n<10&&n%1?n.toFixed(1):Math.floor(n).toString();const u=LANG==='en'?['k','M','B','T','Qa']:['k','M','Md','Bn','Bd'];let i=-1;while(n>=1000&&i<u.length-1){n/=1000;i++}return n.toFixed(n<10?2:n<100?1:0)+u[i]};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const now=()=>Date.now();
 const today=()=>new Date().toDateString(), yesterday=()=>new Date(Date.now()-864e5).toDateString();
@@ -510,7 +510,7 @@ const Ads={ready:false,can:false,privacy:false,pending:null,A:null,
  async init(){if(!NATIVE)return;try{const A=this.A=window.Capacitor.registerPlugin('AdMob');
   A.addListener('onRewardedVideoAdReward',()=>{const f=this.pending;this.pending=null;if(f)f()});
   A.addListener('onRewardedVideoAdDismissed',()=>{this.pending=null;setTimeout(()=>this.preload(),800)});
-  A.addListener('onRewardedVideoAdFailedToShow',()=>{this.pending=null;toast('La pub n’a pas pu s’afficher');setTimeout(()=>this.preload(),5000)});
+  A.addListener('onRewardedVideoAdFailedToShow',()=>{this.pending=null;toast(tx('La pub n’a pas pu s’afficher','The ad couldn’t be shown'));setTimeout(()=>this.preload(),5000)});
   await A.initialize({});
   let info=await A.requestConsentInfo();
   if(info.isConsentFormAvailable&&info.status==='REQUIRED')info=await A.showConsentForm();
@@ -518,7 +518,7 @@ const Ads={ready:false,can:false,privacy:false,pending:null,A:null,
   this.can=!!info.canRequestAds;this.privacy=info.privacyOptionsRequirementStatus==='REQUIRED';
   this.preload();render()}catch(e){console.log('ads',e)}},
  async preload(){if(!this.can||this.ready)return;try{await this.A.prepareRewardVideoAd({adId:AD_ID,isTesting:AD_TEST});this.ready=true;if($('sheet').hidden)render()}catch(e){this.ready=false;setTimeout(()=>this.preload(),60000)}},
- show(onReward){if(!this.ready){toast('Pas de pub disponible pour l’instant, réessaie dans un moment');return}
+ show(onReward){if(!this.ready){toast(tx('Pas de pub disponible pour l’instant, réessaie dans un moment','No ad available right now, try again in a moment'));return}
   this.ready=false;this.pending=onReward;this.A.showRewardVideoAd().catch(()=>{this.pending=null;setTimeout(()=>this.preload(),5000)});render()},
  async privacyForm(){try{await this.A.showPrivacyOptionsForm()}catch(e){}}
 };
@@ -527,7 +527,7 @@ const Notif={P:null,
  get(){if(!NATIVE)return null;return this.P||(this.P=window.Capacitor.registerPlugin('LocalNotifications'))},
  async plan(end,min){const N=this.get();if(!N)return;try{let st=await N.checkPermissions();if(st.display!=='granted')st=await N.requestPermissions();if(st.display!=='granted')return;
   await N.cancel({notifications:[{id:1}]}).catch(()=>{});
-  await N.schedule({notifications:[{id:1,title:'Minuteur terminé, bravo !',body:`Tes ${studyReward(min)} étoile${studyReward(min)>1?'s':''} t’attendent. Ouvre le jeu pour les récupérer.`,schedule:{at:new Date(end),allowWhileIdle:true}}]})}catch(e){console.log('notif',e)}},
+  await N.schedule({notifications:[{id:1,title:tx('Minuteur terminé, bravo !','Timer finished, well done!'),body:tx(`Tes ${studyReward(min)} étoile${studyReward(min)>1?'s':''} t’attendent. Ouvre le jeu pour les récupérer.`,`Your ${studyReward(min)} star${studyReward(min)>1?'s are':' is'} waiting. Open the game to collect ${studyReward(min)>1?'them':'it'}.`),schedule:{at:new Date(end),allowWhileIdle:true}}]})}catch(e){console.log('notif',e)}},
  async cancel(){const N=this.get();if(!N)return;try{await N.cancel({notifications:[{id:1}]})}catch(e){}}
 };
 const IOS_APP_ID=''; /*IOS_APP_ID*/ // numéro de l'appli sur l'App Store, rempli quand la fiche App Store existe
@@ -535,23 +535,23 @@ const PLAY_URL='https://play.google.com/store/apps/details?id=com.hiboubougie.ap
 const STORE_URL=IOS&&APPSTORE_URL?APPSTORE_URL:PLAY_URL;
 const plug=n=>NATIVE?window.Capacitor.registerPlugin(n):null;
 function rateApp(){if(IOS){if(IOS_APP_ID)location.href='itms-apps://apps.apple.com/app/id'+IOS_APP_ID+'?action=write-review';else askReview()}else if(NATIVE)location.href='market://details?id=com.hiboubougie.app';else window.open(STORE_URL,'_blank')}
-async function shareApp(){const text='Je me concentre avec Hibou & Bougie : pendant que je travaille, la bibliothèque de mon hibou grandit 🦉🕯️';
- try{if(NATIVE){await plug('Share').share({title:'Hibou & Bougie',text,url:STORE_URL,dialogTitle:'Partager Hibou & Bougie'});return}
+async function shareApp(){const text=tx('Je me concentre avec Hibou & Bougie : pendant que je travaille, la bibliothèque de mon hibou grandit 🦉🕯️','I focus with Hibou & Bougie: while I work, my owl’s library grows 🦉🕯️');
+ try{if(NATIVE){await plug('Share').share({title:'Hibou & Bougie',text,url:STORE_URL,dialogTitle:tx('Partager Hibou & Bougie','Share Hibou & Bougie')});return}
   if(navigator.share){await navigator.share({title:'Hibou & Bougie',text,url:STORE_URL});return}
-  await navigator.clipboard.writeText(text+' '+STORE_URL);toast('Lien copié !')}catch(e){}}
+  await navigator.clipboard.writeText(text+' '+STORE_URL);toast(tx('Lien copié !','Link copied!'))}catch(e){}}
 async function askReview(){try{await plug('InAppReview').requestReview()}catch(e){console.log('review',e)}}
 const prod=()=>prodBase()*boostMult()*(studying()?3:1);
 const tapVal=()=>(1+lv('bec'))*(1+.5*tr('lunettes'))*lvlMult()*boostMult();
 function gain(n){S.pl+=n;S.tot+=n;S.run=(S.run||0)+n}
 const lvlReward=l=>l%5===0?3:1;
-function addXp(n){S.xp+=n;while(S.xp>=xpNeed(S.lvl)){S.xp-=xpNeed(S.lvl);S.lvl++;S.st+=lvlReward(S.lvl);toast(`Niveau ${S.lvl} ! +${lvlReward(S.lvl)} étoile${S.lvl%5?'':'s'} · tout +3 %`)}}
+function addXp(n){S.xp+=n;while(S.xp>=xpNeed(S.lvl)){S.xp-=xpNeed(S.lvl);S.lvl++;S.st+=lvlReward(S.lvl);toast(tx(`Niveau ${S.lvl} ! +${lvlReward(S.lvl)} étoile${S.lvl%5?'':'s'} · tout +3 %`,`Level ${S.lvl}! +${lvlReward(S.lvl)} star${S.lvl%5?'':'s'} · everything +3%`))}}
 
 const dailyStars=n=>2+Math.min(n,7), dailyPl=()=>Math.max(100,prodBase()*300);
 const studyReward=m=>m<1?1:Math.max(1,Math.round(m/25*3))+tr('casque');
 const DUR_MIN=10,DUR_MAX=180;
 const fmtDur=m=>m<60?`${m} min`:`${Math.floor(m/60)} h${m%60?` ${String(m%60).padStart(2,'0')}`:''}`;
 function setDur(m){m=Math.max(DUR_MIN,Math.min(DUR_MAX,Math.round(m/5)*5));S.dur=m;
- if($('durmin')){$('durmin').textContent=fmtDur(m);$('durst').textContent=`${studyReward(m)} ★ à la fin`;$('durrange').value=m;$('durgo').dataset.act='study:'+m;$('durgo').innerHTML=`${ICON.timer}Lancer ${fmtDur(m)}`;
+ if($('durmin')){$('durmin').textContent=fmtDur(m);$('durst').textContent=tx(`${studyReward(m)} ★ à la fin`,`${studyReward(m)} ★ at the end`);$('durrange').value=m;$('durgo').dataset.act='study:'+m;$('durgo').innerHTML=`${ICON.timer}${tx('Lancer','Start')} ${fmtDur(m)}`;
   document.querySelectorAll('[data-act^="durset:"]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.act.split(':')[1]===m))}}
 document.addEventListener('input',e=>{if(e.target.id==='durrange')setDur(+e.target.value)});
 
@@ -720,9 +720,9 @@ const drawOwl=()=>drawScene(true),drawLib=drawOwl;
 
 const scene=$('scene');
 const OBJ_CD=30000,lastUse={};
-const OBJ_TXT={globe:'Le monde tourne !',sablier:'Le temps file !',lucioles:'Bzzz !',grimoire:'Abracadabra !',planetaire:'Tout tourne !',portail:'Woosh !',bougie:'Flamme vive !',the:'Slurp !',lampe:'Plus de lumière !',etagere:'Un livre !',chat:'Miaou !',tour:'Étoile filante !'};
+const OBJ_TXT=LANG==='en'?{globe:'The world turns!',sablier:'Time flies!',lucioles:'Bzzz!',grimoire:'Abracadabra!',planetaire:'Round and round!',portail:'Woosh!',bougie:'Bright flame!',the:'Slurp!',lampe:'More light!',etagere:'A book!',chat:'Meow!',tour:'Shooting star!'}:{globe:'Le monde tourne !',sablier:'Le temps file !',lucioles:'Bzzz !',grimoire:'Abracadabra !',planetaire:'Tout tourne !',portail:'Woosh !',bougie:'Flamme vive !',the:'Slurp !',lampe:'Plus de lumière !',etagere:'Un livre !',chat:'Miaou !',tour:'Étoile filante !'};
 function tapOwl(x,y){
- if(studying()){floatAt(x,y,'Chut… on se concentre');return}
+ if(studying()){floatAt(x,y,tx('Chut… on se concentre','Shh… focusing'));return}
  const v=tapVal();gain(v);S.taps++;addXp(1);floatAt(x,y,'+'+fmt(v));
  const q=document.getElementById('owlsq');if(q){q.classList.add('squish');setTimeout(()=>q.classList.remove('squish'),80)}
  const tl=document.getElementById('owltilt');if(tl){const c=(S.taps%2)?'tl':'tr';tl.classList.remove('tl','tr');void tl.getBBox?.();tl.classList.add(c);setTimeout(()=>tl.classList.remove(c),460)}
@@ -733,8 +733,8 @@ function useObj(id,x,y){
  svg.classList.remove('a-'+id);void svg.getBBox?.();svg.classList.add('a-'+id);setTimeout(()=>svg.classList.remove('a-'+id),900);
  if(id==='etagere'){const r=S.rank||0,y0=r>=1?120:130;svg.insertAdjacentHTML('beforeend',`<rect class="flyb" x="60" y="${y0}" width="12" height="18" rx="2" fill="${BOOKC[Math.floor(Math.random()*6)]}"/>`);setTimeout(()=>svg.querySelector('.flyb')?.remove(),950)}
  if(id==='tour'){const wx=(S.rank||0)>=3?220:215;svg.insertAdjacentHTML('beforeend',`<path class="shoot" d="M${wx} 50l14 -8" stroke="#fff6c9" stroke-width="3" stroke-linecap="round"/>`);setTimeout(()=>svg.querySelector('.shoot')?.remove(),1150)}
- if(studying()){floatAt(x,y,'Chut… on se concentre');return}
- if(!objReady(id)){floatAt(x,y,`Encore ${Math.ceil((OBJ_CD-(now()-lastUse[id]))/1000)} s`);return}
+ if(studying()){floatAt(x,y,tx('Chut… on se concentre','Shh… focusing'));return}
+ if(!objReady(id)){floatAt(x,y,`${tx('Encore','Wait')} ${Math.ceil((OBJ_CD-(now()-lastUse[id]))/1000)} s`);return}
  lastUse[id]=now();S.inter=(S.inter||0)+1;
  const g=Math.max(2,cnt(id)*unitProd(b)*30);gain(g);addXp(2);
  floatAt(x,y-18,OBJ_TXT[id]);setTimeout(()=>floatAt(x,y,'+'+fmt(g)),150);
@@ -749,10 +749,10 @@ $('owlbtn').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.pr
 function floatAt(x,y,txt){const f=document.createElement('div');f.className='float';f.textContent=txt;f.style.left=(x-20)+'px';f.style.top=(y-20)+'px';if(txt.length>8){f.style.fontSize='15px';f.style.color='var(--star)'}scene.appendChild(f);setTimeout(()=>f.remove(),900)}
 let nextLetter=now()+25000;
 function spawnLetter(){
- const L=document.createElement('button');L.id='letter';L.setAttribute('aria-label','Lettre dorée : toque pour un bonus');
+ const L=document.createElement('button');L.id='letter';L.setAttribute('aria-label',tx('Lettre dorée : toque pour un bonus','Golden letter: tap for a bonus'));
  L.innerHTML='<svg viewBox="0 0 46 34"><rect x="2" y="3" width="42" height="28" rx="4" fill="#f2c94c" stroke="#c98a1e" stroke-width="2"/><path d="M3 5l20 14L43 5" fill="none" stroke="#c98a1e" stroke-width="2"/><circle cx="23" cy="19" r="4" fill="#c0614e"/></svg>';
  L.style.right='-10px';L.style.top=(20+Math.random()*70)+'px';
- L.onclick=()=>{L.remove();if(Math.random()<.5){S.lEnd=Math.max(now(),S.lEnd)+20000;toast('Lettre dorée : plumes ×7 pendant 20 s !')}else{const g=Math.max(prodBase()*90,tapVal()*40);gain(g);toast(`Lettre dorée : +${fmt(g)} plumes`)}addXp(5)};
+ L.onclick=()=>{L.remove();if(Math.random()<.5){S.lEnd=Math.max(now(),S.lEnd)+20000;toast(tx('Lettre dorée : plumes ×7 pendant 20 s !','Golden letter: feathers ×7 for 20 s!'))}else{const g=Math.max(prodBase()*90,tapVal()*40);gain(g);toast(tx(`Lettre dorée : +${fmt(g)} plumes`,`Golden letter: +${fmt(g)} feathers`))}addXp(5)};
  scene.appendChild(L);setTimeout(()=>L.remove(),9000);
 }
 
@@ -765,41 +765,41 @@ function render(){
  h+=goalHtml();
  // 1. Se concentrer avec le minuteur
  h+=`<section id="mission">${st?`
-  <div class="goalhead"><b>Concentration en cours</b><span class="prog">plumes ×3</span></div>
-  <p class="sub">Pose ton téléphone et concentre-toi. À la fin du minuteur : ${studyReward(S.study.min)} étoile${studyReward(S.study.min)>1?'s':''}.</p>
+  <div class="goalhead"><b>${tx('Concentration en cours','Focusing')}</b><span class="prog">${tx('plumes ×3','feathers ×3')}</span></div>
+  <p class="sub">${tx(`Pose ton téléphone et concentre-toi. À la fin du minuteur : ${studyReward(S.study.min)} étoile${studyReward(S.study.min)>1?'s':''}.`,`Put your phone down and focus. When the timer ends: ${studyReward(S.study.min)} star${studyReward(S.study.min)>1?'s':''}.`)}</p>
   <p class="fstats">${actOf(S.study.act).e} ${actName(actOf(S.study.act))}</p>
-  <button class="btn ghost" data-act="stop">Arrêter le minuteur</button>`:`
-  <div><div class="goalhead"><b>Se concentrer = gagner des étoiles</b></div><p class="sub">Lance un minuteur, pose ton téléphone et concentre-toi : études, travail, lecture, sport… Pendant ce temps, ta bibliothèque produit 3 fois plus.</p></div>
-  <div class="dur"><button class="step-b" data-act="dur:-5" aria-label="Moins 5 minutes">−</button><div class="durv"><b id="durmin">${fmtDur(S.dur||25)}</b><span id="durst">${studyReward(S.dur||25)} ★ à la fin</span></div><button class="step-b" data-act="dur:5" aria-label="Plus 5 minutes">+</button></div>
-  <input type="range" id="durrange" min="${DUR_MIN}" max="${DUR_MAX}" step="5" value="${S.dur||25}" aria-label="Durée de concentration">
+  <button class="btn ghost" data-act="stop">${tx('Arrêter le minuteur','Stop the timer')}</button>`:`
+  <div><div class="goalhead"><b>${tx('Se concentrer = gagner des étoiles','Focus = earn stars')}</b></div><p class="sub">${tx('Lance un minuteur, pose ton téléphone et concentre-toi : études, travail, lecture, sport… Pendant ce temps, ta bibliothèque produit 3 fois plus.','Start a timer, put your phone down and focus: study, work, reading, sport… Meanwhile, your library produces 3 times more.')}</p></div>
+  <div class="dur"><button class="step-b" data-act="dur:-5" aria-label="${tx('Moins 5 minutes','5 minutes less')}">−</button><div class="durv"><b id="durmin">${fmtDur(S.dur||25)}</b><span id="durst">${tx(`${studyReward(S.dur||25)} ★ à la fin`,`${studyReward(S.dur||25)} ★ at the end`)}</span></div><button class="step-b" data-act="dur:5" aria-label="${tx('Plus 5 minutes','5 minutes more')}">+</button></div>
+  <input type="range" id="durrange" min="${DUR_MIN}" max="${DUR_MAX}" step="5" value="${S.dur||25}" aria-label="${tx('Durée de concentration','Focus duration')}">
   <div class="pick">${[15,25,45,60,90].map(m=>`<button data-act="durset:${m}" aria-pressed="${(S.dur||25)===m}">${fmtDur(m)}</button>`).join('')}</div>
   <div class="pick" id="actpick" style="justify-content:center">${ACTS.map(a=>`<button data-act="actset:${a.id}" aria-pressed="${(S.act||'etudes')===a.id}">${a.e} ${actName(a)}</button>`).join('')}</div>
-  <button class="btn main big" data-act="study:${S.dur||25}" id="durgo">${ICON.timer}Lancer ${fmtDur(S.dur||25)}</button>
-  ${S.trial?'':'<button class="link" data-act="study:0.5" style="align-self:center">Essayer une fois avec 30 secondes</button>'}
-  ${S.fmin>=1?`<p class="fstats">Concentration au total : <b>${fmtDur(Math.round(S.fmin))}</b>${fstreak()>1?` · série : <b>${fstreak()} jours</b>`:''}</p>`:''}
-  ${NATIVE&&Ads.can?`<button class="btn ad" data-act="adboost" ${Ads.ready&&((S.adEnd||0)-now())/60000<=AD_BOOST_CAP-AD_BOOST_MIN?'':'disabled'}>▶ Pub : plumes ×2 pendant ${AD_BOOST_MIN} min${now()<(S.adEnd||0)?` (encore ${Math.ceil(((S.adEnd||0)-now())/60000)} min)`:''}</button>`:''}`}
-  ${S.daily.day!==today()?`<button class="chest" data-act="daily"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#f2b134" stroke-width="2"><path d="M3 10h18v11H3zM2 6h20v4H2zM12 6v15"/></svg><span style="flex:1"><b>Coffre du jour</b><span>Toque pour l’ouvrir</span></span></button>`:''}
+  <button class="btn main big" data-act="study:${S.dur||25}" id="durgo">${ICON.timer}${tx('Lancer','Start')} ${fmtDur(S.dur||25)}</button>
+  ${S.trial?'':`<button class="link" data-act="study:0.5" style="align-self:center">${tx('Essayer une fois avec 30 secondes','Try it once with 30 seconds')}</button>`}
+  ${S.fmin>=1?`<p class="fstats">${tx('Concentration au total :','Total focus:')} <b>${fmtDur(Math.round(S.fmin))}</b>${fstreak()>1?tx(` · série : <b>${fstreak()} jours</b>`,` · streak: <b>${fstreak()} days</b>`):''}</p>`:''}
+  ${NATIVE&&Ads.can?`<button class="btn ad" data-act="adboost" ${Ads.ready&&((S.adEnd||0)-now())/60000<=AD_BOOST_CAP-AD_BOOST_MIN?'':'disabled'}>▶ ${tx(`Pub : plumes ×2 pendant ${AD_BOOST_MIN} min`,`Ad: feathers ×2 for ${AD_BOOST_MIN} min`)}${now()<(S.adEnd||0)?tx(` (encore ${Math.ceil(((S.adEnd||0)-now())/60000)} min)`,` (${Math.ceil(((S.adEnd||0)-now())/60000)} min left)`):''}</button>`:''}`}
+  ${S.daily.day!==today()?`<button class="chest" data-act="daily"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#f2b134" stroke-width="2"><path d="M3 10h18v11H3zM2 6h20v4H2zM12 6v15"/></svg><span style="flex:1"><b>${tx('Coffre du jour','Daily chest')}</b><span>${tx('Toque pour l’ouvrir','Tap to open it')}</span></span></button>`:''}
  </section>`;
  // 2. Ma bibliothèque
  const r=S.rank||0;
- h+=`<section class="sect" id="secbib"><h2>Ma bibliothèque</h2><p class="sub">Elle produit des plumes toute seule, même app fermée. Achète des objets, puis améliore-les.</p>
-  <div class="rankcard"><div class="top"><div class="txt"><span class="tag">Rang ${r+1} / ${RANKS.length}</span><b>${RANKS[r]}</b><span>Agrandir la pièce multiplie <b class="in">toute</b> ta production de plumes. Actuellement <span class="mul">×${rankMult(r)}</span>${r<5?`, puis ×${rankMult(r+1)} au rang suivant.`:'.'}</span></div>${r<5?buy(RANKCOST[r],'st','rank'):'<button class="buy st" disabled>Max</button>'}</div>
-  <div class="rankdots">${RANKS.map((_,i)=>`<i class="${i<=r?'on':''}"></i>`).join('')}</div>${r<5?`<p class="sub">Agrandir coûte des étoiles, gagnées en te concentrant. La pièce se transforme à chaque rang.</p>`:''}</div>`;
+ h+=`<section class="sect" id="secbib"><h2>${tx('Ma bibliothèque','My library')}</h2><p class="sub">${tx('Elle produit des plumes toute seule, même app fermée. Achète des objets, puis améliore-les.','It makes feathers on its own, even with the app closed. Buy objects, then upgrade them.')}</p>
+  <div class="rankcard"><div class="top"><div class="txt"><span class="tag">${tx('Rang','Rank')} ${r+1} / ${RANKS.length}</span><b>${RANKS[r]}</b><span>${tx(`Agrandir la pièce multiplie <b class="in">toute</b> ta production de plumes. Actuellement <span class="mul">×${rankMult(r)}</span>${r<5?`, puis ×${rankMult(r+1)} au rang suivant.`:'.'}`,`Expanding the room multiplies <b class="in">all</b> your feather output. Currently <span class="mul">×${rankMult(r)}</span>${r<5?`, then ×${rankMult(r+1)} at the next rank.`:'.'}`)}</span></div>${r<5?buy(RANKCOST[r],'st','rank'):'<button class="buy st" disabled>Max</button>'}</div>
+  <div class="rankdots">${RANKS.map((_,i)=>`<i class="${i<=r?'on':''}"></i>`).join('')}</div>${r<5?`<p class="sub">${tx('Agrandir coûte des étoiles, gagnées en te concentrant. La pièce se transforme à chaque rang.','Expanding costs stars, earned by focusing. The room changes at every rank.')}</p>`:''}</div>`;
  const dg=dipGain();
  let shown=0;
  for(let i=0;i<BUILD.length;i++){const b=BUILD[i],open=i===0||cnt(BUILD[i-1].id)>0;
-  if(!open){if(shown++)break;h+=`<div class="row" style="opacity:.45"><div class="ico">?</div><div class="txt"><b>Objet mystère</b><span>Achète une ${BUILD[i-1].n.toLowerCase()} pour le découvrir</span></div></div>`;continue}
+  if(!open){if(shown++)break;h+=`<div class="row" style="opacity:.45"><div class="ico">?</div><div class="txt"><b>${tx('Objet mystère','Mystery object')}</b><span>${tx(`Achète une ${BUILD[i-1].n.toLowerCase()} pour le découvrir`,`Buy ${/^[aeiou]/i.test(BUILD[i-1].n)?'an':'a'} ${BUILD[i-1].n.toLowerCase()} to discover it`)}</span></div></div>`;continue}
   const n=cnt(b.id),L=bl(b.id),need=upNeed(b),u=unitProd(b);
-  h+=`<div class="row"><div class="ico">${b.ic}</div><button class="txtbtn" data-act="info:b:${b.id}"><b>${b.n}<span class="lv" style="display:inline">${n?`×${n}`:''}${L?` · niv. ${L+1}`:''}</span></b><span>${b.role}</span>
-   <span class="eff">${n?`Produit ${fmt(n*u)} plumes/s · <em>+${fmt(u)}/s</em> par achat`:`Produit <em>+${fmt(u)} plumes/s</em>, même jeu fermé`}</span>
-   ${n?`<span>${n>=need?'Amélioration prête : production ×2':`Amélioration ×2 à ${need} possédés (${n}/${need})`}</span>`:''}<span class="more">Détails ›</span></button>
+  h+=`<div class="row"><div class="ico">${b.ic}</div><button class="txtbtn" data-act="info:b:${b.id}"><b>${b.n}<span class="lv" style="display:inline">${n?`×${n}`:''}${L?` · ${tx('niv.','lv.')} ${L+1}`:''}</span></b><span>${b.role}</span>
+   <span class="eff">${n?tx(`Produit ${fmt(n*u)} plumes/s · <em>+${fmt(u)}/s</em> par achat`,`Makes ${fmt(n*u)} feathers/s · <em>+${fmt(u)}/s</em> per purchase`):tx(`Produit <em>+${fmt(u)} plumes/s</em>, même jeu fermé`,`Makes <em>+${fmt(u)} feathers/s</em>, even with the game closed`)}</span>
+   ${n?`<span>${n>=need?tx('Amélioration prête : production ×2','Upgrade ready: output ×2'):tx(`Amélioration ×2 à ${need} possédés (${n}/${need})`,`×2 upgrade at ${need} owned (${n}/${need})`)}</span>`:''}<span class="more">${tx('Détails ›','Details ›')}</span></button>
   <div class="acts">${buy(bCost(b),'pl','b:'+b.id)}${n?(n>=need?`<button class="buy up" data-act="up:${b.id}" data-cost="${upCost(b)}" data-cur="pl">×2 · ${fmt(upCost(b))}</button>`:`<button class="buy up" disabled>${n}/${need}</button>`):''}</div></div>`}
  h+=`</section>`;
  // 3. Mon hibou
- h+=`<section class="sect" id="sechibou"><h2>Mon hibou</h2><p class="sub">Le bec se paie en plumes, l’équipement en étoiles. Tout s’affiche sur le hibou. Il gagne aussi des accessoires en montant de niveau : mèche au niv. 3, livre au niv. 6, toque de diplômé au niv. 10, aura au niv. 15.</p>
-  <div class="row"><div class="ico">${BEC.ic}</div><button class="txtbtn" data-act="info:bec:"><b>${BEC.n}<span class="lv" style="display:inline">niv. ${lv('bec')}</span></b><span>Chaque toucher sur le hibou rapporte plus de plumes.</span><span class="eff">Un toucher = ${fmt(tapVal())} plumes · <em>+${fmt(becGain())}</em> par achat</span><span class="more">Détails ›</span></button>${buy(becCost(),'pl','bec')}</div>`;
+ h+=`<section class="sect" id="sechibou"><h2>${tx('Mon hibou','My owl')}</h2><p class="sub">${tx('Le bec se paie en plumes, l’équipement en étoiles. Tout s’affiche sur le hibou. Il gagne aussi des accessoires en montant de niveau : mèche au niv. 3, livre au niv. 6, toque de diplômé au niv. 10, aura au niv. 15.','The beak costs feathers, the gear costs stars. Everything shows on the owl. It also gets accessories as it levels up: a tuft at lv. 3, a book at lv. 6, a graduation cap at lv. 10, an aura at lv. 15.')}</p>
+  <div class="row"><div class="ico">${BEC.ic}</div><button class="txtbtn" data-act="info:bec:"><b>${BEC.n}<span class="lv" style="display:inline">${tx('niv.','lv.')} ${lv('bec')}</span></b><span>${tx('Chaque toucher sur le hibou rapporte plus de plumes.','Each tap on the owl earns more feathers.')}</span><span class="eff">${tx(`Un toucher = ${fmt(tapVal())} plumes · <em>+${fmt(becGain())}</em> par achat`,`One tap = ${fmt(tapVal())} feathers · <em>+${fmt(becGain())}</em> per purchase`)}</span><span class="more">${tx('Détails ›','Details ›')}</span></button>${buy(becCost(),'pl','bec')}</div>`;
  for(const e of EQ){const t=tr(e.id);
-  h+=`<div class="row"><div class="ico" style="color:${TCOL[t]||'var(--muted)'}">${ICON.star}</div><button class="txtbtn" data-act="info:e:${e.id}"><b>${e.n}${t?`<span class="lv" style="display:inline;color:${TCOL[t]}">${TIER[t]}</span>`:''}</b><span>${e.role}</span><span class="eff">${t>=5?e.d(t):t?`${e.d(t)} → <em>${e.d(t+1)}</em>`:`Pas encore équipé · <em>${e.d(1)}</em>`}</span><div class="tiers">${[1,2,3,4,5].map(i=>`<i style="${i<=t?'background:'+TCOL[i]:''}"></i>`).join('')}</div><span class="more">Détails ›</span></button>${t>=5?'<button class="buy st" disabled>Max</button>':buy(EQCOST[t],'st','e:'+e.id)}</div>`}
+  h+=`<div class="row"><div class="ico" style="color:${TCOL[t]||'var(--muted)'}">${ICON.star}</div><button class="txtbtn" data-act="info:e:${e.id}"><b>${e.n}${t?`<span class="lv" style="display:inline;color:${TCOL[t]}">${TIER[t]}</span>`:''}</b><span>${e.role}</span><span class="eff">${t>=5?e.d(t):t?`${e.d(t)} → <em>${e.d(t+1)}</em>`:`${tx('Pas encore équipé','Not equipped yet')} · <em>${e.d(1)}</em>`}</span><div class="tiers">${[1,2,3,4,5].map(i=>`<i style="${i<=t?'background:'+TCOL[i]:''}"></i>`).join('')}</div><span class="more">${tx('Détails ›','Details ›')}</span></button>${t>=5?'<button class="buy st" disabled>Max</button>':buy(EQCOST[t],'st','e:'+e.id)}</div>`}
  h+=`<div class="card"><b style="font-family:var(--f-display);font-weight:600">${tx('Plumage','Plumage')}</b><p class="sub">${tx('Change la couleur de ton hibou. Les nouvelles couleurs se débloquent avec des étoiles.','Change your owl’s colours. New colours are unlocked with stars.')}</p>
   <div class="plum">${PLUMAGE.map(p=>{const own=!p.cost||S.plum?.[p.id];return `<button data-act="plum:${p.id}" aria-pressed="${(S.pcol||'brun')===p.id}" ${!own&&S.st<p.cost?'disabled style="opacity:.45"':''}><i style="background:linear-gradient(135deg,${p.c[0]} 55%,${p.c[2]} 55%)"></i>${own?tx(p.fr,p.en):'★ '+p.cost}</button>`}).join('')}</div></div>`;
  h+=`</section>`;
@@ -815,15 +815,15 @@ function render(){
  </section>`}
  // 2 bis. Recommencer avec un bonus (diplômes)
  {const run=S.run||0,pr=Math.min(100,Math.pow(run/dipNext(),1/3)*100),after=(1+.2*((S.dip||0)+dg)).toFixed(1);
- h+=`<section class="sect" id="secdip"><h2>Recommencer avec un bonus</h2><p class="sub">Quand ta bibliothèque a produit énormément de plumes, tu obtiens un diplôme. Tu recommences alors ta bibliothèque, mais en plus fort, pour toujours.</p>
-  <div class="rankcard"><div class="txt"><span class="tag">${S.dip?`${S.dip} diplôme${S.dip>1?'s':''} · bonus actuel ×${dipMult().toFixed(1)}`:'Aucun diplôme pour l’instant'}</span>
-   <b>${dg?`Prêt : +${dg} diplôme${dg>1?'s':''}`:'Prochain diplôme'}</b>
-   <span>${dg?`Ta production passera à <span class="mul">×${after}</span> pour toujours.`:`Encore <b>${fmt(dipNext()-run)} plumes</b> à produire dans cette partie. Chaque diplôme = +20 % de production pour toujours.`}</span></div>
+ h+=`<section class="sect" id="secdip"><h2>${tx('Recommencer avec un bonus','Start over with a bonus')}</h2><p class="sub">${tx('Quand ta bibliothèque a produit énormément de plumes, tu obtiens un diplôme. Tu recommences alors ta bibliothèque, mais en plus fort, pour toujours.','When your library has made a huge amount of feathers, you earn a diploma. You then restart your library, but stronger, forever.')}</p>
+  <div class="rankcard"><div class="txt"><span class="tag">${S.dip?tx(`${S.dip} diplôme${S.dip>1?'s':''} · bonus actuel ×${dipMult().toFixed(1)}`,`${S.dip} diploma${S.dip>1?'s':''} · current bonus ×${dipMult().toFixed(1)}`):tx('Aucun diplôme pour l’instant','No diploma yet')}</span>
+   <b>${dg?tx(`Prêt : +${dg} diplôme${dg>1?'s':''}`,`Ready: +${dg} diploma${dg>1?'s':''}`):tx('Prochain diplôme','Next diploma')}</b>
+   <span>${dg?tx(`Ta production passera à <span class="mul">×${after}</span> pour toujours.`,`Your output will become <span class="mul">×${after}</span> forever.`):tx(`Encore <b>${fmt(dipNext()-run)} plumes</b> à produire dans cette partie. Chaque diplôme = +20 % de production pour toujours.`,`<b>${fmt(dipNext()-run)} more feathers</b> to make in this run. Each diploma = +20% output forever.`)}</span></div>
    ${dg?'':`<div class="bar"><i style="width:${pr}%;background:var(--amber)"></i></div>`}
-   <div class="facts" style="background:transparent"><div class="fact"><small>Tu gardes</small><div>Tes étoiles, le rang de la bibliothèque, l’équipement, le niveau du hibou et tes diplômes.</div></div><div class="fact"><small>Tu recommences</small><div>Tes plumes, tes objets, leurs améliorations et le bec.</div></div></div>
-   ${dg?`<button class="btn main big" data-act="dip">Recommencer avec +${dg} diplôme${dg>1?'s':''}</button>`:''}</div></section>`}
- h+=`<section class="sect" id="seclove"><h2>Tu aimes le jeu ?</h2><p class="sub">Une note ou un partage aide beaucoup ce petit jeu à se faire connaître. Merci !</p><div class="love"><button class="btn ghost" data-act="rate">⭐ Noter le jeu</button><button class="btn ghost" data-act="share">📤 Partager</button></div></section>`;
- h+=`<p class="foot">${fmt(S.tot)} plumes gagnées · ${S.studies} minuteur${S.studies>1?'s':''} terminé${S.studies>1?'s':''}${S.fmin>=1?` · ${fmtDur(Math.round(S.fmin))} de concentration`:''}${(S.fbest||0)>1?` · meilleure série : ${S.fbest} jours`:''}<br>${NATIVE&&Ads.privacy?'<button class="link" data-act="adprivacy">Choix de confidentialité des pubs</button> · ':''}<button class="link" data-act="lang">${LANG==='fr'?'English version':'Version française'}</button> · <button class="link" data-act="tuto">Revoir le tutoriel</button> · <button class="link" data-act="reset">Effacer toute ma partie (sans bonus)</button></p>`;
+   <div class="facts" style="background:transparent"><div class="fact"><small>${tx('Tu gardes','You keep')}</small><div>${tx('Tes étoiles, le rang de la bibliothèque, l’équipement, le niveau du hibou et tes diplômes.','Your stars, the library’s rank, the gear, the owl’s level and your diplomas.')}</div></div><div class="fact"><small>${tx('Tu recommences','You restart')}</small><div>${tx('Tes plumes, tes objets, leurs améliorations et le bec.','Your feathers, your objects, their upgrades and the beak.')}</div></div></div>
+   ${dg?`<button class="btn main big" data-act="dip">${tx(`Recommencer avec +${dg} diplôme${dg>1?'s':''}`,`Start over with +${dg} diploma${dg>1?'s':''}`)}</button>`:''}</div></section>`}
+ h+=`<section class="sect" id="seclove"><h2>${tx('Tu aimes le jeu ?','Enjoying the game?')}</h2><p class="sub">${tx('Une note ou un partage aide beaucoup ce petit jeu à se faire connaître. Merci !','A rating or a share really helps this little game get known. Thank you!')}</p><div class="love"><button class="btn ghost" data-act="rate">⭐ ${tx('Noter le jeu','Rate the game')}</button><button class="btn ghost" data-act="share">📤 ${tx('Partager','Share')}</button></div></section>`;
+ h+=`<p class="foot">${tx(`${fmt(S.tot)} plumes gagnées · ${S.studies} minuteur${S.studies>1?'s':''} terminé${S.studies>1?'s':''}${S.fmin>=1?` · ${fmtDur(Math.round(S.fmin))} de concentration`:''}${(S.fbest||0)>1?` · meilleure série : ${S.fbest} jours`:''}`,`${fmt(S.tot)} feathers earned · ${S.studies} timer${S.studies!==1?'s':''} finished${S.fmin>=1?` · ${fmtDur(Math.round(S.fmin))} of focus`:''}${(S.fbest||0)>1?` · best streak: ${S.fbest} days`:''}`)}<br>${NATIVE&&Ads.privacy?`<button class="link" data-act="adprivacy">${tx('Choix de confidentialité des pubs','Ad privacy choices')}</button> · `:''}<button class="link" data-act="lang">${LANG==='fr'?'English version':'Version française'}</button> · <button class="link" data-act="tuto">${tx('Revoir le tutoriel','Replay the tutorial')}</button> · <button class="link" data-act="reset">${tx('Effacer toute ma partie (sans bonus)','Erase my whole game (no bonus)')}</button></p>`;
  $('content').innerHTML=h;refresh();
 }
 function statsHtml(){
@@ -833,30 +833,30 @@ function statsHtml(){
  return `<div class="card stats"><div class="srow"><div><b>${fmtDur(Math.round(S.fmin||0))}</b><small>${tx('au total','in total')}</small></div><div><b>${fmtDur(Math.round(week))}</b><small>${tx('ces 7 jours','last 7 days')}</small></div><div><b>${fstreak()}</b><small>${tx('jours de suite','day streak')}</small></div></div>
   <div class="week">${days.map((d,i)=>`<div><i class="${vals[i]?'':'z'}" style="height:${Math.round(vals[i]/mx*76)}px"></i><small>${d.l}</small></div>`).join('')}</div>
   ${Object.keys(fa).length?`<div class="actl">${ACTS.filter(a=>fa[a.id]).map(a=>`<div><span>${a.e} ${actName(a)}</span><div class="bar"><i style="width:${fa[a.id]/tot*100}%;background:var(--star)"></i></div><b>${fmtDur(Math.round(fa[a.id]))}</b></div>`).join('')}</div>`:''}
-  <p class="sub" style="text-align:center">${tx(`${S.studies} minuteur${S.studies>1?'s':''} terminé${S.studies>1?'s':''} · plus longue séance : ${fmtDur(Math.round(S.maxmin||0))} · meilleure série : ${S.fbest||0} jour${(S.fbest||0)>1?'s':''}`,`${S.studies} timer${S.studies>1?'s':''} finished · longest session: ${fmtDur(Math.round(S.maxmin||0))} · best streak: ${S.fbest||0} day${(S.fbest||0)>1?'s':''}`)}</p></div>`}
+  <p class="sub" style="text-align:center">${tx(`${S.studies} minuteur${S.studies>1?'s':''} terminé${S.studies>1?'s':''} · plus longue séance : ${fmtDur(Math.round(S.maxmin||0))} · meilleure série : ${S.fbest||0} jour${(S.fbest||0)>1?'s':''}`,`${S.studies} timer${S.studies!==1?'s':''} finished · longest session: ${fmtDur(Math.round(S.maxmin||0))} · best streak: ${S.fbest||0} day${(S.fbest||0)>1?'s':''}`)}</p></div>`}
 function refresh(){document.querySelectorAll('.buy[data-cost]').forEach(b=>{b.disabled=(b.dataset.cur==='st'?S.st:S.pl)<+b.dataset.cost})}
 
 // ---------- objectif suivant : une seule chose à faire, toujours visible ----------
 let goalKey='';
 function goalHtml(){const G=nextGoal();goalKey=JSON.stringify([G.t,G.p!=null?Math.round(G.p*50):0]);
- return `<button id="goal" ${G.act?`data-act="${G.act}"`:''}><span class="gi">!</span><span style="flex:1;min-width:0"><small>Ton prochain objectif</small><b>${G.t}</b><span>${G.d}</span>${G.p!=null?`<div class="gbar"><i style="width:${Math.min(100,G.p*100)}%"></i></div>`:''}</span></button>`}
+ return `<button id="goal" ${G.act?`data-act="${G.act}"`:''}><span class="gi">!</span><span style="flex:1;min-width:0"><small>${tx('Ton prochain objectif','Your next goal')}</small><b>${G.t}</b><span>${G.d}</span>${G.p!=null?`<div class="gbar"><i style="width:${Math.min(100,G.p*100)}%"></i></div>`:''}</span></button>`}
 function updGoal(){const G=nextGoal(),k=JSON.stringify([G.t,G.p!=null?Math.round(G.p*50):0]);if(k!==goalKey&&$('goal'))$('goal').outerHTML=goalHtml()}
 function nextGoal(){
  const firstUp=BUILD.find(b=>cnt(b.id)>0&&bl(b.id)===0);
- if(studying()){const a=S.study.end-S.study.min*60000;return{t:'Concentre-toi jusqu’à la fin',d:'Ta bibliothèque produit 3 fois plus. Reviens à la fin du minuteur pour tes étoiles.',p:(now()-a)/(S.study.end-a),act:'gotop'}}
- if(S.taps<10)return{t:'Touche le hibou 10 fois',d:'Chaque toucher te donne des plumes.',p:S.taps/10,act:'gotop'};
- if(!cnt('bougie'))return{t:'Achète ta première bougie',d:`Elle produit des plumes toute seule. Prix : 15 plumes.`,p:S.pl/15,act:'gobib'};
- if(!S.inter)return{t:'Touche la bougie dans la scène',d:'Les objets qui brillent donnent un bonus quand tu les touches, toutes les 30 secondes.',act:'gotop'};
- if(!S.studies&&!studying())return{t:'Lance ton premier minuteur',d:'Choisis ta durée, pose ton téléphone et concentre-toi. Tu gagneras des étoiles.',act:'gostudy'};
- if(!S.rank)return{t:'Agrandis ta bibliothèque',d:`Il faut ${RANKCOST[0]} étoiles, gagnées en te concentrant.`,p:S.st/RANKCOST[0],act:'gobib'};
- if(!Object.values(S.e).some(Boolean))return{t:'Équipe ton hibou',d:`Les lunettes coûtent ${EQCOST[0]} étoiles et rendent chaque toucher plus fort.`,p:S.st/EQCOST[0],act:'gohibou'};
- if(!cnt('the'))return{t:'Achète une tasse de thé',d:'Elle produit 8 fois plus qu’une bougie.',p:S.pl/bCost(BUILD[1]),act:'gobib'};
- if(firstUp&&cnt(firstUp.id)<upNeed(firstUp))return{t:`Possède ${upNeed(firstUp)} ${PLUR[firstUp.id]}`,d:'Tu pourras alors l’améliorer : production ×2 et nouveau look.',p:cnt(firstUp.id)/upNeed(firstUp),act:'gobib'};
- if(S.daily.day!==today())return{t:'Ouvre le coffre du jour',d:'Il est dans la carte du minuteur juste en dessous.',act:'gostudy'};
+ if(studying()){const a=S.study.end-S.study.min*60000;return{t:tx('Concentre-toi jusqu’à la fin','Stay focused until the end'),d:tx('Ta bibliothèque produit 3 fois plus. Reviens à la fin du minuteur pour tes étoiles.','Your library produces 3 times more. Come back when the timer ends for your stars.'),p:(now()-a)/(S.study.end-a),act:'gotop'}}
+ if(S.taps<10)return{t:tx('Touche le hibou 10 fois','Tap the owl 10 times'),d:tx('Chaque toucher te donne des plumes.','Each tap gives you feathers.'),p:S.taps/10,act:'gotop'};
+ if(!cnt('bougie'))return{t:tx('Achète ta première bougie','Buy your first candle'),d:tx(`Elle produit des plumes toute seule. Prix : 15 plumes.`,`It makes feathers on its own. Price: 15 feathers.`),p:S.pl/15,act:'gobib'};
+ if(!S.inter)return{t:tx('Touche la bougie dans la scène','Tap the candle in the scene'),d:tx('Les objets qui brillent donnent un bonus quand tu les touches, toutes les 30 secondes.','Glowing objects give a bonus when you tap them, every 30 seconds.'),act:'gotop'};
+ if(!S.studies&&!studying())return{t:tx('Lance ton premier minuteur','Start your first timer'),d:tx('Choisis ta durée, pose ton téléphone et concentre-toi. Tu gagneras des étoiles.','Pick a duration, put your phone down and focus. You’ll earn stars.'),act:'gostudy'};
+ if(!S.rank)return{t:tx('Agrandis ta bibliothèque','Expand your library'),d:tx(`Il faut ${RANKCOST[0]} étoiles, gagnées en te concentrant.`,`You need ${RANKCOST[0]} stars, earned by focusing.`),p:S.st/RANKCOST[0],act:'gobib'};
+ if(!Object.values(S.e).some(Boolean))return{t:tx('Équipe ton hibou','Equip your owl'),d:tx(`Les lunettes coûtent ${EQCOST[0]} étoiles et rendent chaque toucher plus fort.`,`Glasses cost ${EQCOST[0]} stars and make every tap stronger.`),p:S.st/EQCOST[0],act:'gohibou'};
+ if(!cnt('the'))return{t:tx('Achète une tasse de thé','Buy a cup of tea'),d:tx('Elle produit 8 fois plus qu’une bougie.','It produces 8 times more than a candle.'),p:S.pl/bCost(BUILD[1]),act:'gobib'};
+ if(firstUp&&cnt(firstUp.id)<upNeed(firstUp))return{t:tx(`Possède ${upNeed(firstUp)} ${PLUR[firstUp.id]}`,`Own ${upNeed(firstUp)} ${PLUR[firstUp.id]}`),d:tx('Tu pourras alors l’améliorer : production ×2 et nouveau look.','You’ll then be able to upgrade it: output ×2 and a new look.'),p:cnt(firstUp.id)/upNeed(firstUp),act:'gobib'};
+ if(S.daily.day!==today())return{t:tx('Ouvre le coffre du jour','Open the daily chest'),d:tx('Il est dans la carte du minuteur juste en dessous.','It’s in the timer card just below.'),act:'gostudy'};
  const nx=BUILD.find(b=>!cnt(b.id));
- if(nx)return{t:`Débloque : ${nx.n}`,d:`Prix : ${fmt(bCost(nx))} plumes.`,p:S.pl/bCost(nx),act:'gobib'};
- if((S.rank||0)<5)return{t:`Passe au rang « ${RANKS[S.rank+1]} »`,d:`Il faut ${RANKCOST[S.rank]} étoiles. Continue tes minuteurs.`,p:S.st/RANKCOST[S.rank],act:'gobib'};
- return{t:dipGain()?'Obtiens ton diplôme':'Vise le prochain diplôme',d:dipGain()?'Recommence plus fort : +20 % pour toujours.':`Cumule ${fmt(dipNext())} plumes dans cette partie.`,p:Math.pow((S.run||0)/dipNext(),1/3),act:'gobib'};
+ if(nx)return{t:tx(`Débloque : ${nx.n}`,`Unlock: ${nx.n}`),d:tx(`Prix : ${fmt(bCost(nx))} plumes.`,`Price: ${fmt(bCost(nx))} feathers.`),p:S.pl/bCost(nx),act:'gobib'};
+ if((S.rank||0)<5)return{t:tx(`Passe au rang « ${RANKS[S.rank+1]} »`,`Reach the “${RANKS[S.rank+1]}” rank`),d:tx(`Il faut ${RANKCOST[S.rank]} étoiles. Continue tes minuteurs.`,`You need ${RANKCOST[S.rank]} stars. Keep doing timers.`),p:S.st/RANKCOST[S.rank],act:'gobib'};
+ return{t:dipGain()?tx('Obtiens ton diplôme','Get your diploma'):tx('Vise le prochain diplôme','Aim for the next diploma'),d:dipGain()?tx('Recommence plus fort : +20 % pour toujours.','Start over stronger: +20% forever.'):tx(`Cumule ${fmt(dipNext())} plumes dans cette partie.`,`Make ${fmt(dipNext())} feathers in this run.`),p:Math.pow((S.run||0)/dipNext(),1/3),act:'gobib'};
 }
 
 // ---------- panneau d'aide ----------
@@ -864,44 +864,54 @@ let F={kind:null};
 function openSheet(kind,info){F.kind=kind;F.info=info;$('sheet').hidden=false;document.body.style.overflow='hidden';renderSheet();$('sbody').scrollTop=0}
 function closeSheet(){const k=F.kind;F.kind=null;$('sheet').hidden=true;document.body.style.overflow='';render();if(k==='help'&&!S.tuto&&!studying())tuto(0)}
 const becGain=()=>(1+.5*tr('lunettes'))*lvlMult()*boostMult();
-const PLUR={globe:'globes',sablier:'sabliers',lucioles:'bocaux de lucioles',grimoire:'grimoires volants',planetaire:'planétaires',portail:'portails du savoir',bougie:'bougies',the:'tasses de thé',lampe:'lampes',etagere:'étagères',chat:'chats',tour:'tours d’astronomie'};
+const PLUR=LANG==='en'?{globe:'globes',sablier:'hourglasses',lucioles:'jars of fireflies',grimoire:'flying grimoires',planetaire:'orreries',portail:'portals of knowledge',bougie:'candles',the:'cups of tea',lampe:'desk lamps',etagere:'bookshelves',chat:'library cats',tour:'astronomy towers'}:{globe:'globes',sablier:'sabliers',lucioles:'bocaux de lucioles',grimoire:'grimoires volants',planetaire:'planétaires',portail:'portails du savoir',bougie:'bougies',the:'tasses de thé',lampe:'lampes',etagere:'étagères',chat:'chats',tour:'tours d’astronomie'};
 const FEM=id=>['bougie','the','lampe','etagere','tour'].includes(id);
 const fact=(k,v)=>`<div class="fact"><small>${k}</small><div>${v}</div></div>`;
-const share=v=>{const t=prodBase();return t>0?` (${Math.round(v/t*100)} % de ta production)`:''};
+const share=v=>{const t=prodBase();return t>0?tx(` (${Math.round(v/t*100)} % de ta production)`,` (${Math.round(v/t*100)}% of your output)`):''};
 function infoSheet(){
  const [k,id]=F.info.split(':');let t='',h='',f='';
  if(k==='b'){const b=BUILD.find(x=>x.id===id),n=cnt(id),L=bl(id),need=upNeed(b),u=unitProd(b);t=b.n;
   h=`<div class="ihead"><div class="ico">${b.ic}</div><p>${b.role}</p></div><div class="facts">
-   ${fact('À quoi ça sert',`Produit des plumes <b>toute seule</b>, même quand le jeu est fermé. Plus tu en as, plus tu gagnes.`)}
-   ${fact('Ce que tu as',n?`${n} ${n>1?PLUR[id]:b.n.toLowerCase()} → <strong>${fmt(n*u)} plumes/s</strong>${share(n*u)}`:'Aucun pour l’instant.')}
-   ${fact(`Si tu en achètes ${FEM(id)?'une':'un'}`,`<strong>+${fmt(u)} plumes/s</strong> pour <strong>${fmt(bCost(b))} plumes</strong>. Le prix augmente un peu à chaque achat.`)}
-   ${fact(`Amélioration ${L?`(niveau ${L+1} → ${L+2})`:''}`,`Double la production de <b>${FEM(id)?'toutes':'tous'}</b> tes ${PLUR[id]}. ${n>=need?`<span class="ok">Disponible maintenant</span> pour <strong>${fmt(upCost(b))} plumes</strong>.`:`Possible quand tu en as <b>${need}</b> (tu en as ${n}).`}`)}
-   ${fact('Dans la bibliothèque',b.look)}
-   ${fact('Quand tu le touches dans la scène',`Il réagit et te donne <strong>30 secondes de sa production</strong>${n?` (${fmt(Math.max(2,n*u*30))} plumes)`:''}. Ensuite, il se recharge pendant 30 secondes : il brille quand il est prêt.`)}
-   ${fact('Bonus qui s’appliquent',`Rang de la bibliothèque ×${rankMult(S.rank||0)}, écharpe ×${(1+.25*tr('echarpe')).toFixed(2)}, niveau du hibou ×${lvlMult().toFixed(2)}${S.dip?`, diplômes ×${dipMult().toFixed(1)}`:''}. Ces chiffres sont déjà comptés ci-dessus.`)}</div>`;
-  f=`<div class="ibtns">${buy(bCost(b),'pl','b:'+id,`Acheter · ${ICON.plume}${fmt(bCost(b))}`)}${n>=need?`<button class="buy up" data-act="up:${id}" data-cost="${upCost(b)}" data-cur="pl">Améliorer ×2 · ${fmt(upCost(b))} plumes</button>`:''}</div>`}
+   ${fact(tx('À quoi ça sert','What it does'),tx(`Produit des plumes <b>toute seule</b>, même quand le jeu est fermé. Plus tu en as, plus tu gagnes.`,`Makes feathers <b>on its own</b>, even when the game is closed. The more you have, the more you earn.`))}
+   ${fact(tx('Ce que tu as','What you have'),n?`${n} ${n>1?PLUR[id]:b.n.toLowerCase()} → <strong>${fmt(n*u)} ${tx('plumes/s','feathers/s')}</strong>${share(n*u)}`:tx('Aucun pour l’instant.','None yet.'))}
+   ${fact(tx(`Si tu en achètes ${FEM(id)?'une':'un'}`,'If you buy one'),tx(`<strong>+${fmt(u)} plumes/s</strong> pour <strong>${fmt(bCost(b))} plumes</strong>. Le prix augmente un peu à chaque achat.`,`<strong>+${fmt(u)} feathers/s</strong> for <strong>${fmt(bCost(b))} feathers</strong>. The price goes up a little with each purchase.`))}
+   ${fact(tx(`Amélioration ${L?`(niveau ${L+1} → ${L+2})`:''}`,`Upgrade ${L?`(level ${L+1} → ${L+2})`:''}`),tx(`Double la production de <b>${FEM(id)?'toutes':'tous'}</b> tes ${PLUR[id]}. ${n>=need?`<span class="ok">Disponible maintenant</span> pour <strong>${fmt(upCost(b))} plumes</strong>.`:`Possible quand tu en as <b>${need}</b> (tu en as ${n}).`}`,`Doubles the output of <b>all</b> your ${PLUR[id]}. ${n>=need?`<span class="ok">Available now</span> for <strong>${fmt(upCost(b))} feathers</strong>.`:`Possible once you have <b>${need}</b> (you have ${n}).`}`))}
+   ${fact(tx('Dans la bibliothèque','In the library'),b.look)}
+   ${fact(tx('Quand tu le touches dans la scène','When you tap it in the scene'),tx(`Il réagit et te donne <strong>30 secondes de sa production</strong>${n?` (${fmt(Math.max(2,n*u*30))} plumes)`:''}. Ensuite, il se recharge pendant 30 secondes : il brille quand il est prêt.`,`It reacts and gives you <strong>30 seconds of its output</strong>${n?` (${fmt(Math.max(2,n*u*30))} feathers)`:''}. Then it recharges for 30 seconds: it glows when it’s ready.`))}
+   ${fact(tx('Bonus qui s’appliquent','Bonuses applied'),tx(`Rang de la bibliothèque ×${rankMult(S.rank||0)}, écharpe ×${(1+.25*tr('echarpe')).toFixed(2)}, niveau du hibou ×${lvlMult().toFixed(2)}${S.dip?`, diplômes ×${dipMult().toFixed(1)}`:''}. Ces chiffres sont déjà comptés ci-dessus.`,`Library rank ×${rankMult(S.rank||0)}, scarf ×${(1+.25*tr('echarpe')).toFixed(2)}, owl level ×${lvlMult().toFixed(2)}${S.dip?`, diplomas ×${dipMult().toFixed(1)}`:''}. These are already included above.`))}</div>`;
+  f=`<div class="ibtns">${buy(bCost(b),'pl','b:'+id,`${tx('Acheter','Buy')} · ${ICON.plume}${fmt(bCost(b))}`)}${n>=need?`<button class="buy up" data-act="up:${id}" data-cost="${upCost(b)}" data-cur="pl">${tx(`Améliorer ×2 · ${fmt(upCost(b))} plumes`,`Upgrade ×2 · ${fmt(upCost(b))} feathers`)}</button>`:''}</div>`}
  if(k==='bec'){t=BEC.n;
-  h=`<div class="ihead"><div class="ico">${BEC.ic}</div><p>Un bec plus affûté pour des touchers plus efficaces.</p></div><div class="facts">
-   ${fact('À quoi ça sert','Chaque fois que tu touches le hibou, tu gagnes des plumes. Le bec augmente ce gain.')}
-   ${fact('Maintenant',`Niveau ${lv('bec')} → un toucher = <strong>${fmt(tapVal())} plumes</strong>`)}
-   ${fact('Si tu l’améliores',`<strong>+${fmt(becGain())} plumes</strong> par toucher, pour <strong>${fmt(becCost())} plumes</strong>.`)}
-   ${fact('Sur le hibou','Le bec devient doré au niveau 10, puis cristal au niveau 30.')}
-   ${fact('Astuce','Les lunettes multiplient aussi la valeur des touchers.')}</div>`;
-  f=`<div class="ibtns">${buy(becCost(),'pl','bec',`Améliorer · ${ICON.plume}${fmt(becCost())}`)}</div>`}
+  h=`<div class="ihead"><div class="ico">${BEC.ic}</div><p>${tx('Un bec plus affûté pour des touchers plus efficaces.','A sharper beak for more effective taps.')}</p></div><div class="facts">
+   ${fact(tx('À quoi ça sert','What it does'),tx('Chaque fois que tu touches le hibou, tu gagnes des plumes. Le bec augmente ce gain.','Every time you tap the owl, you earn feathers. The beak increases that gain.'))}
+   ${fact(tx('Maintenant','Now'),tx(`Niveau ${lv('bec')} → un toucher = <strong>${fmt(tapVal())} plumes</strong>`,`Level ${lv('bec')} → one tap = <strong>${fmt(tapVal())} feathers</strong>`))}
+   ${fact(tx('Si tu l’améliores','If you upgrade it'),tx(`<strong>+${fmt(becGain())} plumes</strong> par toucher, pour <strong>${fmt(becCost())} plumes</strong>.`,`<strong>+${fmt(becGain())} feathers</strong> per tap, for <strong>${fmt(becCost())} feathers</strong>.`))}
+   ${fact(tx('Sur le hibou','On the owl'),tx('Le bec devient doré au niveau 10, puis cristal au niveau 30.','The beak turns gold at level 10, then crystal at level 30.'))}
+   ${fact(tx('Astuce','Tip'),tx('Les lunettes multiplient aussi la valeur des touchers.','Glasses also multiply the value of taps.'))}</div>`;
+  f=`<div class="ibtns">${buy(becCost(),'pl','bec',`${tx('Améliorer','Upgrade')} · ${ICON.plume}${fmt(becCost())}`)}</div>`}
  if(k==='e'){const e=EQ.find(x=>x.id===id),tt=tr(id);t=e.n;
   h=`<div class="ihead"><div class="ico" style="color:${TCOL[tt]||'var(--muted)'}">${ICON.star}</div><p>${e.role}</p></div><div class="facts">
-   ${fact('Maintenant',tt?`Palier <b style="color:${TCOL[tt]}">${TIER[tt]}</b> : <strong>${e.d(tt)}</strong>`:'Pas encore équipé.')}
-   ${tt<5?fact('Palier suivant',`<b style="color:${TCOL[tt+1]}">${TIER[tt+1]}</b> : <strong>${e.d(tt+1)}</strong> pour <strong class="st">${EQCOST[tt]} étoiles</strong>.`):fact('Palier maximum','Tu as atteint le palier Cristal.')}
-   ${fact('Les 5 paliers',[1,2,3,4,5].map(i=>`${TIER[i]} : ${e.d(i)}`).join('<br>'))}
-   ${fact('Sur le hibou','Il porte l’objet, dont la couleur change selon le palier : bois, bronze, argent, or, cristal.')}
-   ${fact('Comment gagner des étoiles','Termine des minuteurs de concentration, ouvre le coffre du jour et monte de niveau.')}</div>`;
-  f=tt<5?`<div class="ibtns">${buy(EQCOST[tt],'st','e:'+id,`Équiper ${TIER[tt+1]} · ${ICON.star}${EQCOST[tt]}`)}</div>`:''}
+   ${fact(tx('Maintenant','Now'),tt?tx(`Palier <b style="color:${TCOL[tt]}">${TIER[tt]}</b> : <strong>${e.d(tt)}</strong>`,`Tier <b style="color:${TCOL[tt]}">${TIER[tt]}</b>: <strong>${e.d(tt)}</strong>`):tx('Pas encore équipé.','Not equipped yet.'))}
+   ${tt<5?fact(tx('Palier suivant','Next tier'),tx(`<b style="color:${TCOL[tt+1]}">${TIER[tt+1]}</b> : <strong>${e.d(tt+1)}</strong> pour <strong class="st">${EQCOST[tt]} étoiles</strong>.`,`<b style="color:${TCOL[tt+1]}">${TIER[tt+1]}</b>: <strong>${e.d(tt+1)}</strong> for <strong class="st">${EQCOST[tt]} stars</strong>.`)):fact(tx('Palier maximum','Max tier'),tx('Tu as atteint le palier Cristal.','You’ve reached the Crystal tier.'))}
+   ${fact(tx('Les 5 paliers','The 5 tiers'),[1,2,3,4,5].map(i=>`${TIER[i]}${tx(' : ',': ')}${e.d(i)}`).join('<br>'))}
+   ${fact(tx('Sur le hibou','On the owl'),tx('Il porte l’objet, dont la couleur change selon le palier : bois, bronze, argent, or, cristal.','It wears the item, whose colour changes with the tier: wood, bronze, silver, gold, crystal.'))}
+   ${fact(tx('Comment gagner des étoiles','How to earn stars'),tx('Termine des minuteurs de concentration, ouvre le coffre du jour et monte de niveau.','Finish focus timers, open the daily chest and level up.'))}</div>`;
+  f=tt<5?`<div class="ibtns">${buy(EQCOST[tt],'st','e:'+id,`${tx('Équiper','Equip')} ${TIER[tt+1]} · ${ICON.star}${EQCOST[tt]}`)}</div>`:''}
  return{t,h,f};
 }
 function renderSheet(){
  if(F.kind==='info'){const x=infoSheet();$('stitle').textContent=x.t;$('sinner').innerHTML=x.h;$('sfootin').innerHTML=x.f;$('sfoot').hidden=!x.f;refresh();return}
- $('stitle').textContent='Bienvenue à la bibliothèque';
- $('sinner').innerHTML=`<p class="lead">Le but : faire grandir la bibliothèque de ton hibou… <em>en te concentrant pour de vrai.</em></p>
+ $('stitle').textContent=tx('Bienvenue à la bibliothèque','Welcome to the library');
+ $('sinner').innerHTML=LANG==='en'?`<p class="lead">The goal: grow your owl’s library… <em>by really focusing.</em></p>
+  <div class="money">
+   <div><b>${plIco}Feathers</b><p><strong>How to earn them:</strong> tap the owl, and your objects make them on their own.</p><p><strong>What they’re for:</strong> buying and upgrading objects.</p></div>
+   <div><b>${stIco}Stars</b><p><strong>How to earn them:</strong> focus with the timer, for as long as you like.</p><p><strong>What they’re for:</strong> expanding the library and equipping the owl.</p></div>
+  </div>
+  <div class="steps">
+   <div class="step"><span class="n">1</span><div><b>Start the timer and focus</b><p class="sub">Put your phone down and get to work. At the end, you earn stars. Meanwhile, your feathers are tripled.</p></div></div>
+   <div class="step"><span class="n">2</span><div><b>During your breaks, tap the owl</b><p class="sub">Each tap gives feathers. Also tap the objects in your library when they glow: each one gives a bonus every 30 seconds. And catch the golden letters that fly by.</p></div></div>
+   <div class="step"><span class="n">3</span><div><b>Upgrade everything</b><p class="sub">Every purchase shows in the library and on the owl. Later on, diplomas let you start over even stronger.</p></div></div>
+  </div>
+  <p class="sub">Not sure what to do? The green <b>“Your next goal”</b> card always tells you.</p>`:`<p class="lead">Le but : faire grandir la bibliothèque de ton hibou… <em>en te concentrant pour de vrai.</em></p>
   <div class="money">
    <div><b>${plIco}Plumes</b><p><strong>Comment les gagner :</strong> touche le hibou, et tes objets en produisent tout seuls.</p><p><strong>À quoi elles servent :</strong> acheter et améliorer des objets.</p></div>
    <div><b>${stIco}Étoiles</b><p><strong>Comment les gagner :</strong> concentre-toi avec le minuteur, pour la durée de ton choix.</p><p><strong>À quoi elles servent :</strong> agrandir la bibliothèque et équiper le hibou.</p></div>
@@ -912,7 +922,7 @@ function renderSheet(){
    <div class="step"><span class="n">3</span><div><b>Améliore tout</b><p class="sub">Chaque achat se voit dans la bibliothèque et sur le hibou. Plus tard, les diplômes te permettent de recommencer encore plus fort.</p></div></div>
   </div>
   <p class="sub">Pas sûr de quoi faire ? La carte verte <b>« Ton prochain objectif »</b> te le dit toujours.</p>`;
- $('sfootin').innerHTML=`<button class="btn main big" data-act="close">Jouer</button>`;$('sfoot').hidden=false;
+ $('sfootin').innerHTML=`<button class="btn main big" data-act="close">${tx('Jouer','Play')}</button>`;$('sfoot').hidden=false;
 }
 
 // ---------- actions ----------
@@ -927,34 +937,34 @@ document.addEventListener('click',e=>{
   case 'info':openSheet('info',arg);return;
   case 'help':openSheet('help');S.seenHelp=1;break;
   case 'close':closeSheet();break;
-  case 'up':{const B=BUILD.find(x=>x.id===arg),c=upCost(B);if(S.pl<c||cnt(arg)<upNeed(B))return;S.pl-=c;S.bl=S.bl||{};S.bl[arg]=bl(arg)+1;addXp(15);toast(`${B.n} améliorée : production ×2 et nouveau look !`);break}
-  case 'rank':{const r=S.rank||0,c=RANKCOST[r];if(r>=5||S.st<c)return;S.st-=c;S.rank=r+1;drawLib();fx();addXp(30);modal('La bibliothèque s’agrandit !',`Tu passes au rang ${RANKS[r+1]}. Toute ta production est maintenant ×${rankMult(r+1)}.`);break}
+  case 'up':{const B=BUILD.find(x=>x.id===arg),c=upCost(B);if(S.pl<c||cnt(arg)<upNeed(B))return;S.pl-=c;S.bl=S.bl||{};S.bl[arg]=bl(arg)+1;addXp(15);toast(tx(`${B.n} améliorée : production ×2 et nouveau look !`,`${B.n} upgraded: output ×2 and a new look!`));break}
+  case 'rank':{const r=S.rank||0,c=RANKCOST[r];if(r>=5||S.st<c)return;S.st-=c;S.rank=r+1;drawLib();fx();addXp(30);modal(tx('La bibliothèque s’agrandit !','The library grows!'),tx(`Tu passes au rang ${RANKS[r+1]}. Toute ta production est maintenant ×${rankMult(r+1)}.`,`You reach the ${RANKS[r+1]} rank. All your output is now ×${rankMult(r+1)}.`));break}
   case 'bec':{const c=becCost();if(S.pl<c)return;S.pl-=c;S.u.bec=lv('bec')+1;addXp(3);break}
-  case 'b':{const B=BUILD.find(x=>x.id===arg),c=bCost(B);if(S.pl<c)return;S.pl-=c;S.b[arg]=cnt(arg)+1;addXp(4);if(cnt(arg)===1)toast(`${B.n} : nouvel objet dans ta bibliothèque !`);break}
-  case 'e':{const t=tr(arg),c=EQCOST[t];if(S.st<c)return;S.st-=c;S.e[arg]=t+1;drawOwl();toast(`${EQ.find(x=>x.id===arg).n} ${TIER[t+1]} équipé !`);addXp(10);break}
-  case 'daily':{const n=S.daily.day===yesterday()?S.daily.n+1:1,s=dailyStars(n),p=dailyPl();S.daily={day:today(),n};S.st+=s;gain(p);addXp(20);modal('Coffre ouvert !',`Jour ${n} d’affilée : +${s} étoiles et +${fmt(p)} plumes. Reviens demain pour plus.`,{label:'Doubler avec une pub',give:()=>{S.st+=s;gain(p)},done:`Coffre doublé : +${s} étoiles et +${fmt(p)} plumes`});break}
+  case 'b':{const B=BUILD.find(x=>x.id===arg),c=bCost(B);if(S.pl<c)return;S.pl-=c;S.b[arg]=cnt(arg)+1;addXp(4);if(cnt(arg)===1)toast(tx(`${B.n} : nouvel objet dans ta bibliothèque !`,`${B.n}: a new object in your library!`));break}
+  case 'e':{const t=tr(arg),c=EQCOST[t];if(S.st<c)return;S.st-=c;S.e[arg]=t+1;drawOwl();toast(tx(`${EQ.find(x=>x.id===arg).n} ${TIER[t+1]} équipé !`,`${TIER[t+1]} ${EQ.find(x=>x.id===arg).n.toLowerCase()} equipped!`));addXp(10);break}
+  case 'daily':{const n=S.daily.day===yesterday()?S.daily.n+1:1,s=dailyStars(n),p=dailyPl();S.daily={day:today(),n};S.st+=s;gain(p);addXp(20);modal(tx('Coffre ouvert !','Chest opened!'),tx(`Jour ${n} d’affilée : +${s} étoiles et +${fmt(p)} plumes. Reviens demain pour plus.`,`Day ${n} in a row: +${s} stars and +${fmt(p)} feathers. Come back tomorrow for more.`),{label:tx('Doubler avec une pub','Double it with an ad'),give:()=>{S.st+=s;gain(p)},done:tx(`Coffre doublé : +${s} étoiles et +${fmt(p)} plumes`,`Chest doubled: +${s} stars and +${fmt(p)} feathers`)});break}
   case 'actset':S.act=arg;document.querySelectorAll('[data-act^="actset:"]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.act==='actset:'+arg));save();return;
   case 'plum':{const P=PLUMAGE.find(x=>x.id===arg);if(!P)return;S.plum=S.plum||{};if(P.cost&&!S.plum[arg]){if(S.st<P.cost)return;S.st-=P.cost;S.plum[arg]=1;toast(tx(`Plumage ${P.fr} débloqué !`,`${P.en} plumage unlocked!`))}S.pcol=arg;drawOwl();break}
   case 'lang':S.lang=LANG==='fr'?'en':'fr';save();location.reload();return;
   case 'dur':setDur((S.dur||25)+(+arg));save();return;
   case 'durset':setDur(+arg);save();return;
-  case 'adboost':Ads.show(()=>{S.adEnd=Math.max(now(),S.adEnd||0)+AD_BOOST_MIN*60000;save();render();toast(`Plumes ×2 pendant ${AD_BOOST_MIN} minutes !`)});return;
+  case 'adboost':Ads.show(()=>{S.adEnd=Math.max(now(),S.adEnd||0)+AD_BOOST_MIN*60000;save();render();toast(tx(`Plumes ×2 pendant ${AD_BOOST_MIN} minutes !`,`Feathers ×2 for ${AD_BOOST_MIN} minutes!`))});return;
   case 'adprivacy':Ads.privacyForm();return;
   case 'rate':rateApp();return;
   case 'share':shareApp();return;
   case 'tuto':window.scrollTo({top:0});tuto(0);return;
-  case 'study':if(+arg<1){if(S.trial)return;S.trial=1}S.study={end:now()+(+arg)*60000,min:+arg,t0:S.tot,act:S.act||'etudes'};Notif.plan(S.study.end,+arg);toast('C’est parti ! Pose ton téléphone.');window.scrollTo({top:0,behavior:'smooth'});break;
-  case 'stop':if(b.dataset.sure){S.study=null;Notif.cancel();toast('Minuteur arrêté, pas de récompense')}else{b.dataset.sure=1;b.textContent='Toque encore pour arrêter';return}break;
-  case 'dip':{const g=dipGain();if(!g)return;if(!b.dataset.sure){b.dataset.sure=1;b.textContent='Toque encore pour confirmer';return}
+  case 'study':if(+arg<1){if(S.trial)return;S.trial=1}S.study={end:now()+(+arg)*60000,min:+arg,t0:S.tot,act:S.act||'etudes'};Notif.plan(S.study.end,+arg);toast(tx('C’est parti ! Pose ton téléphone.','Here we go! Put your phone down.'));window.scrollTo({top:0,behavior:'smooth'});break;
+  case 'stop':if(b.dataset.sure){S.study=null;Notif.cancel();toast(tx('Minuteur arrêté, pas de récompense','Timer stopped, no reward'))}else{b.dataset.sure=1;b.textContent=tx('Toque encore pour arrêter','Tap again to stop');return}break;
+  case 'dip':{const g=dipGain();if(!g)return;if(!b.dataset.sure){b.dataset.sure=1;b.textContent=tx('Toque encore pour confirmer','Tap again to confirm');return}
    S.dip=(S.dip||0)+g;S.pl=0;S.run=0;S.b={};S.bl={};S.u.bec=0;addXp(50*g);drawScene(true);
-   modal('Diplôme obtenu !',`Tu as maintenant ${S.dip} diplôme${S.dip>1?'s':''} : toute ta production est ×${dipMult().toFixed(1)} pour toujours. Ta bibliothèque recommence, en plus fort.`);window.scrollTo({top:0,behavior:'smooth'});break}
-  case 'reset':if(b.dataset.sure){S=fresh();S.seenHelp=1;drawOwl();drawLib();toast('Nouvelle partie')}else{b.dataset.sure=1;b.textContent='Toque encore : tout sera effacé, sans bonus';return}break;
+   modal(tx('Diplôme obtenu !','Diploma earned!'),tx(`Tu as maintenant ${S.dip} diplôme${S.dip>1?'s':''} : toute ta production est ×${dipMult().toFixed(1)} pour toujours. Ta bibliothèque recommence, en plus fort.`,`You now have ${S.dip} diploma${S.dip>1?'s':''}: all your output is ×${dipMult().toFixed(1)} forever. Your library starts over, stronger.`));window.scrollTo({top:0,behavior:'smooth'});break}
+  case 'reset':if(b.dataset.sure){S=fresh();S.seenHelp=1;drawOwl();drawLib();toast(tx('Nouvelle partie','New game'))}else{b.dataset.sure=1;b.textContent=tx('Toque encore : tout sera effacé, sans bonus','Tap again: everything will be erased, no bonus');return}break;
  }
  save();
  if($('sheet').hidden)render();else if(F.kind==='info')renderSheet();
 });
 function toast(t){const T=$('toast');T.textContent=t;T.hidden=false;T.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>{T.style.opacity=0;setTimeout(()=>T.hidden=true,300)},2200)}
-function modal(title,txt,ad,onClose){$('modalcard').innerHTML=`<h3>${title}</h3><p>${txt}</p>${ad&&adOk()?`<button class="btn ad" id="mad">▶ ${ad.label}</button>`:''}<button class="btn ${ad&&adOk()?'ghost':'main'}" id="mok">${ad&&adOk()?'Non merci':'Super'}</button>`;$('modal').hidden=false;$('mok').onclick=()=>{$('modal').hidden=true;if(onClose)onClose()};
+function modal(title,txt,ad,onClose){$('modalcard').innerHTML=`<h3>${title}</h3><p>${txt}</p>${ad&&adOk()?`<button class="btn ad" id="mad">▶ ${ad.label}</button>`:''}<button class="btn ${ad&&adOk()?'ghost':'main'}" id="mok">${ad&&adOk()?tx('Non merci','No thanks'):tx('Super','Great')}</button>`;$('modal').hidden=false;$('mok').onclick=()=>{$('modal').hidden=true;if(onClose)onClose()};
  if($('mad'))$('mad').onclick=()=>{$('modal').hidden=true;Ads.show(()=>{ad.give();save();render();toast(ad.done)})};$('mok').focus()}
 
 // ---------- boucle ----------
@@ -998,7 +1008,7 @@ function finishStudy(extra=0){
  const k=fstreak();let x=`<span class="recap"><span>${stIco}+${r} ${tx('étoile','star')}${r>1?'s':''}</span>${pl!=null?`<span>${plIco}+${fmt(pl)}</span>`:''}<span>${ICON.timer}${m<1?'30 s':fmtDur(m)}</span></span>`;
  if(grew)x+=tx(`🦉 Ton hibou grandit : il devient <b>${stageName(stage())}</b> !<br>`,`🦉 Your owl is growing: it is now a <b>${stageName(stage())}</b>!<br>`);
  if(book)x+=book.isNew?tx(`📕 Nouveau livre : <b>« ${bookName(book.b)} »</b> (${rarName(book.b.r)})<br>`,`📕 New book: <b>“${bookName(book.b)}”</b> (${rarName(book.b.r)})<br>`):tx(`📕 « ${bookName(book.b)} » est déjà dans ta collection : +1 étoile.<br>`,`📕 “${bookName(book.b)}” is already in your collection: +1 star.<br>`);
- if(got.length)x+=`🏅 ${tx('Succès','Achievement')} : <b>${got.map(achName).join(', ')}</b> (+${got.reduce((n,a)=>n+a.r,0)} ★)<br>`;
+ if(got.length)x+=`🏅 ${tx('Succès :','Achievement:')} <b>${got.map(achName).join(', ')}</b> (+${got.reduce((n,a)=>n+a.r,0)} ★)<br>`;
  if(m>=1)x+=tx(`Concentration au total : <b>${fmtDur(Math.round(S.fmin))}</b>${k>1?`, ${k} jours d’affilée`:''}.<br>`,`Total focus: <b>${fmtDur(Math.round(S.fmin))}</b>${k>1?`, ${k} days in a row`:''}.<br>`);
  if(late&&extra>=1)x+=tx(`Et +${fmt(extra)} plumes produites ensuite, pendant ton absence.<br>`,`Plus ${fmt(extra)} feathers made afterwards, while you were away.<br>`);
  x+=tx('Fais une vraie pause de 5 minutes avant la suite.','Take a real 5-minute break before the next one.');
@@ -1016,7 +1026,7 @@ function welcomeBack(from){
  const g=awayGains(from,now());
  if(g.foc>0)gain(g.foc);
  if(S.study&&now()>=S.study.end)finishStudy(g.off);
- else if(!studying()&&g.sec>60&&g.off>0){gain(g.off);save();modal('Bon retour !',`Pendant ton absence, ta bibliothèque a produit ${fmt(g.off)} plumes.`,{label:'Doubler avec une pub',give:()=>gain(g.off),done:`+${fmt(g.off)} plumes en plus`})}
+ else if(!studying()&&g.sec>60&&g.off>0){gain(g.off);save();modal(tx('Bon retour !','Welcome back!'),tx(`Pendant ton absence, ta bibliothèque a produit ${fmt(g.off)} plumes.`,`While you were away, your library made ${fmt(g.off)} feathers.`),{label:tx('Doubler avec une pub','Double it with an ad'),give:()=>gain(g.off),done:tx(`+${fmt(g.off)} plumes en plus`,`+${fmt(g.off)} extra feathers`)})}
  else gain(g.off);
  save();hud();
 }
@@ -1027,16 +1037,16 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden)goAway();el
 
 // ---------- mini-tutoriel (premier lancement, ou « Revoir le tutoriel ») ----------
 const TUTO=[
- {q:'#owlbtn',t:'Touche le hibou',d:'Chaque toucher te donne des plumes. Les plumes servent à acheter des objets.'},
- {q:'#goal',t:'Ton prochain objectif',d:'Cette carte te dit toujours quoi faire ensuite. Touche-la pour y aller.'},
- {q:'#mission',t:'Le minuteur de concentration',d:'Choisis une durée, pose ton téléphone et concentre-toi. À la fin, tu gagnes des étoiles.'},
- {q:'#secbib .row',t:'Ta bibliothèque',d:'Achète des objets avec tes plumes : ils en produisent tout seuls, même jeu fermé. Chaque achat change la pièce.'}];
+ {q:'#owlbtn',t:tx('Touche le hibou','Tap the owl'),d:tx('Chaque toucher te donne des plumes. Les plumes servent à acheter des objets.','Each tap gives you feathers. Feathers are used to buy objects.')},
+ {q:'#goal',t:tx('Ton prochain objectif','Your next goal'),d:tx('Cette carte te dit toujours quoi faire ensuite. Touche-la pour y aller.','This card always tells you what to do next. Tap it to go there.')},
+ {q:'#mission',t:tx('Le minuteur de concentration','The focus timer'),d:tx('Choisis une durée, pose ton téléphone et concentre-toi. À la fin, tu gagnes des étoiles.','Pick a duration, put your phone down and focus. At the end, you earn stars.')},
+ {q:'#secbib .row',t:tx('Ta bibliothèque','Your library'),d:tx('Achète des objets avec tes plumes : ils en produisent tout seuls, même jeu fermé. Chaque achat change la pièce.','Buy objects with your feathers: they make more on their own, even with the game closed. Every purchase changes the room.')}];
 function tuto(i){const old=$('tuto');if(old)old.remove();
  if(i>=TUTO.length){S.tuto=1;save();window.scrollTo({top:0,behavior:'smooth'});return}
  const s=TUTO[i],el=document.querySelector(s.q);if(!el){tuto(i+1);return}
  el.scrollIntoView({block:'center'});
- const O=document.createElement('div');O.id='tuto';O.setAttribute('role','dialog');O.setAttribute('aria-label','Tutoriel');
- O.innerHTML=`<div class="hole"></div><div class="bub"><small>Étape ${i+1} / ${TUTO.length}</small><b>${s.t}</b><p>${s.d}</p><div><button class="link" id="tskip">Passer</button><button class="btn main" id="tnext">${i+1<TUTO.length?'Suivant':'C’est parti !'}</button></div></div>`;
+ const O=document.createElement('div');O.id='tuto';O.setAttribute('role','dialog');O.setAttribute('aria-label',tx('Tutoriel','Tutorial'));
+ O.innerHTML=`<div class="hole"></div><div class="bub"><small>${tx('Étape','Step')} ${i+1} / ${TUTO.length}</small><b>${s.t}</b><p>${s.d}</p><div><button class="link" id="tskip">${tx('Passer','Skip')}</button><button class="btn main" id="tnext">${i+1<TUTO.length?tx('Suivant','Next'):tx('C’est parti !','Let’s go!')}</button></div></div>`;
  document.body.appendChild(O);
  requestAnimationFrame(()=>{const r=el.getBoundingClientRect(),vh=innerHeight,top=Math.max(r.top-6,8),bot=Math.min(r.bottom+6,vh-8),H=O.querySelector('.hole'),B=O.querySelector('.bub');
   Object.assign(H.style,{left:(r.left-6)+'px',top:top+'px',width:(r.width+12)+'px',height:Math.max(bot-top,0)+'px'});
@@ -1044,6 +1054,14 @@ function tuto(i){const old=$('tuto');if(old)old.remove();
  $('tnext').onclick=()=>tuto(i+1);$('tskip').onclick=()=>tuto(TUTO.length);$('tnext').focus()}
 
 function start(){
+ if(LANG==='en'){const cur=document.querySelectorAll('#top .cur');cur[0].title='Feathers';cur[1].title='Stars';
+  $('lvl').previousSibling.nodeValue='Lv. ';
+  document.querySelector('#top .help').setAttribute('aria-label','See the rules again');
+  scene.setAttribute('aria-label','The owl in its library');
+  $('owlbtn').setAttribute('aria-label','Tap the owl to earn feathers');
+  $('veil').querySelector('span').textContent='Focusing · feathers ×3';
+  $('ps').nextSibling.nodeValue=' feathers/s';$('pt').nextSibling.nodeValue=' per tap';
+  document.querySelector('#shead .close').setAttribute('aria-label','Close')}
  if(S.tuto==null&&(S.studies>0||S.taps>=10))S.tuto=1; // joueurs déjà lancés : pas de tutoriel imposé
  drawOwl();drawLib();render();hud();
  welcomeBack(S.last);
