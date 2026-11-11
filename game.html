@@ -1005,7 +1005,7 @@ function finishStudy(extra=0){
  const got=checkAch(true),grew=stage()>st0;
  happyUntil=now()+8000;
  save();render();if(grew)fx();
- const k=fstreak();let x=`<span class="recap"><span>${stIco}+${r} ${tx('étoile','star')}${r>1?'s':''}</span>${pl!=null?`<span>${plIco}+${fmt(pl)}</span>`:''}<span>${ICON.timer}${m<1?'30 s':fmtDur(m)}</span></span>`;
+ const k=fstreak();let x=`<span class="recap"><span>${stIco}+${r} ${tx('étoile','star')}${r>1?'s':''}</span>${pl>=1?`<span>${plIco}+${fmt(pl)}</span>`:''}<span>${ICON.timer}${m<1?'30 s':fmtDur(m)}</span></span>`;
  if(grew)x+=tx(`🦉 Ton hibou grandit : il devient <b>${stageName(stage())}</b> !<br>`,`🦉 Your owl is growing: it is now a <b>${stageName(stage())}</b>!<br>`);
  if(book)x+=book.isNew?tx(`📕 Nouveau livre : <b>« ${bookName(book.b)} »</b> (${rarName(book.b.r)})<br>`,`📕 New book: <b>“${bookName(book.b)}”</b> (${rarName(book.b.r)})<br>`):tx(`📕 « ${bookName(book.b)} » est déjà dans ta collection : +1 étoile.<br>`,`📕 “${bookName(book.b)}” is already in your collection: +1 star.<br>`);
  if(got.length)x+=`🏅 ${tx('Succès :','Achievement:')} <b>${got.map(achName).join(', ')}</b> (+${got.reduce((n,a)=>n+a.r,0)} ★)<br>`;
