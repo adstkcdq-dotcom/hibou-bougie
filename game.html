@@ -391,7 +391,7 @@ const EQ=[
 ];
 const EQCOST=[3,8,20,45,90];
 // Le hibou grandit avec le temps de concentration (en heures)
-const STAGES=[{h:0,fr:'Oisillon',en:'Owlet',s:.8},{h:1,fr:'Jeune étudiant',en:'Young student',s:.9},{h:10,fr:'Savant',en:'Scholar',s:.97},{h:50,fr:'Grand sage',en:'Great sage',s:1.04}];
+const STAGES=[{h:0,fr:'Oisillon',en:'Owlet',s:.8},{h:1,fr:'Jeune étudiant',en:'Young student',s:.9},{h:10,fr:'Savant',en:'Scholar',s:.97},{h:50,fr:'Grand sage',en:'Great sage',s:1.04},{h:100,fr:'Maître hibou',en:'Master owl',s:1.07},{h:200,fr:'Hibou légendaire',en:'Legendary owl',s:1.1}];
 const stage=()=>{const h=(S.fmin||0)/60;let i=0;STAGES.forEach((x,k)=>{if(h>=x.h)i=k});return i};
 const stageName=i=>tx(STAGES[i].fr,STAGES[i].en);
 // Plumage : corps, ailes/oreilles, ventre, motifs
@@ -444,7 +444,9 @@ const ACH=[
  {id:'rank3',e:'🏰',fr:['Grande bibliothèque','Atteins le rang 4'],en:['Grand library','Reach rank 4'],t:()=>(S.rank||0)>=3,r:3},
  {id:'allobj',e:'🪐',fr:['Tout le mobilier','Possède les 12 objets'],en:['Fully furnished','Own all 12 objects'],t:()=>BUILD.every(b=>cnt(b.id)),r:5},
  {id:'dip',e:'📜',fr:['Diplômé','Obtiens un diplôme'],en:['Graduate','Earn a diploma'],t:()=>(S.dip||0)>=1,r:5},
- {id:'sage',e:'👑',fr:['Grand sage','Ton hibou atteint son dernier stade'],en:['Great sage','Your owl reaches its final stage'],t:()=>stage()>=3,r:10}];
+ {id:'sage',e:'👑',fr:['Grand sage','Ton hibou devient Grand sage (50 h)'],en:['Great sage','Your owl becomes a Great sage (50 h)'],t:()=>stage()>=3,r:10},
+ {id:'legende',e:'🌟',fr:['Hibou légendaire','Ton hibou atteint son dernier stade (200 h)'],en:['Legendary owl','Your owl reaches its final stage (200 h)'],t:()=>stage()>=5,r:25},
+ {id:'cst5',e:'✴️',fr:['Astronome','Constellations niveau 5'],en:['Astronomer','Constellations level 5'],t:()=>(S.cst||0)>=5,r:5}];
 const achName=a=>tx(a.fr[0],a.en[0]);
 const achCount=()=>ACH.filter(a=>S.ach?.[a.id]).length;
 function checkAch(silent){const got=[];for(const a of ACH){if(S.ach?.[a.id]||!a.t())continue;S.ach=S.ach||{};S.ach[a.id]=1;S.st+=a.r;got.push(a)}
@@ -475,15 +477,17 @@ let S;
 try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 S=Object.assign(fresh(),S||{});
 if(S.fmin==null&&S.studies)S.fmin=S.studies*20;
+if((S.adEnd||0)>Date.now()+120*60000)S.adEnd=Date.now()+120*60000;if((S.lEnd||0)>Date.now()+60000)S.lEnd=Date.now();
 if(window.claude?.hot?.data?.S)S=window.claude.hot.data.S;
 window.claude?.hot?.snapshot?.(()=>({S}));
-const save=()=>{S.last=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+let pausedAt=0;
+const save=()=>{S.last=pausedAt||Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 
 const $=id=>document.getElementById(id);
-const fmt=n=>{if(n<1000)return n<10&&n%1?n.toFixed(1):Math.floor(n).toString();const u=LANG==='en'?['k','M','B','T','Qa']:['k','M','Md','Bn','Bd'];let i=-1;while(n>=1000&&i<u.length-1){n/=1000;i++}return n.toFixed(n<10?2:n<100?1:0)+u[i]};
+const fmt=n=>{if(n<1000)return n<10&&n%1?n.toFixed(1):Math.floor(n).toString();if(n>=1e33)return n.toExponential(2).replace('e+','e');const u=LANG==='en'?['k','M','B','T','Qa','Qi','Sx','Sp','Oc','No']:['k','M','Md','Bn','Bd','Tn','Td','Qn','Qd','Qt'];let i=-1;while(n>=1000&&i<u.length-1){n/=1000;i++}return n.toFixed(n<10?2:n<100?1:0)+u[i]};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const now=()=>Date.now();
-const today=()=>new Date().toDateString(), yesterday=()=>new Date(Date.now()-864e5).toDateString();
+const today=()=>new Date().toDateString(), dayBefore=d=>{const x=new Date(d);x.setDate(x.getDate()-1);return x.toDateString()}, yesterday=()=>dayBefore(new Date());
 const lv=id=>S.u[id]||0, tr=id=>S.e[id]||0, cnt=id=>S.b[id]||0;
 const bCost=b=>Math.ceil(b.c*Math.pow(1.17,cnt(b.id)));
 const becCost=()=>Math.ceil(BEC.c*Math.pow(BEC.g,lv('bec')));
@@ -491,14 +495,15 @@ const xpNeed=l=>Math.floor(40*Math.pow(1.45,l-1));
 const lvlMult=()=>1+.03*(S.lvl-1);
 const studying=()=>S.study&&now()<S.study.end;
 // Diplômes : on recommence la bibliothèque, chaque diplôme donne +20 % pour toujours
-const DIP_BASE=1e11;
+const DIP_BASE=3e13;
 const dipMult=()=>1+.2*(S.dip||0);
 const dipGain=()=>Math.floor(Math.cbrt((S.run||0)/DIP_BASE));
 const dipNext=()=>DIP_BASE*Math.pow(dipGain()+1,3);
 const bProd=b=>b.p*Math.pow(2,bl(b.id));
-const gMult=()=>rankMult(S.rank||0)*(1+.25*tr('echarpe'))*lvlMult()*dipMult();
+const cstMult=()=>1+.1*(S.cst||0), cstCost=()=>Math.ceil(25*Math.pow(1.3,S.cst||0));
+const gMult=()=>rankMult(S.rank||0)*(1+.25*tr('echarpe'))*lvlMult()*dipMult()*cstMult();
 const unitProd=b=>bProd(b)*gMult();
-function prodBase(){let p=0;for(const b of BUILD)p+=cnt(b.id)*bProd(b);return p*rankMult(S.rank||0)*(1+.25*tr('echarpe'))*lvlMult()*dipMult()}
+function prodBase(){let p=0;for(const b of BUILD)p+=cnt(b.id)*bProd(b);return p*rankMult(S.rank||0)*(1+.25*tr('echarpe'))*lvlMult()*dipMult()*cstMult()}
 function boostMult(){return (now()<S.lEnd?7:1)*(now()<(S.adEnd||0)?2:1)}
 // ---------- app Android : pubs avec récompense, notifications, bouton retour ----------
 const NATIVE=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
@@ -530,6 +535,11 @@ const Notif={P:null,
   await N.schedule({notifications:[{id:1,title:tx('Minuteur terminé, bravo !','Timer finished, well done!'),body:tx(`Tes ${studyReward(min)} étoile${studyReward(min)>1?'s':''} t’attendent. Ouvre le jeu pour les récupérer.`,`Your ${studyReward(min)} star${studyReward(min)>1?'s are':' is'} waiting. Open the game to collect ${studyReward(min)>1?'them':'it'}.`),schedule:{at:new Date(end),allowWhileIdle:true}}]})}catch(e){console.log('notif',e)}},
  async cancel(){const N=this.get();if(!N)return;try{await N.cancel({notifications:[{id:1}]})}catch(e){}}
 };
+// Compte à rebours sur l'écran de verrouillage (Android : plugin natif FocusTimer)
+const Focus={P:null,
+ get(){if(!NATIVE||IOS)return null;return this.P||(this.P=window.Capacitor.registerPlugin('FocusTimer'))},
+ start(){const F=this.get();if(!F||!studying())return;const a=actOf(S.study.act);F.start({end:S.study.end,title:tx('Concentration en cours 🦉','Focusing 🦉'),body:`${a.e} ${actName(a)} · ${tx('plumes ×3','feathers ×3')} · ${studyReward(S.study.min)} ★ ${tx('à la fin','at the end')}`,channel:tx('Minuteur de concentration','Focus timer')}).catch(()=>{})},
+ stop(){const F=this.get();if(F)F.stop().catch(()=>{})}};
 const IOS_APP_ID=''; /*IOS_APP_ID*/ // numéro de l'appli sur l'App Store, rempli quand la fiche App Store existe
 const PLAY_URL='https://play.google.com/store/apps/details?id=com.hiboubougie.app',APPSTORE_URL=IOS_APP_ID?'https://apps.apple.com/app/id'+IOS_APP_ID:'';
 const STORE_URL=IOS&&APPSTORE_URL?APPSTORE_URL:PLAY_URL;
@@ -546,8 +556,9 @@ function gain(n){S.pl+=n;S.tot+=n;S.run=(S.run||0)+n}
 const lvlReward=l=>l%5===0?3:1;
 function addXp(n){S.xp+=n;while(S.xp>=xpNeed(S.lvl)){S.xp-=xpNeed(S.lvl);S.lvl++;S.st+=lvlReward(S.lvl);toast(tx(`Niveau ${S.lvl} ! +${lvlReward(S.lvl)} étoile${S.lvl%5?'':'s'} · tout +3 %`,`Level ${S.lvl}! +${lvlReward(S.lvl)} star${S.lvl%5?'':'s'} · everything +3%`))}}
 
-const dailyStars=n=>2+Math.min(n,7), dailyPl=()=>Math.max(100,prodBase()*300);
-const studyReward=m=>m<1?1:Math.max(1,Math.round(m/25*3))+tr('casque');
+const dailyStars=n=>1+Math.min(2,Math.floor(n/3)), dailyPl=()=>Math.max(150,prodBase()*600);
+const chestOk=()=>S.daily.day!==today()&&now()>=(S.daily.t||0);
+const studyReward=m=>m<1?1:Math.max(1,Math.round(m/25*4))+tr('casque');
 const DUR_MIN=10,DUR_MAX=180;
 const fmtDur=m=>m<60?`${m} min`:`${Math.floor(m/60)} h${m%60?` ${String(m%60).padStart(2,'0')}`:''}`;
 function setDur(m){m=Math.max(DUR_MIN,Math.min(DUR_MAX,Math.round(m/5)*5));S.dur=m;
@@ -569,7 +580,7 @@ const pickT=(arr,l)=>arr[Math.min(l,arr.length-1)];
 const becTier=()=>lv('bec')>=30?2:lv('bec')>=10?1:0;
 let sceneSig='';
 function drawScene(force){
- const r=S.rank||0,c=id=>Math.min(cnt(id),12);
+ const r=S.rank||0,c=id=>Math.min(cnt(id),id==='planetaire'?15:12);
  const TD=tod(),SKYC=r>=5&&TD==='night'?['#3a1f6b','#6b3fa0']:SKY[TD];
  const sig=JSON.stringify([TD,mood(),stage(),S.pcol||'',S.dip||0,r,c('bougie'),c('the'),c('lampe'),c('etagere'),c('chat'),c('tour'),c('globe'),c('sablier'),c('lucioles'),c('grimoire'),c('planetaire'),c('portail'),S.bl,S.e,becTier(),Math.min(S.lvl,15)>=15?15:S.lvl>=10?10:S.lvl>=6?6:S.lvl>=3?3:0]);
  if(!force&&sig===sceneSig)return;sceneSig=sig;
@@ -704,6 +715,7 @@ function owlSvg(){
  <path d="M70 190l-6 6M78 192v7M122 192v7M130 190l6 6" stroke="${beak}" stroke-width="4" stroke-linecap="round"/>`;
  if(st===0)s+=`<path d="M88 52q2-16 8-6q2-14 8-2q4-12 8 4q-12-4-24 4Z" fill="${P[2]}"/>`;
  if(st>=2)s+=`<path d="M54 60q18-12 36 0M110 60q18-12 36 0" stroke="${P[1]}" stroke-width="6" fill="none" stroke-linecap="round"/>`;
+ if(st>=4)s+=`<path d="M45 54 40 34 55 47Z" fill="#f2c94c"/><path d="M155 54 160 34 145 47Z" fill="#f2c94c"/>`;
  if(st>=3)s+=`<path d="M86 112q14 6 28 0q-2 22-14 34q-12-12-14-34Z" fill="#f4ead2"/><path d="M94 118q6 10 12 0M98 128q2 6 4 0" stroke="#d3c7ad" stroke-width="1.6" fill="none"/>`;
  if(S.lvl>=3)s+=`<path d="M92 50q6-22 18-16q-10 4-8 18" fill="${P[1]}"/>`;
  if(tr('echarpe'))s+=`<path d="M48 120q52 22 104 0v14q-52 22-104 0Z" fill="${t('echarpe')}"/><path d="M128 130l10 34 12-4-8-32Z" fill="${t('echarpe')}"/>`;
@@ -713,6 +725,7 @@ function owlSvg(){
  if(S.lvl>=10)s+=`<path d="M100 18l52 16-52 16-52-16Z" fill="#2c3156" stroke="#8f97c9" stroke-width="2" stroke-linejoin="round"/><path d="M74 42v12q26 10 52 0V42l-26 8Z" fill="#2c3156"/><path d="M146 36v22" stroke="#f2c94c" stroke-width="2.5"/><circle cx="146" cy="60" r="4" fill="#f2c94c"/>`;
  if(tr('plume'))s+=`<path d="M176 130c-18 6-28 22-30 44l3 1c4-20 14-34 27-45Z" fill="${t('plume')}"/>`;
  s+=`</g>`;
+ if(st>=5)s+=[[30,60],[168,52],[22,140],[178,150],[100,4]].map(([x,y],i)=>`<path class="tw" style="animation-delay:${i*.4}s" d="M${x} ${y-7}l2 5 5 2-5 2-2 5-2-5-5-2 5-2Z" fill="#fff2b0"/>`).join('');
  if(md==='sleep')s+=[0,1,2].map(i=>`<text class="zz" style="animation-delay:${i}s" x="${150+i*8}" y="${50-i*10}" fill="#efe8da" font-size="${16+i*4}" font-family="Fredoka,sans-serif" font-weight="600">z</text>`).join('');
  return s;
 }
@@ -778,17 +791,18 @@ function render(){
   ${S.trial?'':`<button class="link" data-act="study:0.5" style="align-self:center">${tx('Essayer une fois avec 30 secondes','Try it once with 30 seconds')}</button>`}
   ${S.fmin>=1?`<p class="fstats">${tx('Concentration au total :','Total focus:')} <b>${fmtDur(Math.round(S.fmin))}</b>${fstreak()>1?tx(` · série : <b>${fstreak()} jours</b>`,` · streak: <b>${fstreak()} days</b>`):''}</p>`:''}
   ${NATIVE&&Ads.can?`<button class="btn ad" data-act="adboost" ${Ads.ready&&((S.adEnd||0)-now())/60000<=AD_BOOST_CAP-AD_BOOST_MIN?'':'disabled'}>▶ ${tx(`Pub : plumes ×2 pendant ${AD_BOOST_MIN} min`,`Ad: feathers ×2 for ${AD_BOOST_MIN} min`)}${now()<(S.adEnd||0)?tx(` (encore ${Math.ceil(((S.adEnd||0)-now())/60000)} min)`,` (${Math.ceil(((S.adEnd||0)-now())/60000)} min left)`):''}</button>`:''}`}
-  ${S.daily.day!==today()?`<button class="chest" data-act="daily"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#f2b134" stroke-width="2"><path d="M3 10h18v11H3zM2 6h20v4H2zM12 6v15"/></svg><span style="flex:1"><b>${tx('Coffre du jour','Daily chest')}</b><span>${tx('Toque pour l’ouvrir','Tap to open it')}</span></span></button>`:''}
+  ${chestOk()?`<button class="chest" data-act="daily"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#f2b134" stroke-width="2"><path d="M3 10h18v11H3zM2 6h20v4H2zM12 6v15"/></svg><span style="flex:1"><b>${tx('Coffre du jour','Daily chest')}</b><span>${tx('Toque pour l’ouvrir','Tap to open it')}</span></span></button>`:''}
  </section>`;
  // 2. Ma bibliothèque
  const r=S.rank||0;
  h+=`<section class="sect" id="secbib"><h2>${tx('Ma bibliothèque','My library')}</h2><p class="sub">${tx('Elle produit des plumes toute seule, même app fermée. Achète des objets, puis améliore-les.','It makes feathers on its own, even with the app closed. Buy objects, then upgrade them.')}</p>
   <div class="rankcard"><div class="top"><div class="txt"><span class="tag">${tx('Rang','Rank')} ${r+1} / ${RANKS.length}</span><b>${RANKS[r]}</b><span>${tx(`Agrandir la pièce multiplie <b class="in">toute</b> ta production de plumes. Actuellement <span class="mul">×${rankMult(r)}</span>${r<5?`, puis ×${rankMult(r+1)} au rang suivant.`:'.'}`,`Expanding the room multiplies <b class="in">all</b> your feather output. Currently <span class="mul">×${rankMult(r)}</span>${r<5?`, then ×${rankMult(r+1)} at the next rank.`:'.'}`)}</span></div>${r<5?buy(RANKCOST[r],'st','rank'):'<button class="buy st" disabled>Max</button>'}</div>
   <div class="rankdots">${RANKS.map((_,i)=>`<i class="${i<=r?'on':''}"></i>`).join('')}</div>${r<5?`<p class="sub">${tx('Agrandir coûte des étoiles, gagnées en te concentrant. La pièce se transforme à chaque rang.','Expanding costs stars, earned by focusing. The room changes at every rank.')}</p>`:''}</div>`;
+ h+=`<div class="row"><div class="ico" style="color:var(--star)">${ICON.star}</div><div class="txt"><b>${tx('Constellations','Constellations')}${S.cst?`<span class="lv" style="display:inline">${tx('niv.','lv.')} ${S.cst}</span>`:''}</b><span>${tx('Relie les étoiles du ciel : chaque niveau augmente toute ta production de 10 %, pour toujours (même après un diplôme).','Connect the stars in the sky: each level boosts all your production by 10%, forever (even after a diploma).')}</span><span class="mul">×${cstMult().toFixed(1)} → ×${(cstMult()+.1).toFixed(1)}</span></div>${buy(cstCost(),'st','cst')}</div>`;
  const dg=dipGain();
  let shown=0;
  for(let i=0;i<BUILD.length;i++){const b=BUILD[i],open=i===0||cnt(BUILD[i-1].id)>0;
-  if(!open){if(shown++)break;h+=`<div class="row" style="opacity:.45"><div class="ico">?</div><div class="txt"><b>${tx('Objet mystère','Mystery object')}</b><span>${tx(`Achète une ${BUILD[i-1].n.toLowerCase()} pour le découvrir`,`Buy ${/^[aeiou]/i.test(BUILD[i-1].n)?'an':'a'} ${BUILD[i-1].n.toLowerCase()} to discover it`)}</span></div></div>`;continue}
+  if(!open){if(shown++)break;h+=`<div class="row" style="opacity:.45"><div class="ico">?</div><div class="txt"><b>${tx('Objet mystère','Mystery object')}</b><span>${tx(`Achète ${FEM(BUILD[i-1].id)?'une':'un'} ${BUILD[i-1].n.toLowerCase()} pour le découvrir`,`Buy ${/^([aeiou]|hour)/i.test(BUILD[i-1].n)?'an':'a'} ${BUILD[i-1].n.toLowerCase()} to discover it`)}</span></div></div>`;continue}
   const n=cnt(b.id),L=bl(b.id),need=upNeed(b),u=unitProd(b);
   h+=`<div class="row"><div class="ico">${b.ic}</div><button class="txtbtn" data-act="info:b:${b.id}"><b>${b.n}<span class="lv" style="display:inline">${n?`×${n}`:''}${L?` · ${tx('niv.','lv.')} ${L+1}`:''}</span></b><span>${b.role}</span>
    <span class="eff">${n?tx(`Produit ${fmt(n*u)} plumes/s · <em>+${fmt(u)}/s</em> par achat`,`Makes ${fmt(n*u)} feathers/s · <em>+${fmt(u)}/s</em> per purchase`):tx(`Produit <em>+${fmt(u)} plumes/s</em>, même jeu fermé`,`Makes <em>+${fmt(u)} feathers/s</em>, even with the game closed`)}</span>
@@ -827,7 +841,7 @@ function render(){
  $('content').innerHTML=h;refresh();
 }
 function statsHtml(){
- const days=[];for(let i=6;i>=0;i--){const d=new Date(Date.now()-i*864e5);days.push({k:dk(d),l:d.toLocaleDateString(LANG==='en'?'en-GB':'fr-FR',{weekday:'narrow'})})}
+ const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push({k:dk(d),l:d.toLocaleDateString(LANG==='en'?'en-GB':'fr-FR',{weekday:'narrow'})})}
  const vals=days.map(d=>(S.flog||{})[d.k]||0),mx=Math.max(30,...vals),week=vals.reduce((a,b)=>a+b,0);
  const fa=S.fact||{},tot=Object.values(fa).reduce((a,b)=>a+b,0)||1;
  return `<div class="card stats"><div class="srow"><div><b>${fmtDur(Math.round(S.fmin||0))}</b><small>${tx('au total','in total')}</small></div><div><b>${fmtDur(Math.round(week))}</b><small>${tx('ces 7 jours','last 7 days')}</small></div><div><b>${fstreak()}</b><small>${tx('jours de suite','day streak')}</small></div></div>
@@ -838,9 +852,9 @@ function refresh(){document.querySelectorAll('.buy[data-cost]').forEach(b=>{b.di
 
 // ---------- objectif suivant : une seule chose à faire, toujours visible ----------
 let goalKey='';
-function goalHtml(){const G=nextGoal();goalKey=JSON.stringify([G.t,G.p!=null?Math.round(G.p*50):0]);
+function goalHtml(){const G=nextGoal();goalKey=JSON.stringify([G.t,G.p!=null]);
  return `<button id="goal" ${G.act?`data-act="${G.act}"`:''}><span class="gi">!</span><span style="flex:1;min-width:0"><small>${tx('Ton prochain objectif','Your next goal')}</small><b>${G.t}</b><span>${G.d}</span>${G.p!=null?`<div class="gbar"><i style="width:${Math.min(100,G.p*100)}%"></i></div>`:''}</span></button>`}
-function updGoal(){const G=nextGoal(),k=JSON.stringify([G.t,G.p!=null?Math.round(G.p*50):0]);if(k!==goalKey&&$('goal'))$('goal').outerHTML=goalHtml()}
+function updGoal(){const G=nextGoal(),k=JSON.stringify([G.t,G.p!=null]);const el=$('goal');if(!el)return;if(k!==goalKey){el.outerHTML=goalHtml();return}const bar=el.querySelector('.gbar i');if(bar&&G.p!=null)bar.style.width=Math.min(100,G.p*100)+'%'}
 function nextGoal(){
  const firstUp=BUILD.find(b=>cnt(b.id)>0&&bl(b.id)===0);
  if(studying()){const a=S.study.end-S.study.min*60000;return{t:tx('Concentre-toi jusqu’à la fin','Stay focused until the end'),d:tx('Ta bibliothèque produit 3 fois plus. Reviens à la fin du minuteur pour tes étoiles.','Your library produces 3 times more. Come back when the timer ends for your stars.'),p:(now()-a)/(S.study.end-a),act:'gotop'}}
@@ -852,9 +866,10 @@ function nextGoal(){
  if(!Object.values(S.e).some(Boolean))return{t:tx('Équipe ton hibou','Equip your owl'),d:tx(`Les lunettes coûtent ${EQCOST[0]} étoiles et rendent chaque toucher plus fort.`,`Glasses cost ${EQCOST[0]} stars and make every tap stronger.`),p:S.st/EQCOST[0],act:'gohibou'};
  if(!cnt('the'))return{t:tx('Achète une tasse de thé','Buy a cup of tea'),d:tx('Elle produit 8 fois plus qu’une bougie.','It produces 8 times more than a candle.'),p:S.pl/bCost(BUILD[1]),act:'gobib'};
  if(firstUp&&cnt(firstUp.id)<upNeed(firstUp))return{t:tx(`Possède ${upNeed(firstUp)} ${PLUR[firstUp.id]}`,`Own ${upNeed(firstUp)} ${PLUR[firstUp.id]}`),d:tx('Tu pourras alors l’améliorer : production ×2 et nouveau look.','You’ll then be able to upgrade it: output ×2 and a new look.'),p:cnt(firstUp.id)/upNeed(firstUp),act:'gobib'};
- if(S.daily.day!==today())return{t:tx('Ouvre le coffre du jour','Open the daily chest'),d:tx('Il est dans la carte du minuteur juste en dessous.','It’s in the timer card just below.'),act:'gostudy'};
+ if(chestOk())return{t:tx('Ouvre le coffre du jour','Open the daily chest'),d:tx('Il est dans la carte du minuteur juste en dessous.','It’s in the timer card just below.'),act:'gostudy'};
  const nx=BUILD.find(b=>!cnt(b.id));
  if(nx)return{t:tx(`Débloque : ${nx.n}`,`Unlock: ${nx.n}`),d:tx(`Prix : ${fmt(bCost(nx))} plumes.`,`Price: ${fmt(bCost(nx))} feathers.`),p:S.pl/bCost(nx),act:'gobib'};
+ if((S.rank||0)>=5&&S.st>=cstCost())return{t:tx('Relie une constellation','Connect a constellation'),d:tx(`${cstCost()} étoiles : +10 % de production pour toujours.`,`${cstCost()} stars: +10% production forever.`),act:'gobib'};
  if((S.rank||0)<5)return{t:tx(`Passe au rang « ${RANKS[S.rank+1]} »`,`Reach the “${RANKS[S.rank+1]}” rank`),d:tx(`Il faut ${RANKCOST[S.rank]} étoiles. Continue tes minuteurs.`,`You need ${RANKCOST[S.rank]} stars. Keep doing timers.`),p:S.st/RANKCOST[S.rank],act:'gobib'};
  return{t:dipGain()?tx('Obtiens ton diplôme','Get your diploma'):tx('Vise le prochain diplôme','Aim for the next diploma'),d:dipGain()?tx('Recommence plus fort : +20 % pour toujours.','Start over stronger: +20% forever.'):tx(`Cumule ${fmt(dipNext())} plumes dans cette partie.`,`Make ${fmt(dipNext())} feathers in this run.`),p:Math.pow((S.run||0)/dipNext(),1/3),act:'gobib'};
 }
@@ -873,7 +888,7 @@ function infoSheet(){
  if(k==='b'){const b=BUILD.find(x=>x.id===id),n=cnt(id),L=bl(id),need=upNeed(b),u=unitProd(b);t=b.n;
   h=`<div class="ihead"><div class="ico">${b.ic}</div><p>${b.role}</p></div><div class="facts">
    ${fact(tx('À quoi ça sert','What it does'),tx(`Produit des plumes <b>toute seule</b>, même quand le jeu est fermé. Plus tu en as, plus tu gagnes.`,`Makes feathers <b>on its own</b>, even when the game is closed. The more you have, the more you earn.`))}
-   ${fact(tx('Ce que tu as','What you have'),n?`${n} ${n>1?PLUR[id]:b.n.toLowerCase()} → <strong>${fmt(n*u)} ${tx('plumes/s','feathers/s')}</strong>${share(n*u)}`:tx('Aucun pour l’instant.','None yet.'))}
+   ${fact(tx('Ce que tu as','What you have'),n?`${n} ${n>1?PLUR[id]:b.n.toLowerCase()} → <strong>${fmt(n*u)} ${tx('plumes/s','feathers/s')}</strong>${share(n*u)}`:tx(FEM(id)?'Aucune pour l’instant.':'Aucun pour l’instant.','None yet.'))}
    ${fact(tx(`Si tu en achètes ${FEM(id)?'une':'un'}`,'If you buy one'),tx(`<strong>+${fmt(u)} plumes/s</strong> pour <strong>${fmt(bCost(b))} plumes</strong>. Le prix augmente un peu à chaque achat.`,`<strong>+${fmt(u)} feathers/s</strong> for <strong>${fmt(bCost(b))} feathers</strong>. The price goes up a little with each purchase.`))}
    ${fact(tx(`Amélioration ${L?`(niveau ${L+1} → ${L+2})`:''}`,`Upgrade ${L?`(level ${L+1} → ${L+2})`:''}`),tx(`Double la production de <b>${FEM(id)?'toutes':'tous'}</b> tes ${PLUR[id]}. ${n>=need?`<span class="ok">Disponible maintenant</span> pour <strong>${fmt(upCost(b))} plumes</strong>.`:`Possible quand tu en as <b>${need}</b> (tu en as ${n}).`}`,`Doubles the output of <b>all</b> your ${PLUR[id]}. ${n>=need?`<span class="ok">Available now</span> for <strong>${fmt(upCost(b))} feathers</strong>.`:`Possible once you have <b>${need}</b> (you have ${n}).`}`))}
    ${fact(tx('Dans la bibliothèque','In the library'),b.look)}
@@ -937,39 +952,41 @@ document.addEventListener('click',e=>{
   case 'info':openSheet('info',arg);return;
   case 'help':openSheet('help');S.seenHelp=1;break;
   case 'close':closeSheet();break;
-  case 'up':{const B=BUILD.find(x=>x.id===arg),c=upCost(B);if(S.pl<c||cnt(arg)<upNeed(B))return;S.pl-=c;S.bl=S.bl||{};S.bl[arg]=bl(arg)+1;addXp(15);toast(tx(`${B.n} améliorée : production ×2 et nouveau look !`,`${B.n} upgraded: output ×2 and a new look!`));break}
+  case 'up':{const B=BUILD.find(x=>x.id===arg),c=upCost(B);if(S.pl<c||cnt(arg)<upNeed(B))return;S.pl-=c;S.bl=S.bl||{};S.bl[arg]=bl(arg)+1;addXp(15);toast(tx(`${B.n} amélioré${FEM(arg)?'e':''} : production ×2 et nouveau look !`,`${B.n} upgraded: output ×2 and a new look!`));break}
   case 'rank':{const r=S.rank||0,c=RANKCOST[r];if(r>=5||S.st<c)return;S.st-=c;S.rank=r+1;drawLib();fx();addXp(30);modal(tx('La bibliothèque s’agrandit !','The library grows!'),tx(`Tu passes au rang ${RANKS[r+1]}. Toute ta production est maintenant ×${rankMult(r+1)}.`,`You reach the ${RANKS[r+1]} rank. All your output is now ×${rankMult(r+1)}.`));break}
+  case 'cst':{const c=cstCost();if(S.st<c)return;S.st-=c;S.cst=(S.cst||0)+1;addXp(10);toast(tx(`Constellation niveau ${S.cst} : production ×${cstMult().toFixed(1)}`,`Constellation level ${S.cst}: production ×${cstMult().toFixed(1)}`));break}
   case 'bec':{const c=becCost();if(S.pl<c)return;S.pl-=c;S.u.bec=lv('bec')+1;addXp(3);break}
   case 'b':{const B=BUILD.find(x=>x.id===arg),c=bCost(B);if(S.pl<c)return;S.pl-=c;S.b[arg]=cnt(arg)+1;addXp(4);if(cnt(arg)===1)toast(tx(`${B.n} : nouvel objet dans ta bibliothèque !`,`${B.n}: a new object in your library!`));break}
   case 'e':{const t=tr(arg),c=EQCOST[t];if(S.st<c)return;S.st-=c;S.e[arg]=t+1;drawOwl();toast(tx(`${EQ.find(x=>x.id===arg).n} ${TIER[t+1]} équipé !`,`${TIER[t+1]} ${EQ.find(x=>x.id===arg).n.toLowerCase()} equipped!`));addXp(10);break}
-  case 'daily':{const n=S.daily.day===yesterday()?S.daily.n+1:1,s=dailyStars(n),p=dailyPl();S.daily={day:today(),n};S.st+=s;gain(p);addXp(20);modal(tx('Coffre ouvert !','Chest opened!'),tx(`Jour ${n} d’affilée : +${s} étoiles et +${fmt(p)} plumes. Reviens demain pour plus.`,`Day ${n} in a row: +${s} stars and +${fmt(p)} feathers. Come back tomorrow for more.`),{label:tx('Doubler avec une pub','Double it with an ad'),give:()=>{S.st+=s;gain(p)},done:tx(`Coffre doublé : +${s} étoiles et +${fmt(p)} plumes`,`Chest doubled: +${s} stars and +${fmt(p)} feathers`)});break}
+  case 'daily':{if(!chestOk())return;const n=S.daily.day===yesterday()?S.daily.n+1:1,s=dailyStars(n),p=dailyPl();S.daily={day:today(),n,t:now()};S.st+=s;gain(p);addXp(20);modal(tx('Coffre ouvert !','Chest opened!'),tx(`Jour ${n} d’affilée : +${s} étoiles et +${fmt(p)} plumes. Reviens demain pour plus.`,`Day ${n} in a row: +${s} stars and +${fmt(p)} feathers. Come back tomorrow for more.`),{label:tx('Doubler avec une pub','Double it with an ad'),give:()=>{S.st+=s;gain(p)},done:tx(`Coffre doublé : +${s} étoiles et +${fmt(p)} plumes`,`Chest doubled: +${s} stars and +${fmt(p)} feathers`)});break}
   case 'actset':S.act=arg;document.querySelectorAll('[data-act^="actset:"]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.act==='actset:'+arg));save();return;
   case 'plum':{const P=PLUMAGE.find(x=>x.id===arg);if(!P)return;S.plum=S.plum||{};if(P.cost&&!S.plum[arg]){if(S.st<P.cost)return;S.st-=P.cost;S.plum[arg]=1;toast(tx(`Plumage ${P.fr} débloqué !`,`${P.en} plumage unlocked!`))}S.pcol=arg;drawOwl();break}
   case 'lang':S.lang=LANG==='fr'?'en':'fr';save();location.reload();return;
   case 'dur':setDur((S.dur||25)+(+arg));save();return;
   case 'durset':setDur(+arg);save();return;
-  case 'adboost':Ads.show(()=>{S.adEnd=Math.max(now(),S.adEnd||0)+AD_BOOST_MIN*60000;save();render();toast(tx(`Plumes ×2 pendant ${AD_BOOST_MIN} minutes !`,`Feathers ×2 for ${AD_BOOST_MIN} minutes!`))});return;
+  case 'adboost':Ads.show(()=>{S.adEnd=Math.min(Math.max(now(),S.adEnd||0)+AD_BOOST_MIN*60000,now()+AD_BOOST_CAP*60000);save();render();toast(tx(`Plumes ×2 pendant ${AD_BOOST_MIN} minutes !`,`Feathers ×2 for ${AD_BOOST_MIN} minutes!`))});return;
   case 'adprivacy':Ads.privacyForm();return;
   case 'rate':rateApp();return;
   case 'share':shareApp();return;
   case 'tuto':window.scrollTo({top:0});tuto(0);return;
-  case 'study':if(+arg<1){if(S.trial)return;S.trial=1}S.study={end:now()+(+arg)*60000,min:+arg,t0:S.tot,act:S.act||'etudes'};Notif.plan(S.study.end,+arg);toast(tx('C’est parti ! Pose ton téléphone.','Here we go! Put your phone down.'));window.scrollTo({top:0,behavior:'smooth'});break;
-  case 'stop':if(b.dataset.sure){S.study=null;Notif.cancel();toast(tx('Minuteur arrêté, pas de récompense','Timer stopped, no reward'))}else{b.dataset.sure=1;b.textContent=tx('Toque encore pour arrêter','Tap again to stop');return}break;
+  case 'study':if(+arg<1){if(S.trial)return;S.trial=1}S.study={end:now()+(+arg)*60000,min:+arg,t0:S.tot,act:S.act||'etudes'};Notif.plan(S.study.end,+arg).then(()=>Focus.start());toast(tx('C’est parti ! Pose ton téléphone.','Here we go! Put your phone down.'));window.scrollTo({top:0,behavior:'smooth'});break;
+  case 'stop':if(b.dataset.sure){S.study=null;Notif.cancel();Focus.stop();toast(tx('Minuteur arrêté, pas de récompense','Timer stopped, no reward'))}else{b.dataset.sure=1;b.textContent=tx('Toque encore pour arrêter','Tap again to stop');return}break;
   case 'dip':{const g=dipGain();if(!g)return;if(!b.dataset.sure){b.dataset.sure=1;b.textContent=tx('Toque encore pour confirmer','Tap again to confirm');return}
    S.dip=(S.dip||0)+g;S.pl=0;S.run=0;S.b={};S.bl={};S.u.bec=0;addXp(50*g);drawScene(true);
    modal(tx('Diplôme obtenu !','Diploma earned!'),tx(`Tu as maintenant ${S.dip} diplôme${S.dip>1?'s':''} : toute ta production est ×${dipMult().toFixed(1)} pour toujours. Ta bibliothèque recommence, en plus fort.`,`You now have ${S.dip} diploma${S.dip>1?'s':''}: all your output is ×${dipMult().toFixed(1)} forever. Your library starts over, stronger.`));window.scrollTo({top:0,behavior:'smooth'});break}
-  case 'reset':if(b.dataset.sure){S=fresh();S.seenHelp=1;drawOwl();drawLib();toast(tx('Nouvelle partie','New game'))}else{b.dataset.sure=1;b.textContent=tx('Toque encore : tout sera effacé, sans bonus','Tap again: everything will be erased, no bonus');return}break;
+  case 'reset':if(b.dataset.sure){const lg=S.lang;Notif.cancel();Focus.stop();S=fresh();if(lg)S.lang=lg;S.seenHelp=1;drawOwl();drawLib();toast(tx('Nouvelle partie','New game'))}else{b.dataset.sure=1;b.textContent=tx('Toque encore : tout sera effacé, sans bonus','Tap again: everything will be erased, no bonus');return}break;
  }
  save();
  if($('sheet').hidden)render();else if(F.kind==='info')renderSheet();
 });
 function toast(t){const T=$('toast');T.textContent=t;T.hidden=false;T.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>{T.style.opacity=0;setTimeout(()=>T.hidden=true,300)},2200)}
-function modal(title,txt,ad,onClose){$('modalcard').innerHTML=`<h3>${title}</h3><p>${txt}</p>${ad&&adOk()?`<button class="btn ad" id="mad">▶ ${ad.label}</button>`:''}<button class="btn ${ad&&adOk()?'ghost':'main'}" id="mok">${ad&&adOk()?tx('Non merci','No thanks'):tx('Super','Great')}</button>`;$('modal').hidden=false;$('mok').onclick=()=>{$('modal').hidden=true;if(onClose)onClose()};
+const modalQ=[];
+function modal(title,txt,ad,onClose){if(!$('modal').hidden){modalQ.push([title,txt,ad,onClose]);return}$('modalcard').innerHTML=`<h3>${title}</h3><p>${txt}</p>${ad&&adOk()?`<button class="btn ad" id="mad">▶ ${ad.label}</button>`:''}<button class="btn ${ad&&adOk()?'ghost':'main'}" id="mok">${ad&&adOk()?tx('Non merci','No thanks'):tx('Super','Great')}</button>`;$('modal').hidden=false;$('mok').onclick=()=>{$('modal').hidden=true;if(onClose)onClose();if(modalQ.length)setTimeout(()=>modal(...modalQ.shift()),250)};
  if($('mad'))$('mad').onclick=()=>{$('modal').hidden=true;Ads.show(()=>{ad.give();save();render();toast(ad.done)})};$('mok').focus()}
 
 // ---------- boucle ----------
 let lastT=performance.now(),acc=0,wasStudy=false;
-function hud(){hud.n=hud.n||0;
+function hud(){hud.n=hud.n||0;if(hud.day!==today()){const first=!hud.day;hud.day=today();if(!first&&$('sheet').hidden)render()}
  $('plumes').textContent=fmt(S.pl);$('etoiles').textContent=fmt(S.st);$('lvl').textContent=S.lvl;
  $('xpbar').style.width=Math.min(100,S.xp/xpNeed(S.lvl)*100)+'%';
  $('ps').textContent=fmt(prod());$('pt').textContent='+'+fmt(tapVal());$('rankname').textContent=RANKS[S.rank||0];
@@ -992,14 +1009,14 @@ function tick(t){
 // Série de jours avec au moins un minuteur terminé
 const fstreak=()=>S.fday&&(S.fday.day===today()||S.fday.day===yesterday())?S.fday.n:0;
 function finishStudy(extra=0){
- const late=now()-S.study.end>60000,m=S.study.min,r=studyReward(m),pl=S.study.t0!=null?S.tot-S.study.t0:null,act=actOf(S.study.act),st0=stage();
- S.study=null;S.st+=r;S.studies++;addXp(m<1?20:Math.round(m*8));
+ const endD=new Date(Math.min(now(),S.study.end)),late=now()-S.study.end>60000,m=S.study.min,r=studyReward(m),pl=S.study.t0!=null?S.tot-S.study.t0:null,act=actOf(S.study.act),st0=stage();
+ S.study=null;Focus.stop();S.st+=r;S.studies++;addXp(m<1?20:Math.round(m*8));
  const rev=NATIVE&&m>=10&&S.studies>=3&&!S.revAsked;if(rev)S.revAsked=1;
  let book=null;
- if(m>=1){S.fmin=(S.fmin||0)+m;const d=today();if(!S.fday||S.fday.day!==d){S.fday={day:d,n:S.fday&&S.fday.day===yesterday()?S.fday.n+1:1};S.fbest=Math.max(S.fbest||0,S.fday.n)}
+ if(m>=1){S.fmin=(S.fmin||0)+m;const d=endD.toDateString();if(!S.fday||S.fday.day!==d){S.fday={day:d,n:S.fday&&S.fday.day===dayBefore(endD)?S.fday.n+1:1};S.fbest=Math.max(S.fbest||0,S.fday.n)}
   S.fact=S.fact||{};S.fact[act.id]=(S.fact[act.id]||0)+m;
-  S.flog=S.flog||{};const k=dk();S.flog[k]=(S.flog[k]||0)+m;const ks=Object.keys(S.flog);if(ks.length>40)for(const x of ks.slice(0,ks.length-40))delete S.flog[x];
-  S.maxmin=Math.max(S.maxmin||0,m);const h=new Date().getHours();if(h<5)S.nightOwl=1;else if(h<8)S.early=1;
+  S.flog=S.flog||{};const k=dk(endD);S.flog[k]=(S.flog[k]||0)+m;const ks=Object.keys(S.flog);if(ks.length>40)for(const x of ks.slice(0,ks.length-40))delete S.flog[x];
+  S.maxmin=Math.max(S.maxmin||0,m);const h=endD.getHours();if(h<5)S.nightOwl=1;else if(h<8)S.early=1;
   if(m>=10)book=drawBook()}
  if(extra>0)gain(extra);
  const got=checkAch(true),grew=stage()>st0;
@@ -1030,7 +1047,6 @@ function welcomeBack(from){
  else gain(g.off);
  save();hud();
 }
-let pausedAt=0;
 function goAway(){if(!pausedAt)pausedAt=now();save()}
 function comeBack(){if(!pausedAt)return;const t=pausedAt;pausedAt=0;welcomeBack(t)}
 document.addEventListener('visibilitychange',()=>{if(document.hidden)goAway();else comeBack()});
@@ -1065,6 +1081,7 @@ function start(){
  if(S.tuto==null&&(S.studies>0||S.taps>=10))S.tuto=1; // joueurs déjà lancés : pas de tutoriel imposé
  drawOwl();drawLib();render();hud();
  welcomeBack(S.last);
+ if(studying())Focus.start();
  if(!S.seenHelp){S.seenHelp=1;openSheet('help')}
  S.last=now();requestAnimationFrame(tick);
 }

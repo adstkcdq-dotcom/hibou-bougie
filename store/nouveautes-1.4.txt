@@ -1,0 +1,23 @@
+Notes de version 1.4 pour la Play Console (500 caractères max par langue) :
+
+<fr-FR>
+• Nouveau : compte à rebours du minuteur sur l'écran de verrouillage
+• Nouveau : les Constellations, pour faire grandir ta production avec tes étoiles
+• Deux nouveaux stades pour ton hibou : Maître hibou (100 h) et Hibou légendaire (200 h)
+• Les minuteurs rapportent plus d'étoiles
+• Nombreuses petites corrections (séries de jours, coffre du jour, affichage)
+</fr-FR>
+<en-US>
+• New: focus timer countdown on your lock screen
+• New: Constellations, to boost your production with your stars
+• Two new owl stages: Master owl (100 h) and Legendary owl (200 h)
+• Timers now earn more stars
+• Many small fixes (day streaks, daily chest, display)
+</en-US>
+<en-GB>
+• New: focus timer countdown on your lock screen
+• New: Constellations, to boost your production with your stars
+• Two new owl stages: Master owl (100 h) and Legendary owl (200 h)
+• Timers now earn more stars
+• Many small fixes (day streaks, daily chest, display)
+</en-GB>
