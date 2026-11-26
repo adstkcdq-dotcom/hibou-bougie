@@ -551,11 +551,17 @@ async function shareApp(){const text=tx('Je me concentre avec Hibou & Bougie : p
   if(navigator.share){await navigator.share({title:'Hibou & Bougie',text,url:STORE_URL});return}
   await navigator.clipboard.writeText(text+' '+STORE_URL);toast(tx('Lien copié !','Link copied!'))}catch(e){}}
 async function askReview(){try{await plug('InAppReview').requestReview()}catch(e){console.log('review',e)}}
+// Demande d'avis (fenêtre officielle Google/Apple) : 3 fois maximum, au moins 3 jours d'écart, à des moments réussis
+const revN=()=>S.revN||(S.revAsked?1:0);
+const canReview=()=>NATIVE&&revN()<3&&now()-(S.revT||0)>3*864e5;
+function markReview(){S.revN=revN()+1;S.revT=now();S.revAsked=1}
+function maybeReview(delay=1500){if(!canReview())return;markReview();save();setTimeout(askReview,delay)}
 const prod=()=>prodBase()*boostMult()*(studying()?3:1);
 const tapVal=()=>(1+lv('bec'))*(1+.5*tr('lunettes'))*lvlMult()*boostMult();
 function gain(n){S.pl+=n;S.tot+=n;S.run=(S.run||0)+n}
 const lvlReward=l=>l%5===0?3:1;
-function addXp(n){S.xp+=n;while(S.xp>=xpNeed(S.lvl)){S.xp-=xpNeed(S.lvl);S.lvl++;S.st+=lvlReward(S.lvl);toast(tx(`Niveau ${S.lvl} ! +${lvlReward(S.lvl)} étoile${S.lvl%5?'':'s'} · tout +3 %`,`Level ${S.lvl}! +${lvlReward(S.lvl)} star${S.lvl%5?'':'s'} · everything +3%`))}}
+function addXp(n,quiet){const l0=S.lvl;S.xp+=n;while(S.xp>=xpNeed(S.lvl)){S.xp-=xpNeed(S.lvl);S.lvl++;S.st+=lvlReward(S.lvl);toast(tx(`Niveau ${S.lvl} ! +${lvlReward(S.lvl)} étoile${S.lvl%5?'':'s'} · tout +3 %`,`Level ${S.lvl}! +${lvlReward(S.lvl)} star${S.lvl%5?'':'s'} · everything +3%`))}
+ if(!quiet&&S.lvl>l0&&[5,10,15].some(k=>l0<k&&S.lvl>=k))maybeReview(2500)}
 
 const dailyStars=n=>1+Math.min(2,Math.floor(n/3)), dailyPl=()=>Math.max(150,prodBase()*600);
 const chestOk=()=>S.daily.day!==today()&&now()>=(S.daily.t||0);
@@ -1011,8 +1017,8 @@ function tick(t){
 const fstreak=()=>S.fday&&(S.fday.day===today()||S.fday.day===yesterday())?S.fday.n:0;
 function finishStudy(extra=0){
  const endD=new Date(Math.min(now(),S.study.end)),late=now()-S.study.end>60000,m=S.study.min,r=studyReward(m),pl=S.study.t0!=null?S.tot-S.study.t0:null,act=actOf(S.study.act),st0=stage();
- S.study=null;Focus.stop();S.st+=r;S.studies++;addXp(m<1?20:Math.round(m*8));
- const rev=NATIVE&&m>=10&&S.studies>=3&&!S.revAsked;if(rev)S.revAsked=1;
+ S.study=null;Focus.stop();S.st+=r;S.studies++;addXp(m<1?20:Math.round(m*8),1);
+ const rev=m>=10&&S.studies>=2&&canReview();if(rev)markReview();
  let book=null;
  if(m>=1){S.fmin=(S.fmin||0)+m;const d=endD.toDateString();if(!S.fday||S.fday.day!==d){S.fday={day:d,n:S.fday&&S.fday.day===dayBefore(endD)?S.fday.n+1:1};S.fbest=Math.max(S.fbest||0,S.fday.n)}
   S.fact=S.fact||{};S.fact[act.id]=(S.fact[act.id]||0)+m;

@@ -1,0 +1,14 @@
+Notes de version 1.6 (Play Console : 500 caractères max par langue ; App Store : champ « Nouveautés ») :
+
+<fr-FR>
+• Tu peux maintenant noter Hibou & Bougie directement dans le jeu, après une belle séance ou un nouveau niveau
+• Petites améliorations et corrections
+</fr-FR>
+<en-US>
+• You can now rate Hibou & Bougie right inside the game, after a good session or a new level
+• Small improvements and fixes
+</en-US>
+<en-GB>
+• You can now rate Hibou & Bougie right inside the game, after a good session or a new level
+• Small improvements and fixes
+</en-GB>
